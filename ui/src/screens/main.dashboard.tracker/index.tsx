@@ -10,13 +10,9 @@ import UiField from '/components/UiField'
 import UiSpacer from '/components/UiSpacer'
 import UiButton from '/components/UiButton'
 import UiInputColorPicker from '/components/UiInputColorPicker'
+import UiLevelMenu from '/components/UiLevelMenu'
 import { format, getDaysInMonth } from 'date-fns'
 import s from '/styles'
-
-interface State {
-  color: string
-  isCreatingLabel: boolean
-}
 
 const C = {} as any
 C.title = css`
@@ -130,32 +126,49 @@ C.labelActions = css`
     opacity: 1;
   }
 `
+C.labelActionsIsActive = css`
+  opacity: 1;
+`
 C.labelAction = css`
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+`
+C.labelActionButton = css`
   display: inline-block;
   padding: 0;
   color: ${s['color-bw-700']};
   background: transparent;
   border: 0;
   cursor: pointer;
-
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
 `
 C.popover = css`
   padding: 12px 16px;
   width: 320px;
 `
+C.popoverNote = css`
+  color: ${s['color-bw-700']};
+  line-height: 1.5;
+`
 
 const columns = Array(13).fill(0)
 const boxes = Array(32).fill(0)
 
+interface State {
+  color: string
+  isEditingLabel: boolean
+  isDeletingLabel: boolean
+  isCreatingLabel: boolean
+}
+
 class DashboardTracker extends React.Component<{}, State> {
   state = {
     color: '',
+    isEditingLabel: false,
+    isDeletingLabel: false,
     isCreatingLabel: false
   }
-  
+
   render() {
     return (
       <UiContainer size="lg">
@@ -173,9 +186,7 @@ class DashboardTracker extends React.Component<{}, State> {
                           <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
                         )}
 
-                        {columnIndex === 0 && boxIndex > 0 && (
-                          <div css={C.calendarBoxTitle}>{boxIndex}</div>
-                        )}
+                        {columnIndex === 0 && boxIndex > 0 && <div css={C.calendarBoxTitle}>{boxIndex}</div>}
                       </div>
                     </div>
                   </div>
@@ -186,15 +197,14 @@ class DashboardTracker extends React.Component<{}, State> {
 
           <div css={C.labelSection}>
             <div css={C.labelMenu}>
-              <h5 css={C.labelMenuHeading}>
-                Labels
-              </h5>
+              <h5 css={C.labelMenuHeading}>Labels</h5>
 
-              <UiDropdown isOpen={this.state.isCreatingLabel} onOpen={() => this.setState({ isCreatingLabel: true })} onClose={() => this.setState({ isCreatingLabel: false })}>
+              <UiDropdown
+                isOpen={this.state.isCreatingLabel}
+                onOpen={() => this.setState({ isCreatingLabel: true })}
+                onClose={() => this.setState({ isCreatingLabel: false })}>
                 <UiDropdown.Body>
-                  <UiButtonLink icon="fa fa-plus">
-                    New
-                  </UiButtonLink>
+                  <UiButtonLink icon="fa fa-plus">New</UiButtonLink>
                 </UiDropdown.Body>
 
                 <UiDropdown.Menu>
@@ -208,14 +218,16 @@ class DashboardTracker extends React.Component<{}, State> {
                     <UiSpacer />
 
                     <UiField label="Color">
-                      <UiInputColorPicker value={this.state.color} onChange={(color) => this.setState({ color })} type="text" />
+                      <UiInputColorPicker
+                        value={this.state.color}
+                        onChange={color => this.setState({ color })}
+                        type="text"
+                      />
                     </UiField>
 
                     <UiSpacer />
 
-                    <UiButton preset="primary">
-                      Create
-                    </UiButton>
+                    <UiButton preset="primary">Create</UiButton>
                   </div>
                 </UiDropdown.Menu>
               </UiDropdown>
@@ -224,23 +236,84 @@ class DashboardTracker extends React.Component<{}, State> {
             <section>
               <div css={C.labelContainer}>
                 <div css={C.label}>
-                  <div css={C.labelColor}>
-                    Alt + 1
-                  </div>
-                  
-                  <span css={C.labelName}>
-                    Muntik Lang
-                  </span>
+                  <div css={C.labelColor}>Alt + 1</div>
+
+                  <span css={C.labelName}>Muntik Lang</span>
                 </div>
 
-                <div css={C.labelActions}>
-                  <button type="button" css={C.labelAction}>
-                    <i className='fa fa-pencil' />
-                  </button>
+                <div css={[C.labelActions, this.state.isDeletingLabel && C.labelActionsIsActive]}>
+                  <div css={C.labelAction}>
+                    <UiDropdown
+                      isOpen={this.state.isEditingLabel}
+                      onOpen={() => this.setState({ isEditingLabel: true })}
+                      onClose={() => this.setState({ isEditingLabel: false })}>
+                      <UiDropdown.Body>
+                        <button type="button" css={C.labelActionButton}>
+                          <i className="fa fa-pencil" />
+                        </button>
+                      </UiDropdown.Body>
 
-                  <button type="button" css={C.labelAction}>
-                    <i className='fa fa-trash' />
-                  </button>
+                      <UiDropdown.Menu>
+                        <div css={C.popover}>
+                          <UiDropdown.Heading text="Create New Label" />
+
+                          <UiField label="Name">
+                            <UiInput type="text" />
+                          </UiField>
+
+                          <UiSpacer />
+
+                          <UiField label="Color">
+                            <UiInputColorPicker
+                              value={this.state.color}
+                              onChange={color => this.setState({ color })}
+                              type="text"
+                            />
+                          </UiField>
+
+                          <UiSpacer />
+
+                          <UiButton preset="primary">Create</UiButton>
+                        </div>
+                      </UiDropdown.Menu>
+                    </UiDropdown>
+                  </div>
+
+                  <div c={C.labelAction}>
+                    <UiDropdown
+                      isOpen={this.state.isDeletingLabel}
+                      onOpen={() => this.setState({ isDeletingLabel: true })}
+                      onClose={() => this.setState({ isDeletingLabel: false })}>
+                      <UiDropdown.Body>
+                        <button type="button" css={C.labelActionButton}>
+                          <i className="fa fa-trash" />
+                        </button>
+                      </UiDropdown.Body>
+
+                      <UiDropdown.Menu>
+                        <div css={C.popover}>
+                          <UiDropdown.Heading text="Delete Confirmation" />
+
+                          <p css={C.popoverNote}>
+                            <strong>This action cannot be undone.</strong> This will <strong>permanently delete</strong>{' '}
+                            all of your entries marked with this label.
+                          </p>
+
+                          <UiSpacer />
+
+                          <UiLevelMenu>
+                            <UiLevelMenu.Section>
+                              <UiButton preset="danger">Delete</UiButton>
+                            </UiLevelMenu.Section>
+
+                            <UiLevelMenu.Section>
+                              <UiButton>Cancel</UiButton>
+                            </UiLevelMenu.Section>
+                          </UiLevelMenu>
+                        </div>
+                      </UiDropdown.Menu>
+                    </UiDropdown>
+                  </div>
                 </div>
               </div>
             </section>

@@ -15,8 +15,8 @@ C.button = css`
   font-family: ${s['font-family']};
   font-size: ${s['font-size']}px;
   color: ${s['color-white']};
-  background: ${s['color-bw-400']};
-  border: 0;
+  background: ${s['color-bw-100']};
+  border: 1px solid ${s['color-bw-300']};
   border-radius: ${s['border-radius']}px;
   box-shadow: ${s['drop-shadow']};
   cursor: pointer;
@@ -38,10 +38,19 @@ C.button = css`
 C.buttonIsPrimary = css`
   color: ${s['color-bw-100']};
   background: ${s['color-blue-500']};
+  border: 0;
 
   &:hover {
     background: ${s['color-blue-600']};
   }
+`
+C.buttonIsDefaultDanger = css`
+  color: red;
+`
+C.buttonIsDanger = css`
+  color: ${s['color-bw-100']};
+  background: red;
+  border: 0;
 `
 C.buttonIsBlock = css`
   display: block;
@@ -68,7 +77,7 @@ const UiButtonRightIcon: React.SFC = (props) => {
 }
 
 type UiButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  preset?: 'default' | 'primary'
+  preset?: 'default' | 'primary' | 'default-danger' | 'danger'
   isBlock?: boolean
   size?: 'sm' | 'md' | 'lg'
 }
@@ -79,6 +88,8 @@ const UiButton: React.SFC<UiButtonProps> & { LeftIcon?: any, RightIcon?: any } =
   return <button {...buttonProps} css={[
     C.button,
     preset === 'primary' && C.buttonIsPrimary,
+    preset === 'default-danger' && C.buttonIsDefaultDanger,
+    preset === 'danger' && C.buttonIsDanger,
     isBlock && C.buttonIsBlock,
     size === 'sm' && C.buttonIsSm
   ]}  />
