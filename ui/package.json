@@ -22,6 +22,7 @@
     "emotion-theming": "^10.0.10",
     "font-awesome": "^4.7.0",
     "history": "^4.9.0",
+    "immer": "^2.1.4",
     "random-color": "^1.0.1",
     "react": "^16.8.5",
     "react-addons-css-transition-group": "^15.6.2",
