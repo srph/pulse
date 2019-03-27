@@ -4,8 +4,19 @@ import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import UiContainer from '/components/UiContainer'
 import UiButtonLink from '/components/UiButtonLink'
+import UiDropdown from '/components/UiDropdown'
+import UiInput from '/components/UiInput'
+import UiField from '/components/UiField'
+import UiSpacer from '/components/UiSpacer'
+import UiButton from '/components/UiButton'
+import UiInputColorPicker from '/components/UiInputColorPicker'
 import { format, getDaysInMonth } from 'date-fns'
 import s from '/styles'
+
+interface State {
+  color: string
+  isCreatingLabel: boolean
+}
 
 const C = {} as any
 C.title = css`
@@ -131,11 +142,20 @@ C.labelAction = css`
     margin-right: 16px;
   }
 `
+C.popover = css`
+  padding: 12px 16px;
+  width: 320px;
+`
 
 const columns = Array(13).fill(0)
 const boxes = Array(32).fill(0)
 
-class DashboardTracker extends React.Component {
+class DashboardTracker extends React.Component<{}, State> {
+  state = {
+    color: '',
+    isCreatingLabel: false
+  }
+  
   render() {
     return (
       <UiContainer size="lg">
@@ -170,9 +190,35 @@ class DashboardTracker extends React.Component {
                 Labels
               </h5>
 
-              <UiButtonLink icon="fa fa-plus">
-                New
-              </UiButtonLink>
+              <UiDropdown isOpen={this.state.isCreatingLabel} onOpen={() => this.setState({ isCreatingLabel: true })} onClose={() => this.setState({ isCreatingLabel: false })}>
+                <UiDropdown.Body>
+                  <UiButtonLink icon="fa fa-plus">
+                    New
+                  </UiButtonLink>
+                </UiDropdown.Body>
+
+                <UiDropdown.Menu>
+                  <div css={C.popover}>
+                    <UiDropdown.Heading text="Create New Label" />
+
+                    <UiField label="Name">
+                      <UiInput type="text" />
+                    </UiField>
+
+                    <UiSpacer />
+
+                    <UiField label="Color">
+                      <UiInputColorPicker value={this.state.color} onChange={(color) => this.setState({ color })} type="text" />
+                    </UiField>
+
+                    <UiSpacer />
+
+                    <UiButton preset="primary">
+                      Create
+                    </UiButton>
+                  </div>
+                </UiDropdown.Menu>
+              </UiDropdown>
             </div>
 
             <section>

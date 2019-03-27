@@ -1,27 +1,29 @@
+/** @jsx jsx */
 import * as React from 'react'
-import styled from 'styled-components'
+import { jsx, css } from '@emotion/core'
 import s from '/styles'
 import Link from './Link'
 import Main from './Main'
 import Menu from './Menu'
 import Separator from './Separator'
+import Heading from './Heading'
 import * as utils from './utils'
 
-const ui = {} as any
-ui.Dropdown = styled.div`
+const C = {} as any
+C.dropdown = css`
   position: relative;
 `
-ui.DropdownMenu = styled.div`
+C.dropdownMenu = css`
   position: absolute;
   top: 100%;
   margin-top: 16px;
   right: 0;
   padding-top: 4px;
   padding-bottom: 4px;
-  background: ${s['color-white']};
-  border: 1px solid ${s['color-silver']};
+  background: ${s['color-bw-100']};
+  border: 1px solid ${s['color-bw-300']};
   border-radius: 4px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   z-index: ${s['z-index-popover']};
 `
@@ -38,6 +40,7 @@ class UiDropdown extends React.Component<IUiDropdownProps> {
   static Body = Main
   static Menu = Menu
   static Separator = Separator
+  static Heading = Heading
 
   containerNode: HTMLElement
   menuNode: HTMLElement
@@ -58,12 +61,12 @@ class UiDropdown extends React.Component<IUiDropdownProps> {
     const menu = children.find((child: React.ReactElement<any>) => child.type === Menu) as React.ReactElement<any>
     
     return (
-      <ui.Dropdown
+      <div css={C.dropdown}
         ref={c => this.containerNode = c}>
         {Boolean(main) && main.props.children}
 
-        {this.props.isOpen && <ui.DropdownMenu ref={c => (this.menuNode = c)}>{Boolean(menu) && menu.props.children}</ui.DropdownMenu>}
-      </ui.Dropdown>
+        {this.props.isOpen && <div css={C.dropdownMenu} ref={c => (this.menuNode = c)}>{Boolean(menu) && menu.props.children}</div>}
+      </div>
     )
   }
 

@@ -1,6 +1,7 @@
+/** @jsx jsx */
 import * as React from 'react'
-import styled, { css } from 'styled-components'
-import s from '@app/styles'
+import { jsx, css } from '@emotion/core'
+import s from '/styles'
 
 interface UiFieldProps {
   id?: string
@@ -8,28 +9,19 @@ interface UiFieldProps {
   children: JSX.Element
   disabled?: boolean
   error?: string
-  tooltip?: string
-  actions?: JSX.Element | JSX.Element[]
   spacer?: boolean
+  actions?: React.ReactNode
   isRequired?:  boolean
-  wrapperRef?: (c: JSX.Element) => void
 }
 
-const ui = {} as any
-ui.Field = styled.div`
+const C = {} as any
+C.field = css`
   transition: 250ms all ease;
-
-  ${props => props.spacer && css`
-    margin-bottom: 32px;
-  `}
-
-  ${(props: { disabled: false }) =>
-    props.disabled &&
-    css`
-    opacity: 0.5;
-  `}
 `
-ui.Label = styled.label`
+C.fieldDisabled = css`
+  opacity: 0.5;
+`
+C.label = css`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,27 +33,21 @@ ui.Label = styled.label`
   margin-bottom: 8px;
   text-transform: uppercase;
 `
-ui.LabelRequired = styled.span`
+C.labelRequired = css`
   color: ${s['color-red']};
   margin-left: 4px;
 `
-ui.LabelError = styled.div`
+C.labelError = css`
   font-size: 10px;
   background: red;
   padding: 4px;
   color: ${s['color-white']};
 `
-ui.Tooltip = styled.div`
-  margin-top: 12px;
-  font-size: 10px;
-  font-style: italic;
-  color: ${s['color-dark-silver']};
-`
-ui.Actions = styled.div`
+C.actions = css`
   display: flex;
   align-items: center;
 `
-ui.ActionsItem = styled.div`
+C.actionsItem = css`
   &:not(:last-child) {
     margin-right: 8px;
   }
@@ -70,25 +56,25 @@ ui.ActionsItem = styled.div`
 const UiField: React.SFC<UiFieldProps> = (props) => {
   const actions = props.actions ? (Array.isArray(props.actions) ? props.actions : [props.actions]) : []
   return (
-    <ui.Field innerRef={props.wrapperRef} disabled={props.disabled} spacer={props.spacer}>
-      <ui.Label htmlFor={props.id}>
-        <span>{props.label} {props.isRequired && <ui.LabelRequired>*</ui.LabelRequired>}</span>
-        {props.error && Boolean(props.error.length) && <ui.LabelError>Invalid JSON!</ui.LabelError>}
+    <div css={[C.field, props.disabled && c.fieldDisabled]} spacer={props.spacer}>
+      <label css={C.label} htmlFor={props.id}>
+        <span>{props.label} {props.isRequired && <span css={C.labelRequired}>*</span>}</span>
+        {props.error && Boolean(props.error.length) && <div css={C.labelError}>Invalid JSON!</div>}
         {Boolean(actions.length) && (
-          <ui.Actions>
+          <div css={C.actions}>
             {actions.map((action, i) => (
-              <ui.ActionsItem key={i}>
+              <div css={C.actionsItem} key={i}>
                 {React.cloneElement(action, { disabled: action.props.disabled || props.disabled })}
-              </ui.ActionsItem>
+              </div>
             ))}
-          </ui.Actions>
+          </div>
         )}
-      </ui.Label>
+      </label>
       {React.cloneElement(props.children, {
         id: props.id,
         disabled: props.disabled
       })}
-    </ui.Field>
+    </div>
   )
 }
 

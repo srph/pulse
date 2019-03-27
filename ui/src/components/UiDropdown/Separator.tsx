@@ -1,22 +1,23 @@
+/** @jsx jsx */
 import * as React from 'react'
-import s from '@app/styles'
-import styled from 'styled-components'
+import { jsx, css } from '@emotion/core'
+import s from '/styles'
 
-const ui = {} as any
-ui.Separator = styled.div`
+const C = {} as any
+C.separator = css`
   padding-top: 8px;
   padding-bottom: 8px;
 `
-ui.SeparatorLine = styled.div`
-height: 1px;
-  background: ${s['color-silver']};
+C.separatorLine = css`
+  height: 1px;
+  background: ${s['color-bw-300']};
 `
 
 const UiDropdownSeparator: React.SFC<any> = (props) => {
   return (
-    <ui.Separator>
-      <ui.SeparatorLine />
-    </ui.Separator>
+    <div css={C.separator}>
+      <div css={C.separatorLine} />
+    </div>
   )
 }
 

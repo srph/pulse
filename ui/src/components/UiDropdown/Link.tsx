@@ -1,23 +1,21 @@
+/** @jsx jsx */
 import * as React from 'react'
-import s from '@app/styles'
-import styled from 'styled-components'
+import { jsx, css } from '@emotion/core'
+import s from '/styles'
 import { Link } from 'react-router-dom'
-
-const ui = {} as any
-ui.Link = styled(props => <Link {...props} />)`
-  display: block;
-  padding: 8px;
-  color: ${s['color-dirty-blue']};
-  text-decoration: none;
-
-  &:hover {
-    background: ${s['color-silver']};
-  }
-`
 
 const UiDropdownLink: React.SFC<any> = (props) => {
   return (
-    <ui.Link {...props} />
+    <Link {...props} css={css`
+      display: block;
+      padding: 8px;
+      color: ${s['color-text']};
+      text-decoration: none;
+    
+      &:hover {
+        background: ${s['color-bw-300']};
+      }
+    `} />
   )
 }
 
