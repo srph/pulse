@@ -241,7 +241,11 @@ class DashboardTracker extends React.Component<{}, State> {
                   <span css={C.labelName}>Muntik Lang</span>
                 </div>
 
-                <div css={[C.labelActions, this.state.isDeletingLabel && C.labelActionsIsActive]}>
+                <div
+                  css={[
+                    C.labelActions,
+                    (this.state.isEditingLabel || this.state.isDeletingLabel) && C.labelActionsIsActive
+                  ]}>
                   <div css={C.labelAction}>
                     <UiDropdown
                       isOpen={this.state.isEditingLabel}
@@ -255,7 +259,7 @@ class DashboardTracker extends React.Component<{}, State> {
 
                       <UiDropdown.Menu>
                         <div css={C.popover}>
-                          <UiDropdown.Heading text="Create New Label" />
+                          <UiDropdown.Heading text="Edit Label" />
 
                           <UiField label="Name">
                             <UiInput type="text" />
