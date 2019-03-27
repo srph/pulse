@@ -32,7 +32,7 @@ class MainDashboard extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <UiContainer size="md">
+        <UiContainer size="lg">
           <div css={C.navbar}>
             <div css={C.navbarContainer}>
               <h2 css={C.navbarLogo}>Pulse</h2>

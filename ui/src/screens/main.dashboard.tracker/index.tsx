@@ -3,7 +3,8 @@ import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import UiContainer from '/components/UiContainer'
-import { format } from 'date-fns'
+import UiButtonLink from '/components/UiButtonLink'
+import { format, getDaysInMonth } from 'date-fns'
 import s from '/styles'
 
 const C = {} as any
@@ -14,39 +15,189 @@ C.title = css`
 `
 C.wrapper = css`
   display: flex;
+  padding-bottom: 64px;
 `
 C.calendar = css`
-  width: 100%;
   display: flex;
+  width: 100%;
   margin-right: 16px;
 `
+C.calendarColumn = css`
+  width: ${(1 / 13) * 100}%;
+`
 C.calendarBox = css`
-  width: ${(1/13) * 100}%;
   border: 1px solid ${s['color-bw-400']};
 
-  &:not(:last-child) {
+  .css-${C.calendarColumn.name}:not(:last-child) & {
     border-right-color: transparent;
+  }
+
+  &:not(:last-child) {
+    border-bottom-color: transparent;
   }
 `
 C.calendarBoxInner = css`
+  position: relative;
   padding-bottom: 100%;
 `
+C.calendarBoxContent = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
+C.calendarBoxTitle = css`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 600;
+`
+C.labelSection = css`
+  flex-shrink: 0;
+  width: 180px;
+`
+C.labelMenu = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+`
+C.labelMenuHeading = css`
+  margin: 0;
+  text-transform: uppercase;
+`
+C.labelContainer = css`
+  position: relative;
+
+  &:last-child {
+    margin-bottom: 32px;
+  }
+`
+C.label = css`
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  background: ${s['color-bw-800']};
+  border-radius: ${s['border-radius']}px;
+`
+C.labelColor = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  height: 48px;
+  width: 48px;
+  color: ${s['color-bw-100']};
+  font-weight: 600;
+  font-size: 8px;
+  background: ${s['color-blue-500']};
+  border-radius: ${s['border-radius']}px;
+`
+C.labelName = css`
+  color: ${s['color-bw-100']};
+  font-weight: 600;
+  font-size: ${s['font-size-subtitle']}px;
+`
+C.labelActions = css`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 100%;
+  margin-left: 16px;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  transition: 100ms all ease;
+
+  .css-${C.labelContainer.name}:hover & {
+    opacity: 1;
+  }
+`
+C.labelAction = css`
+  display: inline-block;
+  padding: 0;
+  color: ${s['color-bw-700']};
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:not(:last-child) {
+    margin-right: 16px;
+  }
+`
+
+const columns = Array(13).fill(0)
+const boxes = Array(32).fill(0)
 
 class DashboardTracker extends React.Component {
   render() {
     return (
-      <UiContainer>
-        <h4 css={C.title}>
-          Jakol Tracker 2018
-        </h4>
+      <UiContainer size="lg">
+        <h4 css={C.title}>Jakol Tracker 2018</h4>
 
         <div css={C.wrapper}>
           <div css={C.calendar}>
-            {Array(13).fill(0).map((_, i: number) => (
-              <div css={C.calendarBox} key={i}>
-                <div css={C.calendarBoxInner} />
+            {columns.map((_, columnIndex: number) => (
+              <div css={C.calendarColumn} key={columnIndex} data-column>
+                {boxes.map((_, boxIndex: number) => (
+                  <div css={C.calendarBox} data-calendar-box key={boxIndex}>
+                    <div css={C.calendarBoxInner}>
+                      <div css={C.calendarBoxContent}>
+                        {columnIndex > 0 && boxIndex === 0 && (
+                          <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
+                        )}
+
+                        {columnIndex === 0 && boxIndex > 0 && (
+                          <div css={C.calendarBoxTitle}>{boxIndex}</div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             ))}
+          </div>
+
+          <div css={C.labelSection}>
+            <div css={C.labelMenu}>
+              <h5 css={C.labelMenuHeading}>
+                Labels
+              </h5>
+
+              <UiButtonLink icon="fa fa-plus">
+                New
+              </UiButtonLink>
+            </div>
+
+            <section>
+              <div css={C.labelContainer}>
+                <div css={C.label}>
+                  <div css={C.labelColor}>
+                    Alt + 1
+                  </div>
+                  
+                  <span css={C.labelName}>
+                    Muntik Lang
+                  </span>
+                </div>
+
+                <div css={C.labelActions}>
+                  <button type="button" css={C.labelAction}>
+                    <i className='fa fa-pencil' />
+                  </button>
+
+                  <button type="button" css={C.labelAction}>
+                    <i className='fa fa-trash' />
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </UiContainer>

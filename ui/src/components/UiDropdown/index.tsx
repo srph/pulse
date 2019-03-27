@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import s from '@app/styles'
+import s from '/styles'
 import Link from './Link'
 import Main from './Main'
 import Menu from './Menu'
