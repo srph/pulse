@@ -3,8 +3,7 @@ import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import s from '/styles'
 import color from 'color'
-import randomColor from 'random-color'
-import isValidHexColor from '/utils/isValidHexColor'
+import randomColorHex from '/utils/randomColorHex'
 
 const C = {} as any
 C.wrapper = css`
@@ -115,7 +114,7 @@ export default class UiInput extends React.Component<Props, State> {
   }
 
   handleRandomize = () => {
-    this.props.onChange && this.props.onChange(randomColor(0.3, 99).hexString())
+    this.props.onChange && this.props.onChange(randomColorHex())
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {

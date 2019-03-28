@@ -2,6 +2,7 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
+import EventListener from 'react-event-listener'
 import UiContainer from '/components/UiContainer'
 import UiButtonLink from '/components/UiButtonLink'
 import UiDropdown from '/components/UiDropdown'
@@ -11,7 +12,9 @@ import UiSpacer from '/components/UiSpacer'
 import UiButton from '/components/UiButton'
 import UiInputColorPicker from '/components/UiInputColorPicker'
 import UiLevelMenu from '/components/UiLevelMenu'
-import { format, getDaysInMonth } from 'date-fns'
+import CreateLabelPopover from './CreateLabelPopover'
+import EditLabelPopover from './EditLabelPopover'
+import { format } from 'date-fns'
 import immer from 'immer'
 import s from '/styles'
 import random from '/utils/random';
@@ -188,9 +191,12 @@ interface State {
   color: string
   activeLabelIndex: number
   tracker: AppDataTracker
+  editIndex: number
   isEditingLabel: boolean
   isDeletingLabel: boolean
   isCreatingLabel: boolean
+  isStoringLabel: boolean
+  isUpdatingLabel: boolean
 }
 
 const tz = {
@@ -236,6 +242,7 @@ class DashboardTracker extends React.Component<{}, State> {
   state = {
     color: '',
     activeLabelIndex: 0,
+    editIndex: -1,
     tracker: {
       id: 1,
       title: 'Jog Tracker 2019',
@@ -255,11 +262,9 @@ class DashboardTracker extends React.Component<{}, State> {
     },
     isEditingLabel: false,
     isDeletingLabel: false,
-    isCreatingLabel: false
-  }
-
-  componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown)
+    isCreatingLabel: false,
+    isStoringLabel: false,
+    isUpdatingLabel: false
   }
 
   getEntryDate = (month: number, day: number) => {
@@ -296,6 +301,8 @@ class DashboardTracker extends React.Component<{}, State> {
 
     return (
       <UiContainer size="lg">
+        <EventListener target="document" onKeyDown={this.handleKeyDown} />
+
         <h4 css={C.title}>J*k*l Tracker 2019</h4>
 
         <div css={C.wrapper}>
@@ -332,38 +339,12 @@ class DashboardTracker extends React.Component<{}, State> {
             <div css={C.labelMenu}>
               <h5 css={C.labelMenuHeading}>Labels</h5>
 
-              <UiDropdown
+              <CreateLabelPopover isDisabled={false}
                 isOpen={this.state.isCreatingLabel}
+                isLoading={this.state.isStoringLabel}
+                onStore={this.handleStoreLabel}
                 onOpen={() => this.setState({ isCreatingLabel: true })}
-                onClose={() => this.setState({ isCreatingLabel: false })}>
-                <UiDropdown.Body>
-                  <UiButtonLink icon="fa fa-plus">New</UiButtonLink>
-                </UiDropdown.Body>
-
-                <UiDropdown.Menu>
-                  <div css={C.popover}>
-                    <UiDropdown.Heading text="Create New Label" />
-
-                    <UiField label="Name">
-                      <UiInput type="text" />
-                    </UiField>
-
-                    <UiSpacer />
-
-                    <UiField label="Color">
-                      <UiInputColorPicker
-                        value={this.state.color}
-                        onChange={color => this.setState({ color })}
-                        type="text"
-                      />
-                    </UiField>
-
-                    <UiSpacer />
-
-                    <UiButton preset="primary">Create</UiButton>
-                  </div>
-                </UiDropdown.Menu>
-              </UiDropdown>
+                onClose={() => this.setState({ isCreatingLabel: false })} />
             </div>
 
             <section>
@@ -378,43 +359,14 @@ class DashboardTracker extends React.Component<{}, State> {
                   <div
                     css={[
                       C.labelActions,
-                      (this.state.isEditingLabel || this.state.isDeletingLabel) && C.labelActionsIsActive
+                      (this.state.editIndex === i || this.state.isDeletingLabel) && C.labelActionsIsActive
                     ]}>
                     <div css={C.labelAction}>
-                      <UiDropdown
-                        isOpen={this.state.isEditingLabel}
-                        onOpen={() => this.setState({ isEditingLabel: true })}
-                        onClose={() => this.setState({ isEditingLabel: false })}>
-                        <UiDropdown.Body>
+                      <EditLabelPopover label={label} isOpen={this.state.editIndex === i} isLoading={this.state.isUpdatingLabel} isDisabled={false} onUpdate={this.handleUpdateLabel} onOpen={() => this.setState({ editIndex: i })} onClose={() => this.setState({ editIndex: -1 })}>
                           <button type="button" css={C.labelActionButton}>
                             <i className="fa fa-pencil" />
                           </button>
-                        </UiDropdown.Body>
-
-                        <UiDropdown.Menu>
-                          <div css={C.popover}>
-                            <UiDropdown.Heading text="Edit Label" />
-
-                            <UiField label="Name">
-                              <UiInput type="text" />
-                            </UiField>
-
-                            <UiSpacer />
-
-                            <UiField label="Color">
-                              <UiInputColorPicker
-                                value={this.state.color}
-                                onChange={color => this.setState({ color })}
-                                type="text"
-                              />
-                            </UiField>
-
-                            <UiSpacer />
-
-                            <UiButton preset="primary">Create</UiButton>
-                          </div>
-                        </UiDropdown.Menu>
-                      </UiDropdown>
+                      </EditLabelPopover>
                     </div>
 
                     <div c={C.labelAction}>
@@ -486,6 +438,55 @@ class DashboardTracker extends React.Component<{}, State> {
     })
   }
 
+  handleStoreLabel = (data: Partial<AppDataTrackerLabel>) => {
+    if (this.state.isStoringLabel) {
+      return
+    }
+
+    this.setState({
+      isStoringLabel: true
+    })
+
+    setTimeout(() => {
+      this.setState({
+        isCreatingLabel: false,
+        isStoringLabel: false,
+        tracker: immer(this.state.tracker, draft => {
+          draft.labels.push({
+            id: random(50, 5000),
+            name: data.name,
+            color: data.color,
+            created_at: tz,
+            updated_at: tz
+          })
+        })
+      })
+    }, 2000)
+  }
+
+  handleUpdateLabel = (data: Partial<AppDataTrackerLabel>) => {
+    if (this.state.isUpdatingLabel) {
+      return
+    }
+
+    const index = this.state.editIndex
+
+    this.setState({
+      isUpdatingLabel: true
+    })
+
+    setTimeout(() => {
+      this.setState({
+        editIndex: -1,
+        isUpdatingLabel: false,
+        tracker: immer(this.state.tracker, draft => {
+          draft.labels[index].name = data.name
+          draft.labels[index].color = data.color
+        })
+      })
+    }, 2000)
+  }
+
   handleEntryClick = (month: number, day: number) => {
     const entry = this.getEntry(month, day)
 
@@ -502,6 +503,20 @@ class DashboardTracker extends React.Component<{}, State> {
         }
       })
     })
+  }
+
+  handleEditLabel = (index) => {
+    if (index === this.state.editIndex) {
+      this.setState({
+        isEditingLabel: false,
+        editIndex: -1
+      })
+    } else {
+      this.setState({
+        isEditingLabel: true,
+        editIndex: index
+      })
+    }
   }
 }
 

@@ -6,15 +6,14 @@ import UiInput from '/components/UiInput'
 import UiSpacer from '/components/UiSpacer'
 import UiInputColorPicker from '/components/UiInputColorPicker'
 import UiButton from '/components/UiButton'
-import UiButtonLink from '/components/UiButtonLink'
 import SharedPopover from '../SharedPopover'
-import randomColorHex from '/utils/randomColorHex'
 
 interface Props {
+  label: AppDataTrackerLabel
   isOpen: boolean
   isLoading: boolean
   isDisabled: boolean
-  onStore: (data: State) => void
+  onUpdate: (data: State) => void
   onOpen: () => void
   onClose: () => void
 }
@@ -24,13 +23,13 @@ interface State {
   color: string
 }
 
-class CreateLabelPopover extends React.Component<Props, State> {
+class EditLabelPopover extends React.Component<Props, State> {
   state = this.getInitialState()
 
   getInitialState() {
     return {
-      name: '',
-      color: randomColorHex()
+      name: this.props.label.name,
+      color: this.props.label.color
     }
   }
 
@@ -47,12 +46,12 @@ class CreateLabelPopover extends React.Component<Props, State> {
       onOpen={this.handleOpen}
       onClose={this.handleClose}>
       <UiDropdown.Body>
-        <UiButtonLink icon="fa fa-plus">New</UiButtonLink>
+        {this.props.children}
       </UiDropdown.Body>
 
       <UiDropdown.Menu>
         <SharedPopover>
-          <UiDropdown.Heading text="Create New Label" />
+          <UiDropdown.Heading text="Update Label" />
 
           <form onSubmit={this.handleSubmit}>
             <UiField label="Name">
@@ -71,7 +70,7 @@ class CreateLabelPopover extends React.Component<Props, State> {
 
             <UiSpacer />
 
-            <UiButton type="submit" preset="primary" disabled={this.props.isLoading}>Create</UiButton>
+            <UiButton type="submit" preset="primary" disabled={this.props.isLoading}>Update</UiButton>
           </form>
         </SharedPopover>
       </UiDropdown.Menu>
@@ -81,7 +80,7 @@ class CreateLabelPopover extends React.Component<Props, State> {
 
   handleSubmit = (evt: React.FormEvent<HTMLFormElement>) => {
     evt.preventDefault()
-    this.props.onStore(this.state)
+    this.props.onUpdate(this.state)
   }
 
   handleOpen = () => {
@@ -101,4 +100,4 @@ class CreateLabelPopover extends React.Component<Props, State> {
   }
 }
 
-export default CreateLabelPopover
+export default EditLabelPopover
