@@ -15,6 +15,7 @@ import { format, getDaysInMonth } from 'date-fns'
 import immer from 'immer'
 import s from '/styles'
 import random from '/utils/random';
+import isNumericKeyCode from '/utils/isNumericKeyCode';
 
 const C = {} as any
 C.title = css`
@@ -257,6 +258,10 @@ class DashboardTracker extends React.Component<{}, State> {
     isCreatingLabel: false
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown)
+  }
+
   getEntryDate = (month: number, day: number) => {
     const mm = String(month).padStart(2, '0')
     const dd = String(day).padStart(2, '0')
@@ -455,6 +460,24 @@ class DashboardTracker extends React.Component<{}, State> {
         </div>
       </UiContainer>
     )
+  }
+
+  handleKeyDown = (evt: React.KeyboardEvent<HTMLDocument>) => {
+    if (!evt.altKey || !isNumericKeyCode(evt.keyCode)) {
+      return
+    }
+
+    const number = evt.keyCode - 48
+
+    const index = number === 0
+      ? 9
+      : (number - 1)
+
+    if (this.state.tracker.labels[index] != null) {
+      this.setState({
+        activeLabelIndex: index
+      })
+    }
   }
 
   handleLabelClick = (index: number) => {
