@@ -3,14 +3,10 @@ import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import EventListener from 'react-event-listener'
 import UiContainer from '/components/UiContainer'
-import UiDropdown from '/components/UiDropdown'
-import UiSpacer from '/components/UiSpacer'
-import UiButton from '/components/UiButton'
-import UiLevelMenu from '/components/UiLevelMenu'
 import CreateLabelPopover from './CreateLabelPopover'
 import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
-import { format } from 'date-fns'
+import { format, getDaysInMonth, isToday } from 'date-fns'
 import immer from 'immer'
 import s from '/styles'
 import random from '/utils/random';
@@ -36,15 +32,19 @@ C.calendarColumn = css`
   width: ${(1 / 13) * 100}%;
 `
 C.calendarBox = css`
+  box-sizing: content-box;
   border: 1px solid ${s['color-bw-400']};
 
-  .css-${C.calendarColumn.name}:not(:last-child) & {
+  /* .css-${C.calendarColumn.name}:not(:last-child) & {
     border-right-color: transparent;
-  }
+  } */
 
-  &:not(:last-child) {
+  /* &:not(:last-child) {
     border-bottom-color: transparent;
-  }
+  } */
+`
+C.calendarBoxIsToday = css`
+  border-color: ${s['color-blue-500']};
 `
 C.calendarBoxInner = css`
   position: relative;
@@ -70,6 +70,16 @@ C.calendarBoxContent = css`
     box-shadow: 0 0 0 3px ${s['color-blue-300']};
   }
 `
+C.calendarBoxContentTodayBorder = css`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 1px solid ${s['color-blue-500']};
+  border-top-width: 5px;
+  pointer-events: none;
+`
 C.calendarBoxTitle = css`
   height: 100%;
   width: 100%;
@@ -80,8 +90,25 @@ C.calendarBoxTitle = css`
   font-weight: 600;
 `
 C.calendarBoxLabel = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100%;
   width: 100%;
+`
+C.calendarBoxLabelStamp = css`
+  height: 28px;
+  width: 28px;
+  border-radius: 50%;
+  opacity: 0;
+
+  .css-${C.calendarBoxContent.name}:hover & {
+    opacity: 1;
+  }
+`
+C.calendarBoxLabelIsToday = css`
+  border-top-width: 5px;
+  border-color: ${s['color-blue-500']};
 `
 C.labelSection = css`
   flex-shrink: 0;
@@ -273,18 +300,18 @@ class DashboardTracker extends React.Component<{}, State> {
   renderEntry(month: number, day: number) {
     const entry = this.getEntry(month, day)
 
-    if (entry == null) {
-      return
-    }
-
     return (
       <div
         css={[
           C.calendarBoxLabel,
-          Boolean(entry.label)&& css`
+          Boolean(entry) && css`
             background: ${entry.label.color};
           `
-        ]} />
+        ]}>
+        {entry == null && <div css={[C.calendarBoxLabelStamp, css`
+          background: ${this.state.tracker.labels[this.state.activeLabelIndex].color};
+        `]} />}
+      </div>
     )
   }
 
@@ -299,32 +326,45 @@ class DashboardTracker extends React.Component<{}, State> {
 
         <div css={C.wrapper}>
           <div css={C.calendar}>
-            {columns.map((_, columnIndex: number) => (
-              <div css={C.calendarColumn} key={columnIndex} data-column>
-                {boxes.map((_, boxIndex: number) => {
-                  const isHeading = columnIndex > 0 && boxIndex === 0
-                  const isDate = columnIndex === 0 && boxIndex > 0
-                  const isEntry = columnIndex > 0 && boxIndex > 0
-                  const Content = isEntry ? 'button' : 'div'
+            {columns.map((_, columnIndex: number) => {
+              return (
+                <div css={C.calendarColumn} key={columnIndex} data-column>
+                  {boxes.map((_, boxIndex: number) => {
+                    const isHeading = columnIndex > 0 && boxIndex === 0
+                    const isDate = columnIndex === 0 && boxIndex > 0
+                    const isEntry = columnIndex > 0 && boxIndex > 0
+                    const Content = isEntry ? 'button' : 'div'
 
-                  return (
-                    <div css={C.calendarBox} data-calendar-box key={boxIndex}>
-                      <div css={C.calendarBoxInner}>
-                        <Content css={C.calendarBoxContent} onClick={isEntry ? (() => this.handleEntryClick(columnIndex, boxIndex)) : (() => {})} data-calendar-etits>
-                          {isHeading && (
-                            <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
-                          )}
+                    if (isEntry && boxIndex > getDaysInMonth(new Date(2019, columnIndex - 1))) {
+                      return
+                    }
 
-                          {isDate && <div css={C.calendarBoxTitle}>{boxIndex}</div>}
+                    const isEntryToday = isEntry && isToday(new Date(2019, columnIndex - 1, boxIndex))
 
-                          {isEntry && this.renderEntry(columnIndex, boxIndex)}
+                    return (
+                      <div css={[
+                        C.calendarBox,
+                        isEntryToday && C.calendarBoxIsToday
+                      ]} data-calendar-box key={boxIndex}>
+                        <div css={C.calendarBoxInner}>
+                          <Content css={C.calendarBoxContent} onClick={isEntry ? (() => this.handleEntryClick(columnIndex, boxIndex)) : (() => {})} data-calendar-etits>
+                            {isHeading && (
+                              <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
+                            )}
+
+                            {isDate && <div css={C.calendarBoxTitle}>{boxIndex}</div>}
+
+                            {isEntry && this.renderEntry(columnIndex, boxIndex)}
+                          </Content>
+
+                          {isEntryToday && <div css={C.calendarBoxContentTodayBorder} />}
                         </div>
                       </div>
-                    </div>
-                  )
-                })}
-              </div>
-            ))}
+                    )
+                  })}
+                </div>
+              )
+            })}
           </div>
 
           <div css={C.labelSection}>
@@ -474,7 +514,7 @@ class DashboardTracker extends React.Component<{}, State> {
           )
           delete draft.labels[index]
         })
-      })
+    })
     }, 2000)
   }
 
