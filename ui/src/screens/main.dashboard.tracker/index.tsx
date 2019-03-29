@@ -6,11 +6,11 @@ import UiContainer from '/components/UiContainer'
 import CreateLabelPopover from './CreateLabelPopover'
 import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
-import { format, getDaysInMonth, isToday } from 'date-fns'
+import { format, getDaysInMonth, isToday, isBefore } from 'date-fns'
 import immer from 'immer'
 import s from '/styles'
-import random from '/utils/random';
-import isNumericKeyCode from '/utils/isNumericKeyCode';
+import random from '/utils/random'
+import isNumericKeyCode from '/utils/isNumericKeyCode'
 import toPropertyKeys from '/utils/toPropertyKeys'
 
 const C = {} as any
@@ -63,12 +63,14 @@ C.calendarBoxContent = css`
   border: 0;
   background: transparent;
   outline: 0;
-  cursor: pointer;
 
   &:focus {
     border-color: ${s['color-blue-400']};
     box-shadow: 0 0 0 3px ${s['color-blue-300']};
   }
+`
+C.calendarBoxContentIsButton = css`
+  cursor: pointer;
 `
 C.calendarBoxContentTodayBorder = css`
   position: absolute;
@@ -102,7 +104,15 @@ C.calendarBoxLabelStamp = css`
   border-radius: 50%;
   opacity: 0;
 
-  .css-${C.calendarBoxContent.name}:hover & {
+  .css-${C.calendarBox.name}:hover & {
+    opacity: 1;
+  }
+`
+C.calendarBoxLabelInvalid = css`
+  color: red;
+  opacity: 0;
+
+  .css-${C.calendarBox.name}:hover & {
     opacity: 1;
   }
 `
@@ -297,24 +307,6 @@ class DashboardTracker extends React.Component<{}, State> {
     return this.state.tracker.entries[this.getEntryDate(month, day)]
   }
 
-  renderEntry(month: number, day: number) {
-    const entry = this.getEntry(month, day)
-
-    return (
-      <div
-        css={[
-          C.calendarBoxLabel,
-          Boolean(entry) && css`
-            background: ${entry.label.color};
-          `
-        ]}>
-        {entry == null && <div css={[C.calendarBoxLabelStamp, css`
-          background: ${this.state.tracker.labels[this.state.activeLabelIndex].color};
-        `]} />}
-      </div>
-    )
-  }
-
   render() {
     const { tracker } = this.state
 
@@ -333,28 +325,58 @@ class DashboardTracker extends React.Component<{}, State> {
                     const isHeading = columnIndex > 0 && boxIndex === 0
                     const isDate = columnIndex === 0 && boxIndex > 0
                     const isEntry = columnIndex > 0 && boxIndex > 0
-                    const Content = isEntry ? 'button' : 'div'
 
                     if (isEntry && boxIndex > getDaysInMonth(new Date(2019, columnIndex - 1))) {
                       return
                     }
 
-                    const isEntryToday = isEntry && isToday(new Date(2019, columnIndex - 1, boxIndex))
+                    const isToday2 = isToday(new Date(2019, columnIndex - 1, boxIndex))
+                    const isEntryToday = isEntry && isToday2
+                    const entry = this.getEntry(columnIndex, boxIndex)
+                    const date = new Date(2019, columnIndex - 1, boxIndex)
+                    const isBeforeOrToday = isBefore(date, new Date()) || isToday2
+                    const isActive = isEntry && isBeforeOrToday
+                    const Content = !isActive ? 'div' : 'button'
 
                     return (
-                      <div css={[
-                        C.calendarBox,
-                        isEntryToday && C.calendarBoxIsToday
-                      ]} data-calendar-box key={boxIndex}>
+                      <div css={[C.calendarBox, isEntryToday && C.calendarBoxIsToday]} data-calendar-box key={boxIndex}>
                         <div css={C.calendarBoxInner}>
-                          <Content css={C.calendarBoxContent} onClick={isEntry ? (() => this.handleEntryClick(columnIndex, boxIndex)) : (() => {})} data-calendar-etits>
+                          <Content
+                            css={[C.calendarBoxContent, isActive && C.calendarBoxContentIsButton]}
+                            onClick={isActive ? () => this.handleEntryClick(columnIndex, boxIndex) : () => {}}
+                            data-calendar-etits>
                             {isHeading && (
                               <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
                             )}
 
                             {isDate && <div css={C.calendarBoxTitle}>{boxIndex}</div>}
 
-                            {isEntry && this.renderEntry(columnIndex, boxIndex)}
+                            {isEntry && (
+                              <div
+                                css={[
+                                  C.calendarBoxLabel,
+                                  Boolean(entry) &&
+                                    css`
+                                      background: ${entry.label.color};
+                                    `
+                                ]}>
+                                {entry == null &&
+                                  (isBeforeOrToday ? (
+                                    <div
+                                      css={[
+                                        C.calendarBoxLabelStamp,
+                                        css`
+                                          background: ${this.state.tracker.labels[this.state.activeLabelIndex].color};
+                                        `
+                                      ]}
+                                    />
+                                  ) : (
+                                    <span css={C.calendarBoxLabelInvalid}>
+                                      <i className="fa fa-close" />
+                                    </span>
+                                  ))}
+                              </div>
+                            )}
                           </Content>
 
                           {isEntryToday && <div css={C.calendarBoxContentTodayBorder} />}
@@ -371,19 +393,23 @@ class DashboardTracker extends React.Component<{}, State> {
             <div css={C.labelMenu}>
               <h5 css={C.labelMenuHeading}>Labels</h5>
 
-              <CreateLabelPopover isDisabled={false}
+              <CreateLabelPopover
+                isDisabled={false}
                 isOpen={this.state.isCreatingLabel}
                 isLoading={this.state.isStoringLabel}
                 onStore={this.handleStoreLabel}
                 onOpen={() => this.setState({ isCreatingLabel: true })}
-                onClose={() => this.setState({ isCreatingLabel: false })} />
+                onClose={() => this.setState({ isCreatingLabel: false })}
+              />
             </div>
 
             <section>
-              {tracker.labels.map((label: AppDataTrackerLabel, i: number) =>
+              {tracker.labels.map((label: AppDataTrackerLabel, i: number) => (
                 <div css={C.labelContainer} key={label.id}>
                   <button type="button" css={C.label} onClick={() => this.handleLabelClick(i)}>
-                    <div css={C.labelColor} style={{ backgroundColor: label.color }}>Alt + {i + 1}</div>
+                    <div css={C.labelColor} style={{ backgroundColor: label.color }}>
+                      Alt + {i + 1}
+                    </div>
 
                     <span css={C.labelName}>{label.name}</span>
                   </button>
@@ -394,23 +420,37 @@ class DashboardTracker extends React.Component<{}, State> {
                       (this.state.editIndex === i || this.state.deleteIndex === i) && C.labelActionsIsActive
                     ]}>
                     <div css={C.labelAction}>
-                      <EditLabelPopover label={label} isOpen={this.state.editIndex === i} isLoading={this.state.isUpdatingLabel} isDisabled={false} onUpdate={this.handleUpdateLabel} onOpen={() => this.setState({ editIndex: i })} onClose={() => this.setState({ editIndex: -1 })}>
-                          <button type="button" css={C.labelActionButton}>
-                            <i className="fa fa-pencil" />
-                          </button>
+                      <EditLabelPopover
+                        label={label}
+                        isOpen={this.state.editIndex === i}
+                        isLoading={this.state.isUpdatingLabel}
+                        isDisabled={false}
+                        onUpdate={this.handleUpdateLabel}
+                        onOpen={() => this.setState({ editIndex: i })}
+                        onClose={() => this.setState({ editIndex: -1 })}>
+                        <button type="button" css={C.labelActionButton}>
+                          <i className="fa fa-pencil" />
+                        </button>
                       </EditLabelPopover>
                     </div>
 
                     <div c={C.labelAction}>
-                      <DeleteLabelPopover label={label} isOpen={this.state.deleteIndex === i} isLoading={this.state.isDestroyingLabel} isDisabled={false} onDelete={this.handleDeleteLabel} onOpen={() => this.setState({ deleteIndex: i })} onClose={() => this.setState({ deleteIndex: -1 })}>
-                          <button type="button" css={C.labelActionButton}>
-                            <i className="fa fa-trash" />
-                          </button>
+                      <DeleteLabelPopover
+                        label={label}
+                        isOpen={this.state.deleteIndex === i}
+                        isLoading={this.state.isDestroyingLabel}
+                        isDisabled={false}
+                        onDelete={this.handleDeleteLabel}
+                        onOpen={() => this.setState({ deleteIndex: i })}
+                        onClose={() => this.setState({ deleteIndex: -1 })}>
+                        <button type="button" css={C.labelActionButton}>
+                          <i className="fa fa-trash" />
+                        </button>
                       </DeleteLabelPopover>
                     </div>
                   </div>
                 </div>
-              )}
+              ))}
             </section>
           </div>
         </div>
@@ -425,9 +465,7 @@ class DashboardTracker extends React.Component<{}, State> {
 
     const number = evt.keyCode - 48
 
-    const index = number === 0
-      ? 9
-      : (number - 1)
+    const index = number === 0 ? 9 : number - 1
 
     if (this.state.tracker.labels[index] != null) {
       this.setState({
@@ -509,12 +547,12 @@ class DashboardTracker extends React.Component<{}, State> {
         isDestroyingLabel: false,
         tracker: immer(this.state.tracker, draft => {
           draft.entries = toPropertyKeys(
-            Object.values(draft.entries).filter((entry) => entry.label.id !== label.id),
+            Object.values(draft.entries).filter(entry => entry.label.id !== label.id),
             'entry_date'
           )
           delete draft.labels[index]
         })
-    })
+      })
     }, 2000)
   }
 
@@ -534,7 +572,7 @@ class DashboardTracker extends React.Component<{}, State> {
     })
   }
 
-  handleEditLabel = (index) => {
+  handleEditLabel = index => {
     if (index === this.state.editIndex) {
       this.setState({
         isEditingLabel: false,
