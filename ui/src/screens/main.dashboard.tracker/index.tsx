@@ -1,24 +1,21 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import { Link } from 'react-router-dom'
 import EventListener from 'react-event-listener'
 import UiContainer from '/components/UiContainer'
-import UiButtonLink from '/components/UiButtonLink'
 import UiDropdown from '/components/UiDropdown'
-import UiInput from '/components/UiInput'
-import UiField from '/components/UiField'
 import UiSpacer from '/components/UiSpacer'
 import UiButton from '/components/UiButton'
-import UiInputColorPicker from '/components/UiInputColorPicker'
 import UiLevelMenu from '/components/UiLevelMenu'
 import CreateLabelPopover from './CreateLabelPopover'
 import EditLabelPopover from './EditLabelPopover'
+import DeleteLabelPopover from './DeleteLabelPopover'
 import { format } from 'date-fns'
 import immer from 'immer'
 import s from '/styles'
 import random from '/utils/random';
 import isNumericKeyCode from '/utils/isNumericKeyCode';
+import toPropertyKeys from '/utils/toPropertyKeys'
 
 const C = {} as any
 C.title = css`
@@ -175,14 +172,6 @@ C.labelActionButton = css`
   border: 0;
   cursor: pointer;
 `
-C.popover = css`
-  padding: 12px 16px;
-  width: 320px;
-`
-C.popoverNote = css`
-  color: ${s['color-bw-700']};
-  line-height: 1.5;
-`
 
 const columns = Array(13).fill(0)
 const boxes = Array(32).fill(0)
@@ -192,8 +181,10 @@ interface State {
   activeLabelIndex: number
   tracker: AppDataTracker
   editIndex: number
+  deleteIndex: number
   isEditingLabel: boolean
   isDeletingLabel: boolean
+  isDestroyingLabel: boolean
   isCreatingLabel: boolean
   isStoringLabel: boolean
   isUpdatingLabel: boolean
@@ -260,8 +251,10 @@ class DashboardTracker extends React.Component<{}, State> {
       created_at: tz,
       updated_at: tz
     },
+    deleteIndex: -1,
     isEditingLabel: false,
     isDeletingLabel: false,
+    isDestroyingLabel: false,
     isCreatingLabel: false,
     isStoringLabel: false,
     isUpdatingLabel: false
@@ -288,11 +281,10 @@ class DashboardTracker extends React.Component<{}, State> {
       <div
         css={[
           C.calendarBoxLabel,
-          css`
+          Boolean(entry.label)&& css`
             background: ${entry.label.color};
           `
-        ]}>
-      </div>
+        ]} />
     )
   }
 
@@ -359,7 +351,7 @@ class DashboardTracker extends React.Component<{}, State> {
                   <div
                     css={[
                       C.labelActions,
-                      (this.state.editIndex === i || this.state.isDeletingLabel) && C.labelActionsIsActive
+                      (this.state.editIndex === i || this.state.deleteIndex === i) && C.labelActionsIsActive
                     ]}>
                     <div css={C.labelAction}>
                       <EditLabelPopover label={label} isOpen={this.state.editIndex === i} isLoading={this.state.isUpdatingLabel} isDisabled={false} onUpdate={this.handleUpdateLabel} onOpen={() => this.setState({ editIndex: i })} onClose={() => this.setState({ editIndex: -1 })}>
@@ -370,39 +362,11 @@ class DashboardTracker extends React.Component<{}, State> {
                     </div>
 
                     <div c={C.labelAction}>
-                      <UiDropdown
-                        isOpen={this.state.isDeletingLabel}
-                        onOpen={() => this.setState({ isDeletingLabel: true })}
-                        onClose={() => this.setState({ isDeletingLabel: false })}>
-                        <UiDropdown.Body>
+                      <DeleteLabelPopover label={label} isOpen={this.state.deleteIndex === i} isLoading={this.state.isDestroyingLabel} isDisabled={false} onDelete={this.handleDeleteLabel} onOpen={() => this.setState({ deleteIndex: i })} onClose={() => this.setState({ deleteIndex: -1 })}>
                           <button type="button" css={C.labelActionButton}>
                             <i className="fa fa-trash" />
                           </button>
-                        </UiDropdown.Body>
-
-                        <UiDropdown.Menu>
-                          <div css={C.popover}>
-                            <UiDropdown.Heading text="Delete Confirmation" />
-
-                            <p css={C.popoverNote}>
-                              <strong>This action cannot be undone.</strong> This will <strong>permanently delete</strong>{' '}
-                              all of your entries marked with this label.
-                            </p>
-
-                            <UiSpacer />
-
-                            <UiLevelMenu>
-                              <UiLevelMenu.Section>
-                                <UiButton preset="danger">Delete</UiButton>
-                              </UiLevelMenu.Section>
-
-                              <UiLevelMenu.Section>
-                                <UiButton>Cancel</UiButton>
-                              </UiLevelMenu.Section>
-                            </UiLevelMenu>
-                          </div>
-                        </UiDropdown.Menu>
-                      </UiDropdown>
+                      </DeleteLabelPopover>
                     </div>
                   </div>
                 </div>
@@ -487,9 +451,34 @@ class DashboardTracker extends React.Component<{}, State> {
     }, 2000)
   }
 
-  handleEntryClick = (month: number, day: number) => {
-    const entry = this.getEntry(month, day)
+  handleDeleteLabel = () => {
+    if (this.state.isDestroyingLabel) {
+      return
+    }
 
+    this.setState({
+      isDestroyingLabel: true
+    })
+
+    setTimeout(() => {
+      const index = this.state.deleteIndex
+      const label = this.state.tracker.labels[index]
+
+      this.setState({
+        deleteIndex: -1,
+        isDestroyingLabel: false,
+        tracker: immer(this.state.tracker, draft => {
+          draft.entries = toPropertyKeys(
+            Object.values(draft.entries).filter((entry) => entry.label.id !== label.id),
+            'entry_date'
+          )
+          delete draft.labels[index]
+        })
+      })
+    }, 2000)
+  }
+
+  handleEntryClick = (month: number, day: number) => {
     this.setState({
       tracker: immer(this.state.tracker, draft => {
         const date = this.getEntryDate(month, day)
