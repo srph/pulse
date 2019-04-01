@@ -506,6 +506,20 @@ class DashboardTracker extends React.Component<Props, State> {
     }, 2000)
   }
 
+  handleEditLabel = index => {
+    if (index === this.state.editIndex) {
+      this.setState({
+        isEditingLabel: false,
+        editIndex: -1
+      })
+    } else {
+      this.setState({
+        isEditingLabel: true,
+        editIndex: index
+      })
+    }
+  }
+
   handleUpdateLabel = (data: Partial<AppDataTrackerLabel>) => {
     if (this.state.isUpdatingLabel) {
       return
@@ -578,20 +592,6 @@ class DashboardTracker extends React.Component<Props, State> {
       entry_date: date,
       tracker_label_id: label.id
     })
-  }
-
-  handleEditLabel = index => {
-    if (index === this.state.editIndex) {
-      this.setState({
-        isEditingLabel: false,
-        editIndex: -1
-      })
-    } else {
-      this.setState({
-        isEditingLabel: true,
-        editIndex: index
-      })
-    }
   }
 }
 
