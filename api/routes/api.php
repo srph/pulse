@@ -24,6 +24,7 @@ Route::middleware('auth:api')->group(function() {
 
         Route::post('/{tracker}/labels', 'TrackerLabelsController@store');
         Route::put('/{tracker}/labels/{tracker_label}', 'TrackerLabelsController@update');
+        Route::delete('/{tracker}/labels/{tracker_label}', 'TrackerLabelsController@destroy');
 
         Route::post('/{tracker}/entries', 'TrackerEntriesController@store');
         Route::put('/{tracker}/entries/{tracker_entry}', 'TrackerEntriesController@update');

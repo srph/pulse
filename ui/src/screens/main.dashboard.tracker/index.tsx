@@ -480,7 +480,7 @@ class DashboardTracker extends React.Component<Props, State> {
     })
   }
 
-  handleStoreLabel = (data: Partial<AppDataTrackerLabel>) => {
+  handleStoreLabel = async (data: Partial<AppDataTrackerLabel>) => {
     if (this.state.isStoringLabel) {
       return
     }
@@ -489,21 +489,22 @@ class DashboardTracker extends React.Component<Props, State> {
       isStoringLabel: true
     })
 
-    setTimeout(() => {
+    try {
+      const response = await axios.post(
+        `/api/trackers/${this.state.tracker.id}/labels`,
+        data
+      )
+
       this.setState({
         isCreatingLabel: false,
         isStoringLabel: false,
         tracker: immer(this.state.tracker, draft => {
-          draft.labels.push({
-            id: random(50, 5000),
-            name: data.name,
-            color: data.color,
-            created_at: '',
-            updated_at: ''
-          })
+          draft.labels.push(response.data)
         })
       })
-    }, 2000)
+    } catch(e) {
+      this.setState({ isStoringLabel: false })
+    }
   }
 
   handleEditLabel = index => {
@@ -520,30 +521,39 @@ class DashboardTracker extends React.Component<Props, State> {
     }
   }
 
-  handleUpdateLabel = (data: Partial<AppDataTrackerLabel>) => {
+  handleUpdateLabel = async (data: Partial<AppDataTrackerLabel>) => {
     if (this.state.isUpdatingLabel) {
       return
     }
-
-    const index = this.state.editIndex
 
     this.setState({
       isUpdatingLabel: true
     })
 
-    setTimeout(() => {
-      this.setState({
-        editIndex: -1,
-        isUpdatingLabel: false,
-        tracker: immer(this.state.tracker, draft => {
-          draft.labels[index].name = data.name
-          draft.labels[index].color = data.color
-        })
+    const { tracker } = this.state
+    const index = this.state.editIndex
+
+    try {
+      await axios.put(
+        `/api/trackers/${tracker.id}/labels/${tracker.labels[index].id}`,
+        data
+      )
+    } catch(e) {
+      this.setState({ isUpdatingLabel: false })
+      return
+    }
+
+    this.setState({
+      editIndex: -1,
+      isUpdatingLabel: false,
+      tracker: immer(this.state.tracker, draft => {
+        draft.labels[index].name = data.name
+        draft.labels[index].color = data.color
       })
-    }, 2000)
+    })
   }
 
-  handleDeleteLabel = () => {
+  handleDeleteLabel = async () => {
     if (this.state.isDestroyingLabel) {
       return
     }
@@ -552,22 +562,29 @@ class DashboardTracker extends React.Component<Props, State> {
       isDestroyingLabel: true
     })
 
-    setTimeout(() => {
-      const index = this.state.deleteIndex
-      const label = this.state.tracker.labels[index]
+    const { tracker } = this.state
+    const index = this.state.deleteIndex
+    const label = tracker.labels[index]
 
-      this.setState({
-        deleteIndex: -1,
-        isDestroyingLabel: false,
-        tracker: immer(this.state.tracker, draft => {
-          draft.entries = toPropertyKeys(
-            Object.values(draft.entries).filter(entry => entry.label.id !== label.id),
-            'entry_date'
-          )
-          delete draft.labels[index]
-        })
+    try {
+      await axios.delete(`/api/trackers/${tracker.id}/labels/${label.id}`)
+    } catch(e) {
+      this.setState({ isDestroyingLabel: false })
+      return
+    }
+
+    this.setState({
+      deleteIndex: -1,
+      isDeletingLabel: false,
+      isDestroyingLabel: false,
+      tracker: immer(this.state.tracker, draft => {
+        draft.entries = toPropertyKeys(
+          Object.values(draft.entries).filter((entry: AppDataTrackerEntry) => entry.label.id !== label.id),
+          'entry_date'
+        )
+        delete draft.labels[index]
       })
-    }, 2000)
+    })
   }
 
   handleEntryClick = async (month: number, day: number) => {

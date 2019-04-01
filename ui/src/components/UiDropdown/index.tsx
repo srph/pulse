@@ -28,14 +28,14 @@ C.dropdownMenu = css`
   z-index: ${s['z-index-popover']};
 `
 
-interface IUiDropdownProps {
+interface Props {
   children: any
   isOpen: boolean
   onOpen: () => void
   onClose: () => void
 }
 
-class UiDropdown extends React.Component<IUiDropdownProps> {
+class UiDropdown extends React.Component<Props> {
   static Link = Link
   static Body = Main
   static Menu = Menu

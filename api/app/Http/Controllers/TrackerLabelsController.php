@@ -26,9 +26,9 @@ class TrackerLabelsController extends Controller
         return response()->json($label);
     }
 
-    public function destroy(TrackerLabel $label) {
-        $tracker->entries()->where('tracker_label_id', $label->id)->destroy();
-        $label->destroy();
+    public function destroy(Tracker $tracker, TrackerLabel $label) {
+        $tracker->entries()->where('tracker_label_id', $label->id)->delete();
+        $label->delete();
         return response()->json(['success' => true]);
     }
 }
