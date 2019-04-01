@@ -60,8 +60,9 @@ class TrackersController extends Controller
             'description'
         ]);
 
-        $tracker->load(['labels', 'entries']);
-        $tracker->fill($payload);
+        $tracker->fill($payload)->save();
+        $tracker = $tracker->load(['labels', 'entries', 'entries.label'])->toArray();
+        $tracker['entries'] = Helper::toPropertyKeys($tracker['entries'], 'entry_date');
         return response()->json($tracker);
     }
 }

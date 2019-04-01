@@ -1,11 +1,5 @@
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
-interface AppDateTime {
-  date: string
-  timezone_type: number
-  timezone: string
-}
-
 interface AppDataUser {
   id: number
   email: string
@@ -29,26 +23,26 @@ interface AppDataTrackerLabel {
   id: number
   name: string
   color: string
-  created_at: AppDateTime
-  updated_at: AppDateTime
+  created_at: string
+  updated_at: string
 }
 
 interface AppDataTrackerEntry {
   id: number
   label: AppDataTrackerLabel
   entry_date: string
-  created_at: AppDateTime
-  updated_at: AppDateTime
+  created_at: string
+  updated_at: string
 }
 
 interface AppDataTracker {
   id: number
-  title: string
+  name: string
   description: string
   labels: AppDataTrackerLabel[]
   entries: {
     [key: string]: AppDataTrackerEntry
   }
-  created_at: AppDateTime
-  updated_at: AppDateTime
+  created_at: string
+  updated_at: string
 }

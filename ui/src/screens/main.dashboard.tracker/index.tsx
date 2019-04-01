@@ -8,6 +8,8 @@ import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
 import { format, getDaysInMonth, isToday, isBefore } from 'date-fns'
 import immer from 'immer'
+import axios from '/lib/axios'
+import { RouteComponentProps } from '/lib/history/types'
 import s from '/styles'
 import random from '/utils/random'
 import isNumericKeyCode from '/utils/isNumericKeyCode'
@@ -213,12 +215,46 @@ C.labelActionButton = css`
 const columns = Array(13).fill(0)
 const boxes = Array(32).fill(0)
 
+const labels: AppDataTrackerLabel[] = [
+  {
+    id: 1,
+    name: 'Muntik Lang',
+    color: '#2186EB',
+    created_at: '',
+    updated_at: ''
+  },
+  {
+    id: 2,
+    name: 'Relapsed',
+    color: '#EB5757',
+    created_at: '',
+    updated_at: ''
+  },
+  {
+    id: 3,
+    name: 'Muntik Lang',
+    color: '#D5DDE5',
+    created_at: '',
+    updated_at: ''
+  },
+  {
+    id: 4,
+    name: 'Eut',
+    color: '#26AE60',
+    created_at: '',
+    updated_at: ''
+  }
+]
+
+const label: AppDataTrackerLabel = labels[0]
+
 interface State {
   color: string
   activeLabelIndex: number
-  tracker: AppDataTracker
+  tracker: AppDataTracker | null
   editIndex: number
   deleteIndex: number
+  isFetching: boolean
   isEditingLabel: boolean
   isDeletingLabel: boolean
   isDestroyingLabel: boolean
@@ -227,74 +263,34 @@ interface State {
   isUpdatingLabel: boolean
 }
 
-const tz = {
-  date: '',
-  timezone_type: 0,
-  timezone: ''
-}
+type Props = RouteComponentProps<{
+  trackerId: string
+}>
 
-const labels: AppDataTrackerLabel[] = [
-  {
-    id: 1,
-    name: 'Muntik Lang',
-    color: '#2186EB',
-    created_at: tz,
-    updated_at: tz
-  },
-  {
-    id: 2,
-    name: 'Relapsed',
-    color: '#EB5757',
-    created_at: tz,
-    updated_at: tz
-  },
-  {
-    id: 3,
-    name: 'Muntik Lang',
-    color: '#D5DDE5',
-    created_at: tz,
-    updated_at: tz
-  },
-  {
-    id: 4,
-    name: 'Eut',
-    color: '#26AE60',
-    created_at: tz,
-    updated_at: tz
-  }
-]
-
-const label: AppDataTrackerLabel = labels[0]
-
-class DashboardTracker extends React.Component<{}, State> {
+class DashboardTracker extends React.Component<Props, State> {
   state = {
     color: '',
     activeLabelIndex: 0,
     editIndex: -1,
-    tracker: {
-      id: 1,
-      title: 'Jog Tracker 2019',
-      description: 'Yada yada, maybe?',
-      labels,
-      entries: {
-        '2019-01-01': {
-          id: 1,
-          label,
-          entry_date: '2019-01-01',
-          created_at: tz,
-          updated_at: tz
-        }
-      },
-      created_at: tz,
-      updated_at: tz
-    },
+    tracker: null,
     deleteIndex: -1,
+    isFetching: false,
     isEditingLabel: false,
     isDeletingLabel: false,
     isDestroyingLabel: false,
     isCreatingLabel: false,
     isStoringLabel: false,
     isUpdatingLabel: false
+  }
+
+  async componentDidMount() {    let response = await axios.get(
+      `/api/trackers/${this.props.match.params.trackerId}`
+    )
+
+    this.setState({
+      tracker: response.data,
+      isFetching: false
+    })
   }
 
   getEntryDate = (month: number, day: number) => {
@@ -310,11 +306,15 @@ class DashboardTracker extends React.Component<{}, State> {
   render() {
     const { tracker } = this.state
 
+    if (tracker == null) {
+      return null;
+    }
+
     return (
       <UiContainer size="lg">
         <EventListener target="document" onKeyDown={this.handleKeyDown} />
 
-        <h4 css={C.title}>J*k*l Tracker 2019</h4>
+        <h4 css={C.title}>{tracker.name}</h4>
 
         <div css={C.wrapper}>
           <div css={C.calendar}>
@@ -498,8 +498,8 @@ class DashboardTracker extends React.Component<{}, State> {
             id: random(50, 5000),
             name: data.name,
             color: data.color,
-            created_at: tz,
-            updated_at: tz
+            created_at: '',
+            updated_at: ''
           })
         })
       })
@@ -556,19 +556,27 @@ class DashboardTracker extends React.Component<{}, State> {
     }, 2000)
   }
 
-  handleEntryClick = (month: number, day: number) => {
+  handleEntryClick = async (month: number, day: number) => {
+    const id = random(2, 5000)
+    const date = this.getEntryDate(month, day)
+    const label = this.state.tracker.labels[this.state.activeLabelIndex]
+
     this.setState({
       tracker: immer(this.state.tracker, draft => {
-        const date = this.getEntryDate(month, day)
-
         draft.entries[date] = {
-          id: random(2, 5000),
-          label: draft.labels[this.state.activeLabelIndex],
+          id,
+          label,
           entry_date: date,
-          created_at: tz,
-          updated_at: tz
+          created_at: '',
+          updated_at: ''
         }
       })
+    })
+
+    // @TODO Undo errors
+    await axios.post(`/api/trackers/${this.state.tracker.id}/entries`, {
+      entry_date: date,
+      tracker_label_id: label.id
     })
   }
 

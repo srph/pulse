@@ -4,6 +4,8 @@ import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import UiContainer from '/components/UiContainer'
 import s from '/styles'
+import axios from '/lib/axios'
+import distanceInWordsStrictToNow from '/utils/distanceInWordsStrictToNow'
 
 const C = {} as any
 C.title = css`
@@ -42,7 +44,33 @@ C.trackerCaret = css`
   color: ${s['color-bw-500']};
 `
 
-class DashboardHome extends React.Component {
+interface State {
+  trackers: AppDataTracker[]
+  isLoading: boolean
+}
+
+/**
+ * @TODO Handle errors
+ */
+class DashboardHome extends React.Component<{}, State> {
+  state = {
+    trackers: [],
+    isLoading: false
+  }
+  
+  async componentDidMount() {
+    this.setState({
+      isLoading: true
+    })
+
+    let response = await axios.get('/api/trackers')
+
+    this.setState({
+      trackers: response.data,
+      isLoading: false
+    })
+  }
+
   render() {
     return (
       <UiContainer size="md">
@@ -50,14 +78,15 @@ class DashboardHome extends React.Component {
           Your trackers
         </h4>
 
-        {Array(4).fill(0).map((_, i: number) =>
-          <Link css={C.tracker} to={`/tracker/${i}`} key={i}>
+        {this.state.trackers.map((tracker: AppDataTracker, i: number) =>
+          <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
             <h4 css={C.trackerTitle}>
-              Jakol Tracker 2018
+              {tracker.name}
             </h4>
 
             <span css={C.trackerDate}>
-            Last updated yesterday</span>
+              Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+            </span>
 
             <span css={C.trackerCaret}>
               <i className='fa fa-angle-right' />

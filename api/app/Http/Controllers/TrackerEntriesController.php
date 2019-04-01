@@ -13,15 +13,9 @@ class TrackerEntriesController extends Controller
             'tracker_label_id',
             'entry_date',
         ]);
-        $entry = $tracker->entries()->create($payload);
-        return response()->json($entry);
-    }
-
-    public function update(Tracker $tracker, TrackerEntry $entry, \App\Http\Requests\UpdateTrackerEntry $request) {
-        $payload = $request->only([
-            'tracker_label_id'
-        ]);
-        $entry->fill($payload)->save();
+        $entry = $tracker->entries()
+            ->where('entry_date', $payload['entry_date'])
+            ->firstOrCreate($payload);
         return response()->json($entry);
     }
 
