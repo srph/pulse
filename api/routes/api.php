@@ -13,11 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::middleware('auth:api')->group(function() {
+    Route::get('/me', 'MeController@me');
+    
     Route::prefix('trackers')->group(function() {
         Route::get('/', 'TrackersController@index');
         Route::post('/', 'TrackersController@store');

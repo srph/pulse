@@ -17,7 +17,7 @@ class CreateTrackerEntriesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('tracker_id');
             $table->integer('tracker_label_id');
-            $table->datetime('entry_date');
+            $table->date('entry_date');
             $table->timestamps();
         });
     }

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Tracker;
+use App\Support\Helper;
 use Illuminate\Http\Request;
 
 class TrackersController extends Controller
 {
-    public function index() {
-        $trackers = Tracker::all();
+    public function index(Request $request) {
+        $trackers = $request->user()->trackers;
 
         return response()->json($trackers);
     }
@@ -24,18 +25,18 @@ class TrackersController extends Controller
         $labels = [
             [
                 'name' => 'No Fap',
-                'color' => 'Relapsed'
+                'color' => '#2186EB'
             ],
             [
-                'name' => 'Muntik Lang',
-                'color' => 'Eut'
-            ],
-            [
-                'name' => '#2186EB',
+                'name' => 'Relapsed',
                 'color' => '#eb5757'
             ],
             [
-                'name' => '#d5dde5',
+                'name' => 'Muntik Lang',
+                'color' => '#d5dde5'
+            ],
+            [
+                'name' => 'Eut',
                 'color' => '#27AE60'
             ],
         ];
@@ -48,7 +49,8 @@ class TrackersController extends Controller
     }
 
     public function show(Tracker $tracker) {
-        $tracker->load(['labels', 'entries']);
+        $tracker = $tracker->load(['labels', 'entries', 'entries.label'])->toArray();
+        $tracker['entries'] = Helper::toPropertyKeys($tracker['entries'], 'entry_date');
         return response()->json($tracker);
     }
 

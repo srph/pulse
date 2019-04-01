@@ -21,6 +21,6 @@ class TrackerEntry extends Model
     }
 
     public function label() {
-        return $this->hasOne(TrackerLabel::class, 'tracker_label_id');
+        return $this->hasOne(TrackerLabel::class, 'id', 'tracker_label_id');
     }
 }
