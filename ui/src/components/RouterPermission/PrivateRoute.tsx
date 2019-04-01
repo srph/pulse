@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { Subscribe as UnstatedSubscribe } from 'unstated'
-import { AuthContainer } from '@app/containers'
+import { AuthContainer } from '/containers'
 import { Route, Redirect } from 'react-router-dom'
 import { RouteProps } from 'react-router'
 
-interface IPrivateRouteProps extends RouteProps {
+interface Props extends RouteProps {
   component: any
 }
 
-class PrivateRoute extends React.Component<IPrivateRouteProps> {
+class PrivateRoute extends React.Component<Props> {
   render() {
     const { component, children, ...rest } = this.props
     const Component = this.props.component

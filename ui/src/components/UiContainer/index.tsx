@@ -8,7 +8,7 @@ ui.Wrapper = styled.div`
   padding: 0 16px;
 
   ${(props: any) => props.size === 'xs' && css`
-    width: 320px;
+    width: 360px;
   `}
 
   ${(props: any) => props.size === 'sm' && css`

@@ -76,7 +76,7 @@ const UiButtonRightIcon: React.SFC = (props) => {
   return <div css={css`margin-left: 16px;`}>{props.children}</div>
 }
 
-type UiButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type UiButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   preset?: 'default' | 'primary' | 'default-danger' | 'danger'
   isBlock?: boolean
   size?: 'sm' | 'md' | 'lg'

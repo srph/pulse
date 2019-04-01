@@ -1,5 +1,5 @@
 import instance from './instance'
-import { toast }  from '@app/components/Toast'
+import { toast }  from '/components/Toast'
 import { AxiosRequestConfig, AxiosError } from 'axios';
 
 interface IAxiosInterceptorValidationConfig extends AxiosRequestConfig {

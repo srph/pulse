@@ -1,5 +1,7 @@
 export default {
   api: {
-    baseUrl: 'https://backend.dashsms.ph'
+    baseUrl: process.env.API_BASE_URL || 'http://localhost:8000',
+    clientId: process.env.API_CLIENT_ID || '',
+    clientSecret: process.env.API_CLIENT_SECRET || ''
   }
 }

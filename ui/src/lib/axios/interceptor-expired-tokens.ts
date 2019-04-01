@@ -1,6 +1,6 @@
 import instance from './instance'
 import * as cookie from 'cookie-machine'
-import history from '@app/lib/history'
+import history from '/lib/history'
 import { AxiosError } from 'axios';
 
 instance.interceptors.response.use(null, (err: AxiosError) => {

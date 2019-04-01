@@ -1,16 +1,17 @@
 import { Container } from 'unstated'
-import axios from '@app/lib/axios'
+import axios from '/lib/axios'
 import * as cookie from 'cookie-machine'
-import history from '@app/lib/history'
+import history from '/lib/history'
 import immer from 'immer'
+import config from '/config';
 
 export interface AuthContainerState {
   data: AppDataUser | null,
   token: string | null
 }
 
-interface UserCredentials {
-  email: string
+export interface UserCredentials {
+  username: string
   password: string
 }
 
@@ -30,16 +31,16 @@ class AuthContainer extends Container<AuthContainerState> {
 
   login = async (credentials: UserCredentials) => {
     const tokenResponse = await axios.post('/oauth/token', {
-      username: credentials.email,
+      username: credentials.username,
       password: credentials.password,
-      client_id: 3,
-      client_secret: 'kYQThaV8wq6j5YdEaJxB96Nt9UtEuf9TrYi4kdPp',
+      client_id: config.api.clientId,
+      client_secret: config.api.clientSecret,
       grant_type: 'password'
     })
     const token = tokenResponse.data.access_token
     cookie.set('app_token', token)
-    const dataResponse = await axios.get('/api/user')
-    const data = dataResponse.data.data
+    const dataResponse = await axios.get('/api/me')
+    const data = dataResponse.data
     this.setState({ data, token })
   }
 
@@ -56,8 +57,8 @@ class AuthContainer extends Container<AuthContainerState> {
       return
     }
 
-    const dataResponse = await axios.get('/api/user')
-    const data = dataResponse.data.data
+    const dataResponse = await axios.get('/api/me')
+    const data = dataResponse.data
     this.setState({ token, data })
   }
 
