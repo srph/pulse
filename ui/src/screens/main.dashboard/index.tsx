@@ -11,6 +11,9 @@ import CreateTrackerModal from './CreateTrackerModal'
 import { NavLink } from 'react-router-dom'
 
 const C = {} as any
+C.line = css`
+  border-top: 5px solid #404b5a;
+`
 C.navbar = css`
   margin-bottom: 40px;
   border-bottom: 1px solid ${s['color-bw-400']};
@@ -21,6 +24,9 @@ C.navbarContainer = css`
   align-items: center;
   height: 64px;
 `
+C.navSection = css`
+  display: flex;
+`
 C.navbarAvatar = css`
   width: 40px;
   height: 40px;
@@ -29,12 +35,19 @@ C.navbarAvatar = css`
   border: 1px solid ${s['color-blue-500']};
 `
 C.navbarLogo = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
+  height: 100%;
+  margin-right: 16px;
   font-weight: 600;
 `
 C.navMenu = css`
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  height: 100%;
 `
 C.navMenuAction = css`
   margin-right: 16px;
@@ -75,14 +88,18 @@ class MainDashboard extends React.Component {
   render() {
     return (
       <React.Fragment>
+        <div css={C.line} />
+        
         <UiContainer size="lg">
           <div css={C.navbar}>
             <div css={C.navbarContainer}> 
-              <NavLink to="/" exact css={C.navLink} activeClassName="-active">
-                <i className='fa fa-home' />
-              </NavLink>
+              <div css={C.navSection}>
+                <h2 css={C.navbarLogo}>Pulse</h2>
 
-              <h2 css={C.navbarLogo}>Pulse</h2>
+                <NavLink to="/" exact css={C.navLink} activeClassName="-active">
+                  <i className='fa fa-home' />
+                </NavLink>
+              </div>
 
               <div css={C.navMenu}>
                 <div css={C.navMenuAction}>
