@@ -11,7 +11,7 @@ import { PrivateRoute, GuestRoute } from '/components/RouterPermission'
 import Main from './main'
 // import MainError404 from './main.error-404'
 import MainLogin from './main.login'
-// import MainLogout from './main.logout'
+import MainLogout from './main.logout'
 import MainDashboard from './main.dashboard'
 import MainDashboardHome from './main.dashboard.home'
 import MainDashboardTracker from './main.dashboard.tracker'
@@ -32,14 +32,14 @@ class Root extends React.Component {
               <Main>
                 <Switch>
                   <GuestRoute exact component={MainLogin} path="/login" />
-                  
+                  <PrivateRoute exact component={MainLogout} path="/logout" />
+
                   <PrivateRoute component={MainDashboard} path="/">
                     <Switch>
                       <RouterRoute exact path="/" component={MainDashboardHome}/>
                       <RouterRoute exact path="/tracker/:trackerId" component={MainDashboardTracker} />
                     </Switch>
                   </PrivateRoute>
-                  {/*<Route exact component={MainLogout} path="/logout" /> */}
                   {/* <Route component={MainError404} /> */}
                 </Switch>
               </Main>
