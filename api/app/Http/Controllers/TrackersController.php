@@ -16,11 +16,13 @@ class TrackersController extends Controller
 
     public function store(\App\Http\Requests\StoreTracker $request) {
         $payload = $request->only([
-            'title',
+            'name',
             'description'
         ]);
 
-        $tracker = $request->user()->trackers()->save($payload);
+        $tracker = tap(
+            $request->user()->trackers()->create($payload)
+        )->save();
 
         $labels = [
             [
@@ -42,7 +44,7 @@ class TrackersController extends Controller
         ];
 
         foreach($labels as $label) {
-            $tracker->labels()->save($label);
+            $tracker->labels()->create($label)->save();
         }
 
         return response()->json($tracker);

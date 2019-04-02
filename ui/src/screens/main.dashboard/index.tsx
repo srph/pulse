@@ -6,6 +6,8 @@ import s from '/styles'
 import avatar from './avatar.png'
 import UiDropdown from '/components/UiDropdown'
 import UiPlainButton from '/components/UiPlainButton'
+import UiButton from '/components/UiButton'
+import CreateTrackerModal from './CreateTrackerModal'
 
 const C = {} as any
 C.navbar = css`
@@ -29,10 +31,23 @@ C.navbarLogo = css`
   margin: 0;
   font-weight: 600;
 `
+C.navMenu = css`
+  display: flex;
+  align-items: center;
+`
+C.navMenuAction = css`
+  margin-right: 16px;
+`
+
+interface State {
+  isDropdownOpen: boolean
+  isCreateTrackerModalOpen: boolean
+}
 
 class MainDashboard extends React.Component {
   state = {
-    isOpen: false
+    isDropdownOpen: false,
+    isCreateTrackerModalOpen: false
   }
   
   render() {
@@ -43,28 +58,42 @@ class MainDashboard extends React.Component {
             <div css={C.navbarContainer}>
               <h2 css={C.navbarLogo}>Pulse</h2>
 
-              <UiDropdown isOpen={this.state.isOpen}
-                onOpen={() => this.setState({ isOpen: true })} 
-                onClose={() => this.setState({ isOpen: false })}>
-                <UiDropdown.Body>
-                  <UiPlainButton>
-                    <img css={C.navbarAvatar} src={avatar} alt="Your Photo" />
-                  </UiPlainButton>
-                </UiDropdown.Body>
+              <div css={C.navMenu}>
+                <div css={C.navMenuAction}>
+                  <UiButton preset="primary" onClick={() => this.setState({ isCreateTrackerModalOpen: true })}>
+                    <UiButton.LeftIcon>
+                      <i className='fa fa-plus' />
+                    </UiButton.LeftIcon>
+                    Create New Tracker
+                  </UiButton>
+                </div>
+                <UiDropdown isOpen={this.state.isDropdownOpen}
+                  onOpen={() => this.setState({ isDropdownOpen: true })} 
+                  onClose={() => this.setState({ isDropdownOpen: false })}>
+                  <UiDropdown.Body>
+                    <UiPlainButton>
+                      <img css={C.navbarAvatar} src={avatar} alt="Your Photo" />
+                    </UiPlainButton>
+                  </UiDropdown.Body>
 
-                <UiDropdown.Menu>
-                  <UiDropdown.Link to="/me">
-                    Account Settings
-                  </UiDropdown.Link>
+                  <UiDropdown.Menu>
+                    <UiDropdown.Link to="/me">
+                      Account Settings
+                    </UiDropdown.Link>
 
-                  <UiDropdown.Link to="/logout">
-                    Logout
-                  </UiDropdown.Link>
-                </UiDropdown.Menu>
-              </UiDropdown>
+                    <UiDropdown.Link to="/logout">
+                      Logout
+                    </UiDropdown.Link>
+                  </UiDropdown.Menu>
+                </UiDropdown>
+              </div>
             </div>
           </div>
         </UiContainer>
+
+        {this.state.isCreateTrackerModalOpen && (
+          <CreateTrackerModal onClose={() => this.setState({ isCreateTrackerModalOpen: false })} />
+        )}
 
         {this.props.children}
       </React.Fragment>

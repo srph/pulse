@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import s from '/styles'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const C = {} as any
 C.button = css`
@@ -61,6 +61,9 @@ C.buttonIsSm = css`
   height: 32px;
   line-height: 31px;
 `
+C.icon = css`
+  opacity: 0.5;
+`
 C.leftIcon = css`
   margin-right: 16px;
 `
@@ -68,22 +71,26 @@ C.rightIcon = css`
   margin-left: 16px;
 `
 
-const UiButtonLeftIcon: React.SFC = (props) => {
-  return <div css={css`margin-right: 16px;`}>{props.children}</div>
+const LeftIcon: React.SFC = (props) => {
+  return <div css={[C.icon, C.leftIcon]}>{props.children}</div>
 }
 
-const UiButtonRightIcon: React.SFC = (props) => {
-  return <div css={css`margin-left: 16px;`}>{props.children}</div>
+const RightIcon: React.SFC = (props) => {
+  return <div css={[C.icon, C.rightIcon]}>{props.children}</div>
 }
 
-export type UiButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement> | React.AnchorHTMLAttributes<HTMLAnchorElement>
+
+export type UiButtonProps = ButtonAttributes & {
+  link?: boolean
   preset?: 'default' | 'primary' | 'default-danger' | 'danger'
   isBlock?: boolean
   size?: 'sm' | 'md' | 'lg'
 }
 
-const UiButton: React.SFC<UiButtonProps> & { LeftIcon?: any, RightIcon?: any } = (props) => {
-  const {preset, isBlock, size, ...buttonProps} = props
+const UiButton: React.SFC<UiButtonProps> & { LeftIcon: any, RightIcon: any } = (props) => {
+  const {preset, isBlock, size, link, ...buttonProps} = props
+  const Component = link ? Link : 'button'
 
   return <button {...buttonProps} css={[
     C.button,
@@ -96,12 +103,13 @@ const UiButton: React.SFC<UiButtonProps> & { LeftIcon?: any, RightIcon?: any } =
 }
 
 UiButton.defaultProps = {
+  link: false,
   preset: 'default',
   isBlock: false,
   size: 'sm'
 }
 
-UiButton.LeftIcon = UiButtonLeftIcon
-UiButton.RightIcon = UiButtonRightIcon
+UiButton.LeftIcon = LeftIcon
+UiButton.RightIcon = RightIcon
 
 export default UiButton

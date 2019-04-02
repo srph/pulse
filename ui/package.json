@@ -33,6 +33,7 @@
     "react-dom": "^16.8.5",
     "react-event-listener": "^0.6.6",
     "react-helmet": "^5.2.0",
+    "react-modal2": "^5.0.0",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "sanitize.css": "^8.0.0",

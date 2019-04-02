@@ -12,7 +12,7 @@ class Tracker extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
+        'name',
         'description'
     ];
 

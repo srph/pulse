@@ -11,6 +11,7 @@ export default function UiPlainButton(props: Props) {
       height: auto;
       padding: 0;
       background: transparent;
+      color: inherit;
       border: 0;
       outline: 0;
       cursor: pointer;

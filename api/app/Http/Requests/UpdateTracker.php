@@ -24,7 +24,7 @@ class UpdateTracker extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required'
+            'name' => 'required'
         ];
     }
 }

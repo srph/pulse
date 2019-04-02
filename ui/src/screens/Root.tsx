@@ -16,12 +16,12 @@ import MainLogout from './main.logout'
 import MainDashboard from './main.dashboard'
 import MainDashboardHome from './main.dashboard.home'
 import MainDashboardTracker from './main.dashboard.tracker'
-// import UiModal from '@app/components/UiModal'
+import UiModal from '/components/UiModal'
 // import Toast from '@app/components/Toast'
 
 class Root extends React.Component {
   componentDidMount() {
-    // UiModal.init()
+    UiModal.init()
   }
   
   render() {
