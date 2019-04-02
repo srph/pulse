@@ -8,6 +8,7 @@ import UiDropdown from '/components/UiDropdown'
 import UiPlainButton from '/components/UiPlainButton'
 import UiButton from '/components/UiButton'
 import CreateTrackerModal from './CreateTrackerModal'
+import { NavLink } from 'react-router-dom'
 
 const C = {} as any
 C.navbar = css`
@@ -38,6 +39,27 @@ C.navMenu = css`
 C.navMenuAction = css`
   margin-right: 16px;
 `
+C.navLink = css`
+  display: inline-flex;
+  align-items: center;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-decoration: none;
+  height: 100%;
+  color: ${s['color-bw-700']};
+  border-bottom: 2px solid ${s['color-bw-600']};
+  transition: 200ms all ease;
+  
+  &:hover {
+    color: ${s['color-bw-800']};
+    border-bottom: 2px solid ${s['color-bw-800']};
+  }
+
+  &.-active {
+    color: ${s['color-blue-500']};
+    border-bottom-color: ${s['color-blue-500']};
+  }
+`
 
 interface State {
   isDropdownOpen: boolean
@@ -55,7 +77,11 @@ class MainDashboard extends React.Component {
       <React.Fragment>
         <UiContainer size="lg">
           <div css={C.navbar}>
-            <div css={C.navbarContainer}>
+            <div css={C.navbarContainer}> 
+              <NavLink to="/" exact css={C.navLink} activeClassName="-active">
+                <i className='fa fa-home' />
+              </NavLink>
+
               <h2 css={C.navbarLogo}>Pulse</h2>
 
               <div css={C.navMenu}>
