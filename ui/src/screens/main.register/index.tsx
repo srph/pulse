@@ -7,10 +7,11 @@ import UiInput from '/components/UiInput'
 import UiField from '/components/UiField'
 import UiSpacer from '/components/UiSpacer'
 import UiButtonLoader from '/components/UiButtonLoader'
-import { Link }  from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import history from '/lib/history'
 import ls from 'linkstate'
+import axios from '/lib/axios'
 import { Subscribe } from 'unstated'
 import { AuthContainer } from '/containers'
 import { UserCredentials } from '/containers/AuthContainer';
@@ -58,7 +59,13 @@ interface Props {
 }
 
 interface State {
-  form: UserCredentials
+  form: {
+    email: string
+    name: string
+    password: string
+    password_confirmation: string
+  }
+  errors: AppDataValidationBag
   error: string
   isLoading: boolean
 }
@@ -66,46 +73,61 @@ interface State {
 class MainLogin extends React.Component<Props, State> {
   state = {
     form: {
-      username: '',
-      password: ''
+      email: '',
+      name: '',
+      password: '',
+      password_confirmation: ''
     },
+    errors: {} as AppDataValidationBag,
     error: '',
     isLoading: false
   }
 
   render() {
-    const { form } = this.state
+    const { form, errors } = this.state
 
     return (
       <div css={C.wrapper}>
         <UiContainer size="sm">
-          <p css={C.text}>Login below to start tracking your goals!</p>
+          <p css={C.text}>Register to get started on your goals.</p>
         </UiContainer>
 
         <UiContainer size="xs">
           <div css={C.panel}>
            <form onSubmit={this.handleSubmit}>
-              <UiField label="Username">
-                <UiInput type="email" value={form.username} onChange={ls(this, 'form.username')}  placeholder="johnny" />
+              <UiField label="Your name" error={errors.name} isRequired>
+                <UiInput type="name" value={form.name} onChange={ls(this, 'form.name')} placeholder="Jan Jason Bodolo" name="email" />
               </UiField>
 
               <UiSpacer />
 
-              <UiField label="Password">
-                <UiInput type="password" value={form.password} onChange={ls(this, 'form.password')} placeholder="********" />
+              <UiField label="Email" error={errors.email} isRequired>
+                <UiInput type="email" value={form.email} onChange={ls(this, 'form.email')} placeholder="your@email.com" name="email" />
+              </UiField>
+
+              <UiSpacer />
+
+              <UiField label="Password" error={errors.password} isRequired>
+                <UiInput type="password" value={form.password} onChange={ls(this, 'form.password')} placeholder="********" name="password" />
+              </UiField>
+
+              <UiSpacer />
+
+              <UiField label="Password Confirmation" error={errors.password_confirmation} isRequired>
+                <UiInput type="password" value={form.password_confirmation} onChange={ls(this, 'form.password_confirmation')} placeholder="********" name="password_confirmation" />
               </UiField>
 
               <UiSpacer />
 
               <UiButtonLoader isLoading={this.state.isLoading} isBlock preset="primary">
-                Login
+                Create an account
               </UiButtonLoader>
             </form>
           </div>
 
           <div css={C.linkWrapper}>
-            <Link to="/register" css={C.link}>
-              New? Create a new account here →
+            <Link to="/login" css={C.link}>
+              ← I'd like to login instead
             </Link>
           </div>
         </UiContainer>
@@ -122,14 +144,15 @@ class MainLogin extends React.Component<Props, State> {
 
     this.setState({
       error: '',
+      errors: {},
       isLoading: true
     })
 
     try {
-      await this.props.login(this.state.form)
+      await axios.post('/api/register', this.state.form)
     } catch(e) {
       this.setState({
-        error: 'Invalid username/password combination',
+        errors: e.response.data.errors,
         isLoading: false
       })
 
@@ -140,7 +163,8 @@ class MainLogin extends React.Component<Props, State> {
       isLoading: false
     })
 
-    history.push('/?login=true')
+    history.push('/login')
+    
   }
 }
 

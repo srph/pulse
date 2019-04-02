@@ -8,8 +8,7 @@ interface UiFieldProps {
   label: string
   children: JSX.Element
   disabled?: boolean
-  error?: string
-  spacer?: boolean
+  error?: AppDataValidationBag
   actions?: React.ReactNode
   isRequired?:  boolean
 }
@@ -34,14 +33,14 @@ C.label = css`
   text-transform: uppercase;
 `
 C.labelRequired = css`
-  color: ${s['color-red']};
+  color: red;
   margin-left: 4px;
 `
 C.labelError = css`
-  font-size: 10px;
-  background: red;
+  margin-top: 4px;
+  font-size: 12px;
   padding: 4px;
-  color: ${s['color-white']};
+  color: red;
 `
 C.actions = css`
   display: flex;
@@ -56,10 +55,9 @@ C.actionsItem = css`
 const UiField: React.SFC<UiFieldProps> = (props) => {
   const actions = props.actions ? (Array.isArray(props.actions) ? props.actions : [props.actions]) : []
   return (
-    <div css={[C.field, props.disabled && c.fieldDisabled]} spacer={props.spacer}>
+    <div css={[C.field, props.disabled && c.fieldDisabled]}>
       <label css={C.label} htmlFor={props.id}>
         <span>{props.label} {props.isRequired && <span css={C.labelRequired}>*</span>}</span>
-        {props.error && Boolean(props.error.length) && <div css={C.labelError}>Invalid JSON!</div>}
         {Boolean(actions.length) && (
           <div css={C.actions}>
             {actions.map((action, i) => (
@@ -70,10 +68,13 @@ const UiField: React.SFC<UiFieldProps> = (props) => {
           </div>
         )}
       </label>
+
       {React.cloneElement(props.children, {
         id: props.id,
         disabled: props.disabled
       })}
+
+      {props.error && Boolean(props.error.length) && <div css={C.labelError}>{props.error[0]}</div>}
     </div>
   )
 }
