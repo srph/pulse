@@ -25,7 +25,8 @@ class StoreTrackerEntry extends FormRequest
     {
         return [
             'tracker_label_id' => 'required|exists:tracker_labels,id',
-            'entry_date' => 'required|date|before:tomorrow'
+            // #YOLO - As long as it's between tomorrow and today, it's okay.
+            'entry_date' => 'required|date|before_or_equal:tomorrow'
         ];
     }
 }
