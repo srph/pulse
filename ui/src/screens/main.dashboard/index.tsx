@@ -7,7 +7,7 @@ import UiDropdown from '~/components/UiDropdown'
 import UiPlainButton from '~/components/UiPlainButton'
 import UiButton from '~/components/UiButton'
 import CreateTrackerModal from './CreateTrackerModal'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 const C = {} as any
 C.line = css`
@@ -40,7 +40,13 @@ C.navbarLogo = css`
   margin: 0;
   height: 100%;
   margin-right: 16px;
+  color: ${s['color-text']};
+  text-decoration: none;
   font-weight: 600;
+  font-size: ${s['font-size-title']}px;
+`
+C.navbarLogoIcon = css`
+  margin-right: 8px;
 `
 C.navMenu = css`
   display: flex;
@@ -93,7 +99,10 @@ class MainDashboard extends React.Component {
           <div css={C.navbar}>
             <div css={C.navbarContainer}>
               <div css={C.navSection}>
-                <h2 css={C.navbarLogo}>Pulse</h2>
+                <Link to="/" css={C.navbarLogo}>
+                  <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" css={C.navbarLogoIcon} />
+                  Pulse
+                </Link>
 
                 <NavLink to="/" exact css={C.navLink} activeClassName="-active">
                   <i className="fa fa-home" />
