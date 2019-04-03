@@ -1,7 +1,7 @@
-// import * as React from 'react'
+import * as React from 'react'
 
 function SlotMenu(props: ComponentSlotProps) {
-  return null
+  return <span />
 }
 
 export default SlotMenu

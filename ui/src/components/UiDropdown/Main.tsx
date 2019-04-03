@@ -1,7 +1,7 @@
-// import * as React from 'react'
+import * as React from 'react'
 
 function SlotMain(props: ComponentSlotProps) {
-  return null
+  return <div />
 }
 
 export default SlotMain
