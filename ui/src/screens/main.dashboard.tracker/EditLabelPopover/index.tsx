@@ -45,9 +45,9 @@ class EditLabelPopover extends React.Component<Props, State> {
       isOpen={this.props.isOpen}
       onOpen={this.handleOpen}
       onClose={this.handleClose}>
-      <UiDropdown.Body>
+      <UiDropdown.Main>
         {this.props.children}
-      </UiDropdown.Body>
+      </UiDropdown.Main>
 
       <UiDropdown.Menu>
         <SharedPopover>

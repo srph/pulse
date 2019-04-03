@@ -37,7 +37,7 @@ interface Props {
 
 class UiDropdown extends React.Component<Props> {
   static Link = Link
-  static Body = Main
+  static Main = Main
   static Menu = Menu
   static Separator = Separator
   static Heading = Heading

@@ -22,7 +22,7 @@ class DeleteLabelPopover extends React.Component<Props, {}> {
   render() {
     return (
       <UiDropdown isOpen={this.props.isOpen} onOpen={this.handleOpen} onClose={this.handleClose}>
-        <UiDropdown.Body>{this.props.children}</UiDropdown.Body>
+        <UiDropdown.Main>{this.props.children}</UiDropdown.Main>
 
         <UiDropdown.Menu>
           <SharedPopover>

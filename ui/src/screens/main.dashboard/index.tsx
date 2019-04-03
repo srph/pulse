@@ -113,7 +113,7 @@ class MainDashboard extends React.Component {
                   isOpen={this.state.isDropdownOpen}
                   onOpen={() => this.setState({ isDropdownOpen: true })}
                   onClose={() => this.setState({ isDropdownOpen: false })}>
-                  <UiDropdown.Body>
+                  <UiDropdown.Main>
                     <UiPlainButton>
                       <img
                         css={C.navbarAvatar}
@@ -121,7 +121,7 @@ class MainDashboard extends React.Component {
                         alt="Your Photo"
                       />
                     </UiPlainButton>
-                  </UiDropdown.Body>
+                  </UiDropdown.Main>
 
                   <UiDropdown.Menu>
                     <UiDropdown.Link to="/me">Account Settings</UiDropdown.Link>
