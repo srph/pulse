@@ -23,6 +23,7 @@ C.alertIsWarning = css`
 `
 C.alertIsCompact = css`
   padding: 12px;
+  text-align: center;
 `
 C.alertIcon = css`
   position: absolute;

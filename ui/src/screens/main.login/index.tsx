@@ -113,28 +113,28 @@ class MainLogin extends React.Component<Props, State> {
         </UiContainer>
 
         <UiContainer size="xs">
+          {this.state.isRegistrationSuccessful && (
+            <React.Fragment>
+              <UiAlert preset="success" isCompact>
+                Your account was successfully created.
+              </UiAlert>
+
+              <UiSpacer />
+            </React.Fragment>
+          )}
+
+          {Boolean(this.state.error.length) && (
+            <React.Fragment>
+              <UiAlert preset="error" isCompact>
+                {this.state.error}
+              </UiAlert>
+
+              <UiSpacer />
+            </React.Fragment>
+          )}
+
           <div css={C.panel}>
             <form onSubmit={this.handleSubmit}>
-              {this.state.isRegistrationSuccessful && (
-                <React.Fragment>
-                  <UiAlert preset="success" isCompact>
-                    Your account was successfully created!
-                  </UiAlert>
-
-                  <UiSpacer />
-                </React.Fragment>
-              )}
-
-              {Boolean(this.state.error.length) && (
-                <React.Fragment>
-                  <UiAlert preset="error" isCompact>
-                    {this.state.error}
-                  </UiAlert>
-
-                  <UiSpacer />
-                </React.Fragment>
-              )}
-
               <UiField label="Email">
                 <UiInput type="email" value={form.username} onChange={ls(this, 'form.username')} placeholder="johnny" />
               </UiField>
