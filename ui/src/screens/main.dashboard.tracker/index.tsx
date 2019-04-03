@@ -284,7 +284,8 @@ class DashboardTracker extends React.Component<Props, State> {
     isUpdatingLabel: false
   }
 
-  async componentDidMount() {    let response = await axios.get(
+  async componentDidMount() {
+    let response = await axios.get(
       `/api/trackers/${this.props.match.params.trackerId}`
     )
 
@@ -615,4 +616,14 @@ class DashboardTracker extends React.Component<Props, State> {
   }
 }
 
-export default DashboardTracker
+/**
+ * Little trick to force our component to remount entirely if the user
+ * creates a tracker all while viewing another tracker.
+ */
+function WrappedDashboardTracker(props: Props) {
+  return (
+    <DashboardTracker key={props.match.params.trackerId} {...props} />
+  )
+}
+
+export default WrappedDashboardTracker
