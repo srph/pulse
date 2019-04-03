@@ -13,7 +13,7 @@ C.alert = css`
   line-height: 1.5;
 `
 C.alertIsError = css`
-  background: #d84237;
+  background: ${s['color-red-400']};
 `
 C.alertIsSuccess = css`
   background: ${s['color-green-500']};
