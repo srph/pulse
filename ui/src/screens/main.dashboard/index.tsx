@@ -61,7 +61,7 @@ C.navLink = css`
   color: ${s['color-bw-700']};
   border-bottom: 2px solid ${s['color-bw-600']};
   transition: 200ms all ease;
-  
+
   &:hover {
     color: ${s['color-bw-800']};
     border-bottom: 2px solid ${s['color-bw-800']};
@@ -83,20 +83,20 @@ class MainDashboard extends React.Component {
     isDropdownOpen: false,
     isCreateTrackerModalOpen: false
   }
-  
+
   render() {
     return (
       <React.Fragment>
         <div css={C.line} />
-        
+
         <UiContainer size="lg">
           <div css={C.navbar}>
-            <div css={C.navbarContainer}> 
+            <div css={C.navbarContainer}>
               <div css={C.navSection}>
                 <h2 css={C.navbarLogo}>Pulse</h2>
 
                 <NavLink to="/" exact css={C.navLink} activeClassName="-active">
-                  <i className='fa fa-home' />
+                  <i className="fa fa-home" />
                 </NavLink>
               </div>
 
@@ -104,28 +104,29 @@ class MainDashboard extends React.Component {
                 <div css={C.navMenuAction}>
                   <UiButton preset="primary" onClick={() => this.setState({ isCreateTrackerModalOpen: true })}>
                     <UiButton.LeftIcon>
-                      <i className='fa fa-plus' />
+                      <i className="fa fa-plus" />
                     </UiButton.LeftIcon>
                     Create New Tracker
                   </UiButton>
                 </div>
-                <UiDropdown isOpen={this.state.isDropdownOpen}
-                  onOpen={() => this.setState({ isDropdownOpen: true })} 
+                <UiDropdown
+                  isOpen={this.state.isDropdownOpen}
+                  onOpen={() => this.setState({ isDropdownOpen: true })}
                   onClose={() => this.setState({ isDropdownOpen: false })}>
                   <UiDropdown.Body>
                     <UiPlainButton>
-                      <img css={C.navbarAvatar} src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/user-avatars/avatar.png" alt="Your Photo" />
+                      <img
+                        css={C.navbarAvatar}
+                        src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/user-avatars/avatar.png"
+                        alt="Your Photo"
+                      />
                     </UiPlainButton>
                   </UiDropdown.Body>
 
                   <UiDropdown.Menu>
-                    <UiDropdown.Link to="/me">
-                      Account Settings
-                    </UiDropdown.Link>
+                    <UiDropdown.Link to="/me">Account Settings</UiDropdown.Link>
 
-                    <UiDropdown.Link to="/logout">
-                      Logout
-                    </UiDropdown.Link>
+                    <UiDropdown.Link to="/logout">Logout</UiDropdown.Link>
                   </UiDropdown.Menu>
                 </UiDropdown>
               </div>
