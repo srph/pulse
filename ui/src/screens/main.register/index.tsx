@@ -1,5 +1,6 @@
 /** @jsx jsx  */
 import * as React from 'react'
+import Helmet from 'react-helmet'
 import { jsx, css } from '@emotion/core'
 import s from '~/styles'
 import UiContainer from '~/components/UiContainer'
@@ -102,6 +103,8 @@ class MainLogin extends React.Component<Props, State> {
 
     return (
       <div css={C.wrapper}>
+        <Helmet title="Create an account" />
+
         <UiContainer size="sm">
           <div css={C.heading}>
             <img

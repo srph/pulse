@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import * as React from 'react'
+import Helmet from 'react-helmet'
 import { jsx, css } from '@emotion/core'
 import EventListener from 'react-event-listener'
 import UiContainer from '~/components/UiContainer'
@@ -312,6 +313,8 @@ class DashboardTracker extends React.Component<Props, State> {
 
     return (
       <UiContainer size="lg">
+        <Helmet title={`${tracker.name}`} />
+
         <EventListener target="document" onKeyDown={this.handleKeyDown} />
 
         <h4 css={C.title}>{tracker.name}</h4>

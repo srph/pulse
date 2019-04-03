@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import * as React from 'react'
+import Helmet from 'react-helmet'
 import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import UiContainer from '~/components/UiContainer'
@@ -74,6 +75,8 @@ class DashboardHome extends React.Component<{}, State> {
   render() {
     return (
       <UiContainer size="md">
+        <Helmet title="Trackers" />
+
         <h4 css={C.title}>
           Your trackers
         </h4>

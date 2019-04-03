@@ -17,6 +17,8 @@ import MainDashboard from './main.dashboard'
 import MainDashboardHome from './main.dashboard.home'
 import MainDashboardTracker from './main.dashboard.tracker'
 import UiModal from '~/components/UiModal'
+import Helmet from 'react-helmet'
+import config from '~/config'
 // import Toast from '~/components/Toast'
 
 class Root extends React.Component {
@@ -27,6 +29,8 @@ class Root extends React.Component {
   render() {
     return (
       <ThemeProvider theme={styles}>
+        <Helmet titleTemplate={`%s | ${config.app.title}`} />
+
         <UnstatedProvider>
           <Router history={history}>
             <UiRoot>

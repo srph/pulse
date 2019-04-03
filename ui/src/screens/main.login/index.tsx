@@ -1,6 +1,7 @@
 /** @jsx jsx  */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
+import Helmet from 'react-helmet'
 import s from '~/styles'
 import UiContainer from '~/components/UiContainer'
 import UiAlert from '~/components/UiAlert'
@@ -73,9 +74,11 @@ type RouteProps = RouteComponentProps<{
   success?: string
 }>
 
-interface Props {
+interface OwnProps {
   login: (credentials: UserCredentials) => Promise<any>
 }
+
+type Props = RouteProps & OwnProps
 
 interface State {
   form: UserCredentials
@@ -100,6 +103,8 @@ class MainLogin extends React.Component<Props, State> {
     
     return (
       <div css={C.wrapper}>
+        <Helmet title="Login" />
+
         <UiContainer size="sm">
           <div css={C.heading}>
             <img
