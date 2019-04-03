@@ -40,7 +40,7 @@ class CreateTrackerModal extends React.Component<Props, State> {
       <UiModal title="Create New Tracker" onClose={this.props.onClose}>
         <form onSubmit={this.handleSubmit}>
           <UiField label="Name" error={errors.name} isRequired>
-            <UiInput value={form.name} onChange={ls(this, 'form.name')} placeholder="Fitness Goal 2019" name="name" />
+            <UiInput autoFocus value={form.name} onChange={ls(this, 'form.name')} placeholder="Fitness Goal 2019" name="name" />
           </UiField>
 
           <UiSpacer />
