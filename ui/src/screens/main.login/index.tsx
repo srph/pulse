@@ -91,7 +91,7 @@ class MainLogin extends React.Component<Props, State> {
       password: ''
     },
     error: '',
-    isRegistrationSuccessful: 'success' in this.props.location.query
+    isRegistrationSuccessful: 'success' in this.props.location.query,
     isLoading: false
   }
 
