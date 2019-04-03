@@ -4,7 +4,8 @@
   "main": "src/index.tsx",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "tsc --noEmit && parcel build src/index.html"
+    "typecheck": "tsc --noEmit",
+    "build": "npm run typecheck && parcel build src/index.html"
   },
   "devDependencies": {
     "@types/node": "^11.12.2",
