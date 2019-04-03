@@ -42,7 +42,7 @@ export default {
   'drop-shadow': '0px 2px 4px rgba(0,0,0,0.1)',
   'drop-shadow-lower': '0px 4px 16px rgba(0,0,0,0.1)',
   // 'font-family': `'aktiv-grotesk','San Francisco',-apple-system,'BlinkMacSystemFont','".SFSNText-Regular"','Segoe UI','Ubuntu','Helvetica',sans-serif`,
-  'font-family': `'Proxima Nova','San Francisco',-apple-system,'BlinkMacSystemFont','".SFSNText-Regular"','Segoe UI','Ubuntu','Helvetica',sans-serif`,
+  'font-family': `proxima-nova,'Proxima Nova','San Francisco',-apple-system,'BlinkMacSystemFont','".SFSNText-Regular"','Segoe UI','Ubuntu','Helvetica',sans-serif`,
   'font-size-title': 16,
   'font-size': 14,
   'font-size-subtitle': 12,
