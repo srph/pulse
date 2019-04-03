@@ -85,7 +85,7 @@ class MainLogin extends React.Component<Props, State> {
         <UiContainer size="xs">
           <div css={C.panel}>
            <form onSubmit={this.handleSubmit}>
-              <UiField label="Username">
+              <UiField label="Email">
                 <UiInput type="email" value={form.username} onChange={ls(this, 'form.username')}  placeholder="johnny" />
               </UiField>
 
