@@ -20,13 +20,27 @@ C.wrapper = css`
   padding-top: 80px;
   padding-bottom: 48px;
 `
-C.text = css`
-  color: ${s['color-bw-700']};
-  margin-top: 0;
+C.heading = css`
+  text-align: center;
   margin-bottom: 36px;
+`
+C.logo = css`
+  width: 72px;
+  height: 72px;
+  margin-bottom: 48px;
+`
+C.text = css`
+  margin: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+`
+C.body = css`
+  color: ${s['color-bw-700']};
+  margin: 0;
   font-size: ${s['font-size-title']}px;
   line-height: 1.5;
-  text-align: center;
 `
 C.panel = css`
   margin-bottom: 24px;
@@ -79,7 +93,11 @@ class MainLogin extends React.Component<Props, State> {
     return (
       <div css={C.wrapper}>
         <UiContainer size="sm">
-          <p css={C.text}>Login below to start tracking your goals!</p>
+          <div css={C.heading}>
+            <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" css={C.logo} />
+            <h4 css={C.text}>Welcome to Pulse</h4>
+            <p css={C.body}>Login below to start tracking your goals!</p>
+          </div>
         </UiContainer>
 
         <UiContainer size="xs">

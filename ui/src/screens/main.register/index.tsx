@@ -14,20 +14,34 @@ import ls from 'linkstate'
 import axios from '~/lib/axios'
 import { Subscribe } from 'unstated'
 import { AuthContainer } from '~/containers'
-import { UserCredentials } from '~/containers/AuthContainer';
+import { UserCredentials } from '~/containers/AuthContainer'
 
 const C = {} as any
 C.wrapper = css`
   padding-top: 80px;
   padding-bottom: 48px;
 `
-C.text = css`
-  color: ${s['color-bw-700']};
-  margin-top: 0;
+C.heading = css`
+  text-align: center;
   margin-bottom: 36px;
+`
+C.logo = css`
+  width: 72px;
+  height: 72px;
+  margin-bottom: 48px;
+`
+C.text = css`
+  margin: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+`
+C.body = css`
+  color: ${s['color-bw-700']};
+  margin: 0;
   font-size: ${s['font-size-title']}px;
   line-height: 1.5;
-  text-align: center;
 `
 C.panel = css`
   margin-bottom: 24px;
@@ -89,32 +103,64 @@ class MainLogin extends React.Component<Props, State> {
     return (
       <div css={C.wrapper}>
         <UiContainer size="sm">
-          <p css={C.text}>Register to get started on your goals.</p>
+          <div css={C.heading}>
+            <img
+              src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg"
+              alt="Pulse Logo"
+              css={C.logo}
+            />
+            <h4 css={C.text}>Create an account</h4>
+            <p css={C.body}>Register to get started on your goals.</p>
+          </div>
         </UiContainer>
 
         <UiContainer size="xs">
           <div css={C.panel}>
-           <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
               <UiField label="Your name" error={errors.name} isRequired>
-                <UiInput type="name" value={form.name} onChange={ls(this, 'form.name')} placeholder="Jan Jason Bodolo" name="email" />
+                <UiInput
+                  type="name"
+                  value={form.name}
+                  onChange={ls(this, 'form.name')}
+                  placeholder="Jan Jason Bodolo"
+                  name="email"
+                />
               </UiField>
 
               <UiSpacer />
 
               <UiField label="Email" error={errors.email} isRequired>
-                <UiInput type="email" value={form.email} onChange={ls(this, 'form.email')} placeholder="your@email.com" name="email" />
+                <UiInput
+                  type="email"
+                  value={form.email}
+                  onChange={ls(this, 'form.email')}
+                  placeholder="your@email.com"
+                  name="email"
+                />
               </UiField>
 
               <UiSpacer />
 
               <UiField label="Password" error={errors.password} isRequired>
-                <UiInput type="password" value={form.password} onChange={ls(this, 'form.password')} placeholder="********" name="password" />
+                <UiInput
+                  type="password"
+                  value={form.password}
+                  onChange={ls(this, 'form.password')}
+                  placeholder="********"
+                  name="password"
+                />
               </UiField>
 
               <UiSpacer />
 
               <UiField label="Password Confirmation" error={errors.password_confirmation} isRequired>
-                <UiInput type="password" value={form.password_confirmation} onChange={ls(this, 'form.password_confirmation')} placeholder="********" name="password_confirmation" />
+                <UiInput
+                  type="password"
+                  value={form.password_confirmation}
+                  onChange={ls(this, 'form.password_confirmation')}
+                  placeholder="********"
+                  name="password_confirmation"
+                />
               </UiField>
 
               <UiSpacer />
@@ -150,7 +196,7 @@ class MainLogin extends React.Component<Props, State> {
 
     try {
       await axios.post('/api/register', this.state.form)
-    } catch(e) {
+    } catch (e) {
       this.setState({
         errors: e.response.data.errors,
         isLoading: false
@@ -164,15 +210,12 @@ class MainLogin extends React.Component<Props, State> {
     })
 
     history.push('/login')
-    
   }
 }
 
 function WrappedMainLogin(props: {}) {
   return (
-    <Subscribe to={[AuthContainer]}>
-      {(auth: AuthContainer) => <MainLogin {...props} login={auth.login} />}
-    </Subscribe>
+    <Subscribe to={[AuthContainer]}>{(auth: AuthContainer) => <MainLogin {...props} login={auth.login} />}</Subscribe>
   )
 }
 
