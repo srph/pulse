@@ -2,18 +2,18 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import EventListener from 'react-event-listener'
-import UiContainer from '/components/UiContainer'
+import UiContainer from '~/components/UiContainer'
 import CreateLabelPopover from './CreateLabelPopover'
 import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
 import { format, getDaysInMonth, isToday, isBefore } from 'date-fns'
 import immer from 'immer'
-import axios from '/lib/axios'
-import { RouteComponentProps } from '/lib/history/types'
-import s from '/styles'
-import random from '/utils/random'
-import isNumericKeyCode from '/utils/isNumericKeyCode'
-import toPropertyKeys from '/utils/toPropertyKeys'
+import axios from '~/lib/axios'
+import { RouteComponentProps } from '~/lib/history/types'
+import s from '~/styles'
+import random from '~/utils/random'
+import isNumericKeyCode from '~/utils/isNumericKeyCode'
+import toPropertyKeys from '~/utils/toPropertyKeys'
 
 const C = {} as any
 C.title = css`
@@ -434,7 +434,7 @@ class DashboardTracker extends React.Component<Props, State> {
                       </EditLabelPopover>
                     </div>
 
-                    <div c={C.labelAction}>
+                    <div css={C.labelAction}>
                       <DeleteLabelPopover
                         label={label}
                         isOpen={this.state.deleteIndex === i}

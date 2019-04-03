@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import s from '@app/styles'
+import s from '~/styles'
 
 const ui = {} as any
 ui.Alert = styled.div`

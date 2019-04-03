@@ -2,7 +2,7 @@ import * as React from 'react'
 import * as Transition from 'react-addons-css-transition-group'
 import {Notification, notify} from '@srph/react-notification'
 import styled from 'styled-components'
-import s from '@app/styles'
+import s from '~/styles'
 
 const ui = {} as any
 ui.StyledTransition = styled(Transition)`

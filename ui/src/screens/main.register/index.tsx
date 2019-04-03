@@ -1,20 +1,20 @@
 /** @jsx jsx  */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
-import UiContainer from '/components/UiContainer'
-import UiInput from '/components/UiInput'
-import UiField from '/components/UiField'
-import UiSpacer from '/components/UiSpacer'
-import UiButtonLoader from '/components/UiButtonLoader'
+import s from '~/styles'
+import UiContainer from '~/components/UiContainer'
+import UiInput from '~/components/UiInput'
+import UiField from '~/components/UiField'
+import UiSpacer from '~/components/UiSpacer'
+import UiButtonLoader from '~/components/UiButtonLoader'
 import { Link } from 'react-router-dom'
 
-import history from '/lib/history'
+import history from '~/lib/history'
 import ls from 'linkstate'
-import axios from '/lib/axios'
+import axios from '~/lib/axios'
 import { Subscribe } from 'unstated'
-import { AuthContainer } from '/containers'
-import { UserCredentials } from '/containers/AuthContainer';
+import { AuthContainer } from '~/containers'
+import { UserCredentials } from '~/containers/AuthContainer';
 
 const C = {} as any
 C.wrapper = css`

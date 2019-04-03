@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as  React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 
 type UiButtonLinkProps = { icon?: string } & React.ButtonHTMLAttributes<HTMLButtonElement>
 

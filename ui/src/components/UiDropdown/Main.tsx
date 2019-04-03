@@ -1,6 +1,6 @@
 // import * as React from 'react'
 
-function SlotMain() {
+function SlotMain(props: ComponentSlotProps) {
   return null
 }
 

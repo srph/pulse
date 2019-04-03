@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { Global, jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 
 interface IUiRootProps {
   children: React.ReactNode

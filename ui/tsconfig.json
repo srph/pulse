@@ -9,6 +9,9 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "paths": {
+      "~*": ["./src/*"]
+    },
     "skipLibCheck": true
   },
   "exclude": [

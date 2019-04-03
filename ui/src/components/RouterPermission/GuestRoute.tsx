@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Subscribe as UnstatedSubscribe } from 'unstated'
-import { AuthContainer } from '/containers'
+import { AuthContainer } from '~/containers'
 import { Route, Redirect } from 'react-router-dom'
 import { RouteProps } from 'react-router'
 

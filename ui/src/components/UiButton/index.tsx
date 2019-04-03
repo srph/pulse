@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 import { Link } from 'react-router-dom'
 
 const C = {} as any
@@ -92,7 +92,7 @@ const UiButton: React.SFC<UiButtonProps> & { LeftIcon: any, RightIcon: any } = (
   const {preset, isBlock, size, link, ...buttonProps} = props
   const Component = link ? Link : 'button'
 
-  return <button {...buttonProps} css={[
+  return <Component {...buttonProps} css={[
     C.button,
     preset === 'primary' && C.buttonIsPrimary,
     preset === 'default-danger' && C.buttonIsDefaultDanger,

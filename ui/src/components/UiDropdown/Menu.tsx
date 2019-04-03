@@ -1,6 +1,6 @@
 // import * as React from 'react'
 
-function SlotMenu() {
+function SlotMenu(props: ComponentSlotProps) {
   return null
 }
 

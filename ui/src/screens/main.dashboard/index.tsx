@@ -1,12 +1,11 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import UiContainer from '/components/UiContainer'
-import s from '/styles'
-import avatar from './avatar.png'
-import UiDropdown from '/components/UiDropdown'
-import UiPlainButton from '/components/UiPlainButton'
-import UiButton from '/components/UiButton'
+import UiContainer from '~/components/UiContainer'
+import s from '~/styles'
+import UiDropdown from '~/components/UiDropdown'
+import UiPlainButton from '~/components/UiPlainButton'
+import UiButton from '~/components/UiButton'
 import CreateTrackerModal from './CreateTrackerModal'
 import { NavLink } from 'react-router-dom'
 
@@ -115,7 +114,7 @@ class MainDashboard extends React.Component {
                   onClose={() => this.setState({ isDropdownOpen: false })}>
                   <UiDropdown.Body>
                     <UiPlainButton>
-                      <img css={C.navbarAvatar} src={avatar} alt="Your Photo" />
+                      <img css={C.navbarAvatar} src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/user-avatars/avatar.png" alt="Your Photo" />
                     </UiPlainButton>
                   </UiDropdown.Body>
 

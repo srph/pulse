@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 
 interface UiFieldProps {
   id?: string
   label: string
   children: JSX.Element
   disabled?: boolean
-  error?: AppDataValidationBag
+  error?: string[]
   actions?: React.ReactNode
   isRequired?:  boolean
 }
@@ -55,12 +55,12 @@ C.actionsItem = css`
 const UiField: React.SFC<UiFieldProps> = (props) => {
   const actions = props.actions ? (Array.isArray(props.actions) ? props.actions : [props.actions]) : []
   return (
-    <div css={[C.field, props.disabled && c.fieldDisabled]}>
+    <div css={[C.field, props.disabled && C.fieldDisabled]}>
       <label css={C.label} htmlFor={props.id}>
         <span>{props.label} {props.isRequired && <span css={C.labelRequired}>*</span>}</span>
         {Boolean(actions.length) && (
           <div css={C.actions}>
-            {actions.map((action, i) => (
+            {actions.map((action: React.ReactElement, i) => (
               <div css={C.actionsItem} key={i}>
                 {React.cloneElement(action, { disabled: action.props.disabled || props.disabled })}
               </div>

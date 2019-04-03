@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { AuthContainer } from '/containers'
+import { AuthContainer } from '~/containers'
 import { Subscribe as UnstatedSubscribe } from 'unstated'
 
 interface OwnProps {

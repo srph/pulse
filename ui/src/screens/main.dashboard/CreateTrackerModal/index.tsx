@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import UiModal from '/components/UiModal'
-import UiField from '/components/UiField'
-import UiInput from '/components/UiInput'
-import UiSpacer from '/components/UiSpacer'
-import UiButtonLoader from '/components/UiButtonLoader'
+import UiModal from '~/components/UiModal'
+import UiField from '~/components/UiField'
+import UiInput from '~/components/UiInput'
+import UiSpacer from '~/components/UiSpacer'
+import UiButtonLoader from '~/components/UiButtonLoader'
 import ls from 'linkstate'
-import axios from '/lib/axios'
-import history from '/lib/history'
+import axios from '~/lib/axios'
+import history from '~/lib/history'
 
 interface Props {
   onClose: () => void

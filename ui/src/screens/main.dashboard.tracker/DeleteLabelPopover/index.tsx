@@ -1,12 +1,12 @@
 /** @jsx jsx */
 import * as React from 'react'
-import UiDropdown from '/components/UiDropdown'
-import UiSpacer from '/components/UiSpacer'
-import UiButton from '/components/UiButton'
-import UiLevelMenu from '/components/UiLevelMenu'
+import UiDropdown from '~/components/UiDropdown'
+import UiSpacer from '~/components/UiSpacer'
+import UiButton from '~/components/UiButton'
+import UiLevelMenu from '~/components/UiLevelMenu'
 import SharedPopover from '../SharedPopover'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 
 interface Props {
   label: AppDataTrackerLabel

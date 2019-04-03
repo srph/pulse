@@ -2,10 +2,10 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
-import UiContainer from '/components/UiContainer'
-import s from '/styles'
-import axios from '/lib/axios'
-import distanceInWordsStrictToNow from '/utils/distanceInWordsStrictToNow'
+import UiContainer from '~/components/UiContainer'
+import s from '~/styles'
+import axios from '~/lib/axios'
+import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
 
 const C = {} as any
 C.title = css`
@@ -91,7 +91,7 @@ class DashboardHome extends React.Component<{}, State> {
             <span css={C.trackerCaret}>
               <i className='fa fa-angle-right' />
             </span>
-          </div>
+          </Link>
         )}
       </UiContainer>
     )

@@ -1,14 +1,14 @@
 import * as React from 'react'
 import ls from 'linkstate'
-import UiDropdown from '/components/UiDropdown'
-import UiField from '/components/UiField'
-import UiInput from '/components/UiInput'
-import UiSpacer from '/components/UiSpacer'
-import UiInputColorPicker from '/components/UiInputColorPicker'
-import UiButton from '/components/UiButton'
-import UiButtonLink from '/components/UiButtonLink'
+import UiDropdown from '~/components/UiDropdown'
+import UiField from '~/components/UiField'
+import UiInput from '~/components/UiInput'
+import UiSpacer from '~/components/UiSpacer'
+import UiInputColorPicker from '~/components/UiInputColorPicker'
+import UiButton from '~/components/UiButton'
+import UiButtonLink from '~/components/UiButtonLink'
 import SharedPopover from '../SharedPopover'
-import randomColorHex from '/utils/randomColorHex'
+import randomColorHex from '~/utils/randomColorHex'
 
 interface Props {
   isOpen: boolean
@@ -65,7 +65,6 @@ class CreateLabelPopover extends React.Component<Props, State> {
               <UiInputColorPicker
                 value={this.state.color}
                 onChange={ls(this, 'color')}
-                type="text"
               />
             </UiField>
 

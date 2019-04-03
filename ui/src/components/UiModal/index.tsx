@@ -2,9 +2,9 @@
 import * as React from 'react'
 import { css, jsx } from '@emotion/core'
 import BaseModal from 'react-modal2'
-import Portal from '/components/Portal'
-import UiPlainButton from '/components/UiPlainButton'
-import s from '/styles'
+import Portal from '~/components/Portal'
+import UiPlainButton from '~/components/UiPlainButton'
+import s from '~/styles'
 
 const C = {} as any
 C.modal = css`
@@ -51,7 +51,7 @@ C.modalBody = css`
 
 interface Props {
   title: string
-  action: React.ReactNode
+  action?: React.ReactNode
   closeOnEsc?: boolean
   closeOnBackdropClick?: boolean
   onClose: () => void

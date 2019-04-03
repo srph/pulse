@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 import { Link } from 'react-router-dom'
 
 const UiDropdownLink: React.SFC<any> = (props) => {

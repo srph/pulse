@@ -1,9 +1,9 @@
 import { Container } from 'unstated'
-import axios from '/lib/axios'
+import axios from '~/lib/axios'
 import * as cookie from 'cookie-machine'
-import history from '/lib/history'
+import history from '~/lib/history'
 import immer from 'immer'
-import config from '/config';
+import config from '~/config';
 
 export interface AuthContainerState {
   data: AppDataUser | null,

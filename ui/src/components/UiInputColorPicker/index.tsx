@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 import color from 'color'
-import randomColorHex from '/utils/randomColorHex'
+import randomColorHex from '~/utils/randomColorHex'
 
 const C = {} as any
 C.wrapper = css`

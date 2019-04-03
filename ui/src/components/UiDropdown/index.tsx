@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
-import s from '/styles'
+import s from '~/styles'
 import Link from './Link'
 import Main from './Main'
 import Menu from './Menu'
@@ -29,7 +29,7 @@ C.dropdownMenu = css`
 `
 
 interface Props {
-  children: any
+  children: React.ReactNode
   isOpen: boolean
   onOpen: () => void
   onClose: () => void
