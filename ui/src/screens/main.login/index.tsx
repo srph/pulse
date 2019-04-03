@@ -3,17 +3,19 @@ import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import s from '~/styles'
 import UiContainer from '~/components/UiContainer'
+import UiAlert from '~/components/UiAlert'
 import UiInput from '~/components/UiInput'
 import UiField from '~/components/UiField'
 import UiSpacer from '~/components/UiSpacer'
 import UiButtonLoader from '~/components/UiButtonLoader'
-import { Link }  from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
+import { RouteComponentProps } from '~/lib/history/types'
 import history from '~/lib/history'
 import ls from 'linkstate'
 import { Subscribe } from 'unstated'
 import { AuthContainer } from '~/containers'
-import { UserCredentials } from '~/containers/AuthContainer';
+import { UserCredentials } from '~/containers/AuthContainer'
 
 const C = {} as any
 C.wrapper = css`
@@ -67,6 +69,10 @@ C.link = css`
   }
 `
 
+type RouteProps = RouteComponentProps<{
+  success?: string
+}>
+
 interface Props {
   login: (credentials: UserCredentials) => Promise<any>
 }
@@ -74,6 +80,7 @@ interface Props {
 interface State {
   form: UserCredentials
   error: string
+  isRegistrationSuccessful: boolean
   isLoading: boolean
 }
 
@@ -84,17 +91,22 @@ class MainLogin extends React.Component<Props, State> {
       password: ''
     },
     error: '',
+    isRegistrationSuccessful: 'success' in this.props.location.query
     isLoading: false
   }
 
   render() {
     const { form } = this.state
-
+    
     return (
       <div css={C.wrapper}>
         <UiContainer size="sm">
           <div css={C.heading}>
-            <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" css={C.logo} />
+            <img
+              src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg"
+              alt="Pulse Logo"
+              css={C.logo}
+            />
             <h4 css={C.text}>Welcome to Pulse</h4>
             <p css={C.body}>Login below to start tracking your goals!</p>
           </div>
@@ -102,15 +114,40 @@ class MainLogin extends React.Component<Props, State> {
 
         <UiContainer size="xs">
           <div css={C.panel}>
-           <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSubmit}>
+              {this.state.isRegistrationSuccessful && (
+                <React.Fragment>
+                  <UiAlert preset="success" isCompact>
+                    Your account was successfully created!
+                  </UiAlert>
+
+                  <UiSpacer />
+                </React.Fragment>
+              )}
+
+              {Boolean(this.state.error.length) && (
+                <React.Fragment>
+                  <UiAlert preset="error" isCompact>
+                    {this.state.error}
+                  </UiAlert>
+
+                  <UiSpacer />
+                </React.Fragment>
+              )}
+
               <UiField label="Email">
-                <UiInput type="email" value={form.username} onChange={ls(this, 'form.username')}  placeholder="johnny" />
+                <UiInput type="email" value={form.username} onChange={ls(this, 'form.username')} placeholder="johnny" />
               </UiField>
 
               <UiSpacer />
 
               <UiField label="Password">
-                <UiInput type="password" value={form.password} onChange={ls(this, 'form.password')} placeholder="********" />
+                <UiInput
+                  type="password"
+                  value={form.password}
+                  onChange={ls(this, 'form.password')}
+                  placeholder="********"
+                />
               </UiField>
 
               <UiSpacer />
@@ -140,14 +177,15 @@ class MainLogin extends React.Component<Props, State> {
 
     this.setState({
       error: '',
+      isRegistrationSuccessful: false,
       isLoading: true
     })
 
     try {
       await this.props.login(this.state.form)
-    } catch(e) {
+    } catch (e) {
       this.setState({
-        error: 'Invalid username/password combination',
+        error: 'Invalid username/password combination.',
         isLoading: false
       })
 
@@ -164,9 +202,7 @@ class MainLogin extends React.Component<Props, State> {
 
 function WrappedMainLogin(props: {}) {
   return (
-    <Subscribe to={[AuthContainer]}>
-      {(auth: AuthContainer) => <MainLogin {...props} login={auth.login} />}
-    </Subscribe>
+    <Subscribe to={[AuthContainer]}>{(auth: AuthContainer) => <MainLogin {...props} login={auth.login} />}</Subscribe>
   )
 }
 

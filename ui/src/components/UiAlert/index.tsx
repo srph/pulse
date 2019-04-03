@@ -1,29 +1,30 @@
+/** @jsx jsx */
 import * as React from 'react'
-import styled, { css } from 'styled-components'
+import { jsx, css } from '@emotion/core'
 import s from '~/styles'
 
-const ui = {} as any
-ui.Alert = styled.div`
+const C = {} as any
+C.alert = css`
   position: relative;
   padding: 26px 12px;
   padding-left: 48px;
-  color: ${s['color-white']};
-  border-radius: 2px;
+  color: ${s['color-bw-100']};
+  border-radius: ${s['border-radius']}px;
   line-height: 1.5;
-
-  ${props => props.preset === 'error' && css`
-    background: #D84237;
-  `}
-
-  ${props => props.preset === 'success' && css`
-    background: ${s['color-green']};
-  `}
-
-  ${props => props.preset === 'warning' && css`
-    background: #ffc700;
-  `}
 `
-ui.AlertIcon = styled.div`
+C.alertIsError = css`
+  background: #d84237;
+`
+C.alertIsSuccess = css`
+  background: ${s['color-green-500']};
+`
+C.alertIsWarning = css`
+  background: #ffc700;
+`
+C.alertIsCompact = css`
+  padding: 12px;
+`
+C.alertIcon = css`
   position: absolute;
   top: 20px;
   left: 12px;
@@ -34,37 +35,58 @@ ui.AlertIcon = styled.div`
   width: 26px;
   border-radius: 50%;
   user-select: none;
-
-  ${props => props.preset === 'error' && css`
-    background: #802C26;
-  `}
-
-  ${props => props.preset === 'success' && css`
-    background: ${s['color-green-dark']};
-  `}
-
-  ${props => props.preset === 'warning' && css`
-    background: ${s['color-yellow']};
-  `}
+`
+C.alertIconIsError = css`
+  background: #802c26;
+`
+C.alertIconIsSuccess = css`
+  background: ${s['color-green-900']};
+`
+C.alertIconIsWarning = css`
+  background: ${s['color-yellow']};
 `
 
-interface IUiAlertProps {
-  preset: 'error' | 'success' | 'warning',
+interface Props {
+  preset: 'error' | 'success' | 'warning'
+  isCompact?: boolean
   children: React.ReactNode
 }
 
-export default function UiAlert(props: IUiAlertProps) {
+function UiAlert(props: Props) {
   let icon: React.ReactNode
   if (props.preset === 'error') {
-    icon = <i className='fa fa-times' />
+    icon = <i className="fa fa-times" />
   } else if (props.preset === 'success') {
-    icon = <i className='fa fa-check' />
+    icon = <i className="fa fa-check" />
   } else if (props.preset === 'warning') {
-    icon = <i className='fa fa-exclamation' />
+    icon = <i className="fa fa-exclamation" />
   }
 
-  return <ui.Alert preset={props.preset}>
-    <ui.AlertIcon preset={props.preset}>{icon}</ui.AlertIcon>
-    {props.children}
-  </ui.Alert>
+  return (
+    <div
+      css={[
+        C.alert,
+        props.preset === 'error' && C.alertIsError,
+        props.preset === 'success' && C.alertIsSuccess,
+        props.preset === 'warning' && C.alertIsWarning,
+        props.isCompact && C.alertIsCompact
+      ]}>
+      {!props.isCompact && <div
+        css={[
+          C.alertIcon,
+          props.preset === 'error' && C.alertIconIsError,
+          props.preset === 'success' && C.alertIconIsSuccess,
+          props.preset === 'warning' && C.alertIconIsWarning
+        ]}>
+        {icon}
+      </div>}
+      {props.children}
+    </div>
+  )
 }
+
+UiAlert.defaultProps = {
+  isCompact: false
+}
+
+export default UiAlert

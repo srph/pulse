@@ -29,6 +29,7 @@
     "immer": "^2.1.4",
     "linkstate": "^1.1.1",
     "lodash.groupby": "^4.6.0",
+    "qhistory": "^1.0.3",
     "random-color": "^1.0.1",
     "react": "^16.8.5",
     "react-addons-css-transition-group": "^15.6.2",

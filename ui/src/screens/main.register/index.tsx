@@ -209,7 +209,7 @@ class MainLogin extends React.Component<Props, State> {
       isLoading: false
     })
 
-    history.push('/login')
+    history.push('/login?success=true')
   }
 }
 
