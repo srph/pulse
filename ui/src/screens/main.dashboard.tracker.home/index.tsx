@@ -6,7 +6,7 @@ import CreateLabelPopover from './CreateLabelPopover'
 import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
 import { format, getDaysInMonth, isToday, isBefore } from 'date-fns'
-import { ClonedProps } from '~/screens/main.dashboard.tracker.home/types'
+import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import s from '~/styles'
 
 const C = {} as any
@@ -308,8 +308,8 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                 isOpen={this.props.isCreatingLabel}
                 isLoading={this.props.isStoringLabel}
                 onStore={this.props.onStoreLabel}
-                onOpen={() => this.setState({ isCreatingLabel: true })}
-                onClose={() => this.setState({ isCreatingLabel: false })}
+                onOpen={this.props.onOpenCreateLabel}
+                onClose={this.props.onCloseCreateLabel}
               />
             </div>
 
@@ -336,8 +336,8 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                         isLoading={this.props.isUpdatingLabel}
                         isDisabled={false}
                         onUpdate={this.props.onUpdateLabel}
-                        onOpen={() => this.setState({ editIndex: i })}
-                        onClose={() => this.setState({ editIndex: -1 })}>
+                        onOpen={() => this.props.onOpenEditLabel(i)}
+                        onClose={this.props.onCloseEditLabel}>
                         <button type="button" css={C.labelActionButton}>
                           <i className="fa fa-pencil" />
                         </button>
@@ -351,8 +351,8 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                         isLoading={this.props.isDestroyingLabel}
                         isDisabled={false}
                         onDelete={this.props.onDeleteLabel}
-                        onOpen={() => this.setState({ deleteIndex: i })}
-                        onClose={() => this.setState({ deleteIndex: -1 })}>
+                        onOpen={() => this.props.onOpenDeleteLabel(i)}
+                        onClose={this.props.onCloseDeleteLabel}>
                         <button type="button" css={C.labelActionButton}>
                           <i className="fa fa-trash" />
                         </button>

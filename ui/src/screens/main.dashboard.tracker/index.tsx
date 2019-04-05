@@ -99,10 +99,15 @@ class DashboardTracker extends React.Component<Props, State> {
           onKeyDown: this.handleKeyDown,
           onLabelClick: this.handleLabelClick,
           onStoreLabel: this.handleStoreLabel,
-          onEditLabel: this.handleEditLabel,
           onUpdateLabel: this.handleUpdateLabel,
           onDeleteLabel: this.handleDeleteLabel,
-          onEntryClick: this.handleEntryClick
+          onEntryClick: this.handleEntryClick,
+          onOpenCreateLabel: this.handleOpenCreateLabel,
+          onCloseCreateLabel: this.handleCloseCreateLabel,
+          onOpenEditLabel: this.handleOpenEditLabel,
+          onCloseEditLabel: this.handleCloseEditLabel,
+          onOpenDeleteLabel: this.handleOpenDeleteLabel,
+          onCloseDeleteLabel: this.handleCloseDeleteLabel
         })}
       </UiContainer>
     )
@@ -127,6 +132,18 @@ class DashboardTracker extends React.Component<Props, State> {
   handleLabelClick = (index: number) => {
     this.setState({
       activeLabelIndex: index
+    })
+  }
+
+  handleOpenCreateLabel = () => {
+    this.setState({
+      isCreatingLabel: true
+    })
+  }
+
+  handleCloseCreateLabel = () => {
+    this.setState({
+      isCreatingLabel: false
     })
   }
 
@@ -155,6 +172,18 @@ class DashboardTracker extends React.Component<Props, State> {
     } catch(e) {
       this.setState({ isStoringLabel: false })
     }
+  }
+
+  handleOpenEditLabel = (index: number) => {
+    this.setState({
+      editIndex: index
+    })
+  }
+
+  handleCloseEditLabel = () => {
+    this.setState({
+      editIndex: -1
+    })
   }
 
   handleEditLabel = index => {
@@ -200,6 +229,18 @@ class DashboardTracker extends React.Component<Props, State> {
         draft.labels[index].name = data.name
         draft.labels[index].color = data.color
       })
+    })
+  }
+
+  handleOpenDeleteLabel = (index: number) => {
+    this.setState({
+      deleteIndex: index
+    })
+  }
+
+  handleCloseDeleteLabel = () => {
+    this.setState({
+      deleteIndex: -1
     })
   }
 
