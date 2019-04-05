@@ -21,7 +21,7 @@ C.button = css`
   box-shadow: ${s['drop-shadow']};
   cursor: pointer;
   transform: translateY(0);
-  transition: 200ms cubic-bezier(.06,.67,.37,.99) all;
+  transition: 200ms cubic-bezier(0.06, 0.67, 0.37, 0.99) all;
   outline: 0;
   text-decoration: none;
 
@@ -70,11 +70,11 @@ C.rightIcon = css`
   margin-left: 16px;
 `
 
-const LeftIcon: React.SFC = (props) => {
+const LeftIcon: React.SFC = props => {
   return <div css={[C.icon, C.leftIcon]}>{props.children}</div>
 }
 
-const RightIcon: React.SFC = (props) => {
+const RightIcon: React.SFC = props => {
   return <div css={[C.icon, C.rightIcon]}>{props.children}</div>
 }
 
@@ -87,8 +87,8 @@ export type UiButtonProps = {
   size?: 'sm' | 'md' | 'lg'
 } & ButtonAttributes
 
-const UiButton: React.SFC<UiButtonProps> & { LeftIcon: any, RightIcon: any } = (props) => {
-  const {preset, isBlock, size, link, ...buttonProps} = props
+const UiButton: React.SFC<UiButtonProps> & { LeftIcon: any; RightIcon: any } = props => {
+  const { preset, isBlock, size, link, ...buttonProps } = props
 
   const className = [
     C.button,
@@ -99,7 +99,11 @@ const UiButton: React.SFC<UiButtonProps> & { LeftIcon: any, RightIcon: any } = (
     size === 'sm' && C.buttonIsSm
   ]
 
-  return link ? <Link {...buttonProps as LinkProps} /> : <button {...buttonProps as React.ButtonHTMLAttributes<HTMLButtonElement>} css={className} />
+  return link ? (
+    <Link {...buttonProps as LinkProps} css={className} />
+  ) : (
+    <button {...buttonProps as React.ButtonHTMLAttributes<HTMLButtonElement>} css={className} />
+  )
 }
 
 UiButton.defaultProps = {
