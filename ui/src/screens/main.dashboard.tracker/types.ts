@@ -27,6 +27,7 @@ export interface MethodProps {
   onCloseEditLabel: () => void
   onOpenDeleteLabel: (index: number) => void
   onCloseDeleteLabel: () => void
+  onUpdateTracker: (data: Partial<AppDataTracker>) => void
 }
 
 export type ClonedProps = State & MethodProps

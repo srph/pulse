@@ -107,7 +107,8 @@ class DashboardTracker extends React.Component<Props, State> {
           onOpenEditLabel: this.handleOpenEditLabel,
           onCloseEditLabel: this.handleCloseEditLabel,
           onOpenDeleteLabel: this.handleOpenDeleteLabel,
-          onCloseDeleteLabel: this.handleCloseDeleteLabel
+          onCloseDeleteLabel: this.handleCloseDeleteLabel,
+          onUpdateTracker: this.handleUpdateTracker
         })}
       </UiContainer>
     )
@@ -299,6 +300,15 @@ class DashboardTracker extends React.Component<Props, State> {
     await axios.post(`/api/trackers/${this.state.tracker.id}/entries`, {
       entry_date: date,
       tracker_label_id: label.id
+    })
+  }
+
+  handleUpdateTracker = (data: Partial<AppDataTracker>) => {
+    this.setState({
+      tracker: {
+        ...this.state.tracker,
+        ...data
+      }
     })
   }
 }

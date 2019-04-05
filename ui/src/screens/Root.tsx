@@ -18,6 +18,7 @@ import MainDashboardHome from './main.dashboard.home'
 import MainDashboardTracker from './main.dashboard.tracker'
 import MainDashboardTrackerHome from './main.dashboard.tracker.home'
 import MainDashboardTrackerStats from './main.dashboard.tracker.stats'
+import MainDashboardTrackerSettings from './main.dashboard.tracker.settings'
 import MainDashboardMe from './main.dashboard.me'
 import UiModal from '~/components/UiModal'
 import Helmet from 'react-helmet'
@@ -50,6 +51,7 @@ class Root extends React.Component {
                         <RouterSwitch>
                           <RouterRoute exact path="/tracker/:trackerId" component={MainDashboardTrackerHome} />
                           <RouterRoute exact path="/tracker/:trackerId/stats" component={MainDashboardTrackerStats} />
+                          <RouterRoute exact path="/tracker/:trackerId/settings" component={MainDashboardTrackerSettings} />
                         </RouterSwitch>
                       </RouterRoute>
                       <RouterRoute exact path="/me" component={MainDashboardMe} />

@@ -22,6 +22,11 @@ export default function UiRoot({ children }: IUiRootProps) {
           background: ${s['color-bw-200']};
           color: ${s['color-text']};
         }
+
+        form {
+          /* Fix sanitize.css's default */
+          margin-block-end: 0;
+        }
       `} />
       {children}
     </React.Fragment>
