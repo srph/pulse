@@ -7,6 +7,7 @@ import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
 import { format, getDaysInMonth, isToday, isBefore } from 'date-fns'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
+import color from 'color'
 import s from '~/styles'
 
 const C = {} as any
@@ -158,11 +159,14 @@ C.labelColor = css`
   margin-right: 16px;
   height: 48px;
   width: 48px;
-  color: ${s['color-bw-100']};
-  font-weight: 600;
-  font-size: 8px;
+  color: ${s['color-bw-900']};
+  font-weight: 800;
+  font-size: 10px;
   background: ${s['color-blue-500']};
   border-radius: ${s['border-radius']}px;
+`
+C.labelColorIsDark = css`
+  color: ${s['color-bw-900']};
 `
 C.labelName = css`
   color: ${s['color-bw-100']};
@@ -317,7 +321,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
               {tracker.labels.map((label: AppDataTrackerLabel, i: number) => (
                 <div css={C.labelContainer} key={label.id}>
                   <button type="button" css={C.label} onClick={() => this.props.onLabelClick(i)}>
-                    <div css={C.labelColor} style={{ backgroundColor: label.color }}>
+                    <div css={[C.labelColor, color(label.color).isDark() && C.labelColorIsDark ]} style={{ backgroundColor: label.color }}>
                       Alt + {i + 1}
                     </div>
 
