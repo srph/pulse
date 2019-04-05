@@ -2,7 +2,7 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import s from '~/styles'
-import { Link } from 'react-router-dom'
+import { Link, LinkProps } from 'react-router-dom'
 
 const C = {} as any
 C.button = css`
@@ -78,27 +78,28 @@ const RightIcon: React.SFC = (props) => {
   return <div css={[C.icon, C.rightIcon]}>{props.children}</div>
 }
 
-type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement> | React.AnchorHTMLAttributes<HTMLAnchorElement>
+type ButtonAttributes = React.ButtonHTMLAttributes<HTMLButtonElement> | LinkProps
 
-export type UiButtonProps = ButtonAttributes & {
+export type UiButtonProps = {
   link?: boolean
   preset?: 'default' | 'primary' | 'default-danger' | 'danger'
   isBlock?: boolean
   size?: 'sm' | 'md' | 'lg'
-}
+} & ButtonAttributes
 
 const UiButton: React.SFC<UiButtonProps> & { LeftIcon: any, RightIcon: any } = (props) => {
   const {preset, isBlock, size, link, ...buttonProps} = props
-  const Component = link ? Link : 'button'
 
-  return <Component {...buttonProps} css={[
+  const className = [
     C.button,
     preset === 'primary' && C.buttonIsPrimary,
     preset === 'default-danger' && C.buttonIsDefaultDanger,
     preset === 'danger' && C.buttonIsDanger,
     isBlock && C.buttonIsBlock,
     size === 'sm' && C.buttonIsSm
-  ]}  />
+  ]
+
+  return link ? <Link {...buttonProps as LinkProps} /> : <button {...buttonProps as React.ButtonHTMLAttributes<HTMLButtonElement>} css={className} />
 }
 
 UiButton.defaultProps = {
