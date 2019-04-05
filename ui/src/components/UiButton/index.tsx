@@ -57,7 +57,6 @@ C.buttonIsBlock = css`
   width: 100%;
 `
 C.buttonIsSm = css`
-  font-size: ${s['font-size-subtitle']}px;
   height: 32px;
   line-height: 31px;
 `
