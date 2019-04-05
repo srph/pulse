@@ -11,10 +11,10 @@ function UiPanel(props: Props) {
   return (
     <div
       css={css`
-        padding: 16px;
+        padding: 24px;
         background: ${s['color-bw-100']};
         border-radius: ${s['border-radius']}px;
-        border: 1px solid ${s['color-bw-300']};
+        border: 1px solid ${s['color-bw-400']};
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       `}>
       {props.children}
