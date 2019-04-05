@@ -144,6 +144,8 @@ C.label = css`
   background: ${s['color-bw-800']};
   border: 0;
   border-radius: ${s['border-radius']}px;
+  border-top-left-radius: ${s['border-radius'] + 2}px;
+  border-bottom-left-radius: ${s['border-radius'] + 2}px;
   cursor: pointer;
   outline: 0;
 
