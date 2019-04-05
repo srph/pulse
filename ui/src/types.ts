@@ -1,6 +1,7 @@
 declare module '@srph/react-notification'
 declare module 'color'
 declare module 'cookie-machine'
+declare module 'victory'
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Router, Switch, Route } from 'react-router-dom'
-// import RouterSwitch from '~/components/RouterSwitch'
+import RouterSwitch from '~/components/RouterSwitch'
 import RouterRoute from '~/components/RouterRoute'
 import history from '~/lib/history'
 import { Provider as UnstatedProvider } from 'unstated'
@@ -16,6 +16,9 @@ import MainLogout from './main.logout'
 import MainDashboard from './main.dashboard'
 import MainDashboardHome from './main.dashboard.home'
 import MainDashboardTracker from './main.dashboard.tracker'
+import MainDashboardTrackerHome from './main.dashboard.tracker.home'
+import MainDashboardTrackerStats from './main.dashboard.tracker.stats'
+import MainDashboardMe from './main.dashboard.me'
 import UiModal from '~/components/UiModal'
 import Helmet from 'react-helmet'
 import config from '~/config'
@@ -42,8 +45,14 @@ class Root extends React.Component {
 
                   <PrivateRoute component={MainDashboard} path="/">
                     <Switch>
-                      <RouterRoute exact path="/" component={MainDashboardHome}/>
-                      <RouterRoute exact path="/tracker/:trackerId" component={MainDashboardTracker} />
+                      <RouterRoute exact path="/" component={MainDashboardHome} />
+                      <RouterRoute path="/tracker/:trackerId" component={MainDashboardTracker}>
+                        <RouterSwitch>
+                          <RouterRoute exact path="/tracker/:trackerId" component={MainDashboardTrackerHome} />
+                          <RouterRoute exact path="/tracker/:trackerId/stats" component={MainDashboardTrackerStats} />
+                        </RouterSwitch>
+                      </RouterRoute>
+                      <RouterRoute exact path="/me" component={MainDashboardMe} />
                     </Switch>
                   </PrivateRoute>
                   {/* <Route component={MainError404} /> */}
