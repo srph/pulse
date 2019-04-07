@@ -25,6 +25,13 @@ class MeController extends Controller
         return response()->json($user);
     }
 
+    public function avatar(\App\Http\Requests\UpdateUserAvatar $request) {
+        $user = $request->user();
+        $user->avatar = $request->get('avatar');
+        $user->save();
+        return response()->json($user);
+    }
+
     public function me(Request $request) {
         return response()->json(
             $request->user()

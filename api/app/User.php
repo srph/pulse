@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'avatar'
     ];
 
     /**
@@ -40,6 +40,10 @@ class User extends Authenticatable
 
     public function trackers() {
         return $this->hasMany(Tracker::class);
+    }
+
+    public function getAvatarAttribute($value) {
+        return $value ?? 'https://caretv.sgp1.digitaloceanspaces.com/app-pulse/user-avatars/VW9tSnytYIRgAwg0.png';
     }
 
     public function setPasswordAttribute($value) {
