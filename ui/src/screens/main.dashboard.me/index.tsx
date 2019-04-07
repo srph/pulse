@@ -2,14 +2,10 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import s from '~/styles'
-import { NavLink } from 'react-router-dom'
 import UiContainer from '~/components/UiContainer'
-import UiField from '~/components/UiField'
-import UiInput from '~/components/UiInput'
 import UiSpacer from '~/components/UiSpacer'
-import UiGrid from '~/components/UiGrid'
-import UiPanel from '~/components/UiPanel'
-import UiButtonLoader from '~/components/UiButtonLoader'
+import AvatarSection from './AvatarSection'
+import ChangePasswordSection from './ChangePasswordSection'
 
 class DashboardMe extends React.Component {
   render() {
@@ -26,50 +22,12 @@ class DashboardMe extends React.Component {
           `}>
           Account Settings
         </h4>
-        
-        <UiGrid>
-          <UiGrid.Column size={6}>
-            <h4
-              css={css`
-                margin-top: 0;
-                margin-bottom: 8px;
-                font-size: 16px;
-              `}>
-              Change Password
-            </h4>
-            <p
-              css={css`
-                margin: 0;
-                color: ${s['color-bw-700']};
-                font-size: 14px;
-                font-weight: 300;
-              `}>
-              Remember to change your password every now and then, okay?
-            </p>
-            <UiSpacer />
-            <UiPanel>
-              <UiField label="Current Password">
-                <UiInput />
-              </UiField>
 
-              <UiSpacer />
+        <AvatarSection />
+        <UiSpacer />
 
-              <UiField label="New Password">
-                <UiInput />
-              </UiField>
-
-              <UiSpacer />
-
-              <UiField label="New Password Confirmation">
-                <UiInput />
-              </UiField>
-
-              <UiSpacer />
-
-              <UiButtonLoader preset="primary">Update Password</UiButtonLoader>
-            </UiPanel>
-          </UiGrid.Column>
-        </UiGrid>
+        <ChangePasswordSection />
+        <UiSpacer />
       </UiContainer>
     )
   }

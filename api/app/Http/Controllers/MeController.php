@@ -18,6 +18,13 @@ class MeController extends Controller
         return response()->json($user);
     }
 
+    public function password(\App\Http\Requests\UpdateUserPassword $request) {
+        $user = $request->user();
+        $user->password = $request->get('new_password');
+        $user->save();
+        return response()->json($user);
+    }
+
     public function me(Request $request) {
         return response()->json(
             $request->user()

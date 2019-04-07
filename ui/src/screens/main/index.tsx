@@ -20,8 +20,11 @@ class MainScreen extends React.Component<OwnProps, State> {
   }
 
   async componentDidMount() {
-    await this.props.auth.getUserData()
-    this.setState({ isLoading: false })
+    try {
+      await this.props.auth.getUserData()
+    } finally {
+      this.setState({ isLoading: false })
+    }
   }
 
   render() {
