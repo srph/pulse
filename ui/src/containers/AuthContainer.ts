@@ -63,16 +63,10 @@ class AuthContainer extends Container<AuthContainerState> {
   }
 
   updateUserData = (payload: Partial<AppDataUser>) => {
-    let data: Partial<AppDataUser> = { ...payload }
-
-    if (data.first_name || data.last_name) {
-      data.name = `${data.first_name} ${data.last_name}`
-    }
-
     this.setState({
       data: {
         ...this.state.data,
-        ...data
+        ...payload
       }
     })
   }

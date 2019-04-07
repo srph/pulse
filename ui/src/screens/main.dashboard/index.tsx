@@ -8,6 +8,8 @@ import UiPlainButton from '~/components/UiPlainButton'
 import UiButton from '~/components/UiButton'
 import CreateTrackerModal from './CreateTrackerModal'
 import { Link, NavLink } from 'react-router-dom'
+import { Subscribe } from 'unstated'
+import { AuthContainer } from '~/containers'}
 
 const C = {} as any
 C.line = css`
@@ -84,7 +86,7 @@ interface State {
   isCreateTrackerModalOpen: boolean
 }
 
-class MainDashboard extends React.Component {
+class MainDashboard extends React.Component<{}, State> {
   state = {
     isDropdownOpen: false,
     isCreateTrackerModalOpen: false
@@ -92,6 +94,8 @@ class MainDashboard extends React.Component {
 
   render() {
     return (
+      <Subscribe to={[AuthContainer]}>
+      {(auth: AuthContainer) => (
       <React.Fragment>
         <div css={C.line} />
 
@@ -126,7 +130,7 @@ class MainDashboard extends React.Component {
                     <UiPlainButton>
                       <img
                         css={C.navbarAvatar}
-                        src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/user-avatars/avatar.png"
+                        src={auth.state.data.avatar}
                         alt="Your Photo"
                       />
                     </UiPlainButton>
@@ -149,6 +153,8 @@ class MainDashboard extends React.Component {
 
         {this.props.children}
       </React.Fragment>
+    )}
+    </Subscribe>
     )
   }
 }

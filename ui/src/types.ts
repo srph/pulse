@@ -17,19 +17,7 @@ interface AppDataUser {
   id: number
   email: string
   name: string
-  first_name: string
-  last_name: string
-  phone_number: string
-  landline_number: string
-  organization_count: number
-  campaign_count: number
-  contacts_count: number
-  sender_names: string[]
-  has_temporary_password: number
-  notifications_count: {
-    unread: number
-    read: number
-  }
+  avatar: string
 }
 
 interface AppDataTrackerLabel {
