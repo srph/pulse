@@ -9,7 +9,8 @@ import UiButton from '~/components/UiButton'
 import CreateTrackerModal from './CreateTrackerModal'
 import { Link, NavLink } from 'react-router-dom'
 import { Subscribe } from 'unstated'
-import { AuthContainer } from '~/containers'}
+import { AuthContainer } from '~/containers'
+import Footer from './Footer'
 
 const C = {} as any
 C.line = css`
@@ -207,6 +208,8 @@ class MainDashboard extends React.Component<{}, State> {
             )}
 
             {this.props.children}
+
+            <Footer />
           </React.Fragment>
         )}
       </Subscribe>

@@ -27,6 +27,13 @@ export default function UiRoot({ children }: IUiRootProps) {
           /* Fix sanitize.css's default */
           margin-block-end: 0;
         }
+
+        /* Allow footer to be sticky */
+        #mount {
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        }
       `} />
       {children}
     </React.Fragment>
