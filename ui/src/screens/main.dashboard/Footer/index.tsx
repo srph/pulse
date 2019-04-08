@@ -58,7 +58,7 @@ class Footer extends React.Component {
                 <i className='fa fa-github' />
               </a>
 
-              <a target="_blank" href="https://twitter.com.com/carebe" css={C.icon} title="Feel free to send me complaints, bugs, or just drop by to say hi!">
+              <a target="_blank" href="https://twitter.com/_srph" css={C.icon} title="Feel free to send me complaints, bugs, or just drop by to say hi!">
                 <i className='fa fa-twitter' />
               </a>
 
