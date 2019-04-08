@@ -14,7 +14,7 @@ class DashboardMe extends React.Component {
     return (
       <UiContainer size="lg">
         <Helmet title="Account Settings" />
-        
+
         <h4
           css={css`
             margin-top: 0;

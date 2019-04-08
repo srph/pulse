@@ -11,6 +11,7 @@ import ls from 'linkstate'
 import UiGrid from '~components/UiGrid';
 import UiPanel from '~/components/UiPanel';
 import axios from '~/lib/axios';
+import { toast } from '~/components/Toast'
 
 interface State {
   form: {
@@ -87,6 +88,8 @@ class DashboardTrackerStats extends React.Component<ClonedProps, State> {
     this.setState({
       isLoading: false
     })
+
+    toast('Your tracker was updated.')
 
     this.props.onUpdateTracker(this.state.form)
   }

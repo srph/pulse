@@ -1,11 +1,12 @@
+/** @jsx jsx */
 import * as React from 'react'
-import * as Transition from 'react-addons-css-transition-group'
-import {Notification, notify} from '@srph/react-notification'
-import styled from 'styled-components'
+import Transition from 'react-addons-css-transition-group'
+import { Notification, notify } from '@srph/react-notification'
+import { css, jsx } from '@emotion/core'
 import s from '~/styles'
 
-const ui = {} as any
-ui.StyledTransition = styled(Transition)`
+const C = {} as any
+C.notifications = css`
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -14,14 +15,14 @@ ui.StyledTransition = styled(Transition)`
   pointer-events: none;
   z-index: 1000;
 `
-ui.ToastItem = styled.div`
+C.toast = css`
   position: relative;
   display: inline-block;
   padding: 16px;
   padding-right: 40px;
   font-size: 12px;
-  color: ${s['color-white']};
-  background: #333;
+  color: ${s['color-bw-100']};
+  background: ${s['color-bw-900']};
   border-radius: 4px;
   pointer-events: all;
 
@@ -51,14 +52,14 @@ ui.ToastItem = styled.div`
     transition: 0.3s all ease;
   }
 `
-ui.ToastItemClose = styled.button`
+C.close = css`
   position: absolute;
   top: 16px;
   right: 16px;
   padding: 0;
   cursor: pointer;
   background: transparent;
-  color: ${s['color-white']};
+  color: ${s['color-bw-100']};
   border: 0;
   opacity: 0.4;
   outline: 0;
@@ -68,8 +69,8 @@ class Toast extends React.Component {
   render() {
     return (
       <Notification>
-        {({items, onClose}) => (
-          <ui.StyledTransition
+        {({ items, onClose }) => (
+          <Transition css={C.notifications}
             component='div'
             transitionName={{
               enter: '-enter',
@@ -78,14 +79,14 @@ class Toast extends React.Component {
             transitionEnterTimeout={400}
             transitionLeaveTimeout={400}>
             {items.map(item =>
-              <ui.ToastItem key={item.id}>
+              <div css={C.toast} key={item.id}>
                 {item.text}
-                <ui.ToastItemClose className='close' onClick={() => onClose(item.id)}>
+                <button css={C.close} onClick={() => onClose(item.id)}>
                   ×
-                </ui.ToastItemClose>
-              </ui.ToastItem>
+                </button>
+              </div>
             )}
-          </ui.StyledTransition>
+          </Transition>
         )}
       </Notification>
     );

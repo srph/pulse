@@ -10,6 +10,7 @@ import { AuthContainer } from '~/containers'
 
 import axios from '~/lib/axios'
 import ls from 'linkstate'
+import { toast } from '~/components/Toast'
 
 interface State {
   form: {
@@ -89,6 +90,8 @@ class PersonalDetailsSection extends React.Component<InjectedProps, State> {
     this.setState({
       isLoading: false
     })
+
+    toast('Your profile was successfully updated!')
 
     this.props.onUserUpdate(this.state.form)
   }

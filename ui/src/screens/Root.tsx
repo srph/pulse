@@ -23,7 +23,7 @@ import MainDashboardMe from './main.dashboard.me'
 import UiModal from '~/components/UiModal'
 import Helmet from 'react-helmet'
 import config from '~/config'
-// import Toast from '~/components/Toast'
+import Toast from '~/components/Toast'
 
 class Root extends React.Component {
   componentDidMount() {
@@ -63,6 +63,8 @@ class Root extends React.Component {
             </UiRoot>
           </Router>
         </UnstatedProvider>
+
+        <Toast />
       </ThemeProvider>
       )
   }

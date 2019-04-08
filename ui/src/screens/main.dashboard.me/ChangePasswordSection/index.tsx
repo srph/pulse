@@ -7,6 +7,7 @@ import UiField from '~/components/UiField'
 
 import axios from '~/lib/axios'
 import ls from 'linkstate'
+import { toast } from '~/components/Toast'
 
 interface State {
   form: {
@@ -85,6 +86,8 @@ class AvatarSection extends React.Component<{}, State> {
 
       return 
     }
+
+    toast('Your password was successfully updated!')
 
     this.setState({
       form: this.getInitialFormState(),
