@@ -16,6 +16,13 @@ class TrackerEntry extends Model
         'entry_date'
     ];
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['tracker'];
+
     public function tracker() {
         return $this->belongsTo(Tracker::class);
     }
