@@ -14,10 +14,13 @@ import Footer from './Footer'
 
 const C = {} as any
 C.line = css`
-  border-top: 5px solid #404b5a;
+  flex-shrink: 0;
+  height: 5px;
+  background: linear-gradient(90deg, ${s['color-blue-500']}, ${s['color-blue-700']});
 `
 C.navbar = css`
   margin-bottom: 40px;
+  background: ${s['color-bw-100']};
   border-bottom: 1px solid ${s['color-bw-400']};
 `
 C.navbarContainer = css`
@@ -140,8 +143,8 @@ class MainDashboard extends React.Component<{}, State> {
           <React.Fragment>
             <div css={C.line} />
 
-            <UiContainer size="lg">
-              <div css={C.navbar}>
+            <div css={C.navbar}>
+              <UiContainer size="lg">
                 <div css={C.navbarContainer}>
                   <div css={C.navSection}>
                     <Link to="/" css={C.navbarLogo}>
@@ -200,8 +203,8 @@ class MainDashboard extends React.Component<{}, State> {
                     </UiDropdown>
                   </div>
                 </div>
-              </div>
-            </UiContainer>
+              </UiContainer>
+            </div>
 
             {this.state.isCreateTrackerModalOpen && (
               <CreateTrackerModal onClose={() => this.setState({ isCreateTrackerModalOpen: false })} />

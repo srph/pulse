@@ -46,7 +46,9 @@ class Footer extends React.Component {
       <div css={C.container}>
         <UiContainer size="lg">
           <footer css={C.footer}>
-            <p css={C.text}>Pulse was crafted by Kier Borromeo</p>
+            <p css={C.text}>Crafted by Kier Borromeo</p>
+
+            <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" />
 
             <div css={C.social}>
               <a target="_blank" href="https://github.com/srph/pulse" css={C.icon} title="View the source code, or even contribute some of your own!">
