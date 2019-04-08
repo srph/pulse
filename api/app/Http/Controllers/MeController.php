@@ -32,6 +32,14 @@ class MeController extends Controller
         return response()->json($user);
     }
 
+    public function update(\App\Http\Requests\UpdateUserProfile $request) {
+        $user = $request->user();
+        $user->email = $request->get('email');
+        $user->name = $request->get('name');
+        $user->save();
+        return response()->json($user);
+    }
+
     public function me(Request $request) {
         return response()->json(
             $request->user()
