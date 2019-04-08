@@ -19,7 +19,7 @@ export default function UiRoot({ children }: IUiRootProps) {
           font-family: ${s['font-family']};
           font-weight: 400;
           font-size: ${`${s['font-size']}px`};
-          background: ${s['color-bw-200']};
+          background: ${s['color-bw-100']};
           color: ${s['color-text']};
         }
 

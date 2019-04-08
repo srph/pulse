@@ -19,7 +19,6 @@ C.line = css`
   background: linear-gradient(90deg, ${s['color-blue-500']}, ${s['color-blue-700']});
 `
 C.navbar = css`
-  margin-bottom: 40px;
   background: ${s['color-bw-100']};
   border-bottom: 1px solid ${s['color-bw-400']};
 `

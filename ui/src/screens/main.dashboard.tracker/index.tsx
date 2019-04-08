@@ -1,10 +1,10 @@
-/** @jsx jsx */
 import * as React from 'react'
 import Helmet from 'react-helmet'
-import { jsx, css } from '@emotion/core'
 import EventListener from 'react-event-listener'
 import UiContainer from '~/components/UiContainer'
 import UiTabs from '~/components/UiTabs'
+import UiPageHeading from '~/components/UiPageHeading'
+import UiSpacer from '~/components/UiSpacer'
 import immer from 'immer'
 import axios from '~/lib/axios'
 import { RouteComponentProps } from '~/lib/history/types'
@@ -13,16 +13,6 @@ import random from '~/utils/random'
 import isNumericKeyCode from '~/utils/isNumericKeyCode'
 import toPropertyKeys from '~/utils/toPropertyKeys'
 import { State } from './types'
-
-const C = {} as any
-C.title = css`
-  margin-top: 0;
-  margin-bottom: 24px;
-  font-size: ${s['font-size-title']}px;
-`
-C.tabs = css`
-  margin-bottom: 48px;
-`
 
 type RouteProps = RouteComponentProps<{}, {
   trackerId: string
@@ -79,38 +69,40 @@ class DashboardTracker extends React.Component<Props, State> {
     }
 
     return (
-      <UiContainer size="lg">
+      <React.Fragment>
         <Helmet title={`${tracker.name}`} />
 
         <EventListener target="document" onKeyDown={this.handleKeyDown} />
 
-        <h4 css={C.title}>{tracker.name}</h4>
+        <UiPageHeading title={tracker.name} />
 
-        <div css={C.tabs}>
+        <UiContainer size="lg">
           <UiTabs>
             <UiTabs.Link to={`/tracker/${tracker.id}`} exact icon="fa fa-pencil">Entries</UiTabs.Link>
             <UiTabs.Link to={`/tracker/${tracker.id}/stats`} icon="fa fa-bar-chart">Stats</UiTabs.Link>
             <UiTabs.Link to={`/tracker/${tracker.id}/settings`} icon="fa fa-cog">Settings</UiTabs.Link>
           </UiTabs>
-        </div>
 
-        {React.cloneElement(this.props.children as React.ReactElement<any>, {
-          ...this.state,
-          onKeyDown: this.handleKeyDown,
-          onLabelClick: this.handleLabelClick,
-          onStoreLabel: this.handleStoreLabel,
-          onUpdateLabel: this.handleUpdateLabel,
-          onDeleteLabel: this.handleDeleteLabel,
-          onEntryClick: this.handleEntryClick,
-          onOpenCreateLabel: this.handleOpenCreateLabel,
-          onCloseCreateLabel: this.handleCloseCreateLabel,
-          onOpenEditLabel: this.handleOpenEditLabel,
-          onCloseEditLabel: this.handleCloseEditLabel,
-          onOpenDeleteLabel: this.handleOpenDeleteLabel,
-          onCloseDeleteLabel: this.handleCloseDeleteLabel,
-          onUpdateTracker: this.handleUpdateTracker
-        })}
-      </UiContainer>
+          <UiSpacer size="xxl" />
+
+          {React.cloneElement(this.props.children as React.ReactElement<any>, {
+            ...this.state,
+            onKeyDown: this.handleKeyDown,
+            onLabelClick: this.handleLabelClick,
+            onStoreLabel: this.handleStoreLabel,
+            onUpdateLabel: this.handleUpdateLabel,
+            onDeleteLabel: this.handleDeleteLabel,
+            onEntryClick: this.handleEntryClick,
+            onOpenCreateLabel: this.handleOpenCreateLabel,
+            onCloseCreateLabel: this.handleCloseCreateLabel,
+            onOpenEditLabel: this.handleOpenEditLabel,
+            onCloseEditLabel: this.handleCloseEditLabel,
+            onOpenDeleteLabel: this.handleOpenDeleteLabel,
+            onCloseDeleteLabel: this.handleCloseDeleteLabel,
+            onUpdateTracker: this.handleUpdateTracker
+          })}
+        </UiContainer>
+      </React.Fragment>
     )
   }
 
@@ -170,7 +162,7 @@ class DashboardTracker extends React.Component<Props, State> {
           draft.labels.push(response.data)
         })
       })
-    } catch(e) {
+    } catch (e) {
       this.setState({ isStoringLabel: false })
     }
   }
@@ -218,7 +210,7 @@ class DashboardTracker extends React.Component<Props, State> {
         `/api/trackers/${tracker.id}/labels/${tracker.labels[index].id}`,
         data
       )
-    } catch(e) {
+    } catch (e) {
       this.setState({ isUpdatingLabel: false })
       return
     }
@@ -260,7 +252,7 @@ class DashboardTracker extends React.Component<Props, State> {
 
     try {
       await axios.delete(`/api/trackers/${tracker.id}/labels/${label.id}`)
-    } catch(e) {
+    } catch (e) {
       this.setState({ isDestroyingLabel: false })
       return
     }

@@ -4,16 +4,12 @@ import Helmet from 'react-helmet'
 import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import UiContainer from '~/components/UiContainer'
+import UiPageHeading from '~/components/UiPageHeading'
 import s from '~/styles'
 import axios from '~/lib/axios'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
 
 const C = {} as any
-C.title = css`
-  margin-top: 0;
-  margin-bottom: 24px;
-  font-size: ${s['font-size-title']}px;
-`
 C.tracker = css`
   display: flex;
   align-items: center;
@@ -74,29 +70,29 @@ class DashboardHome extends React.Component<{}, State> {
 
   render() {
     return (
-      <UiContainer size="md">
+      <React.Fragment>
         <Helmet title="Trackers" />
 
-        <h4 css={C.title}>
-          Your trackers
-        </h4>
+        <UiPageHeading title="Your Bullet Journals" />
 
-        {this.state.trackers.map((tracker: AppDataTracker, i: number) =>
-          <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
-            <h4 css={C.trackerTitle}>
-              {tracker.name}
-            </h4>
+        <UiContainer size="md">
+          {this.state.trackers.map((tracker: AppDataTracker, i: number) =>
+            <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
+              <h4 css={C.trackerTitle}>
+                {tracker.name}
+              </h4>
 
-            <span css={C.trackerDate}>
-              Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
-            </span>
+              <span css={C.trackerDate}>
+                Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+              </span>
 
-            <span css={C.trackerCaret}>
-              <i className='fa fa-angle-right' />
-            </span>
-          </Link>
-        )}
-      </UiContainer>
+              <span css={C.trackerCaret}>
+                <i className='fa fa-angle-right' />
+              </span>
+            </Link>
+          )}
+        </UiContainer>
+      </React.Fragment>
     )
   }
 }

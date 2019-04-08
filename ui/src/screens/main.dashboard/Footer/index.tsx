@@ -19,6 +19,9 @@ C.text = css`
   margin: 0;
   color: ${s['color-bw-700']};
 `
+C.logo = css`
+  width: 24px;
+`
 C.social = css`
   display: flex;
 `
@@ -48,7 +51,7 @@ class Footer extends React.Component {
           <footer css={C.footer}>
             <p css={C.text}>Crafted by Kier Borromeo</p>
 
-            <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" />
+            <img css={C.logo} src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" />
 
             <div css={C.social}>
               <a target="_blank" href="https://github.com/srph/pulse" css={C.icon} title="View the source code, or even contribute some of your own!">
