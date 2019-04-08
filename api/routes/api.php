@@ -17,6 +17,7 @@ Route::post('/register', 'MeController@register');
 
 Route::middleware('auth:api')->group(function() {
     Route::get('/me', 'MeController@me');
+    Route::put('/me', 'MeController@profile');
     Route::put('/me/password', 'MeController@password');
     Route::put('/me/avatar', 'MeController@avatar');
     
