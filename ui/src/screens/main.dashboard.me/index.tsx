@@ -4,6 +4,7 @@ import { jsx, css } from '@emotion/core'
 import s from '~/styles'
 import UiContainer from '~/components/UiContainer'
 import UiSpacer from '~/components/UiSpacer'
+import Helmet from 'react-helmet'
 import AvatarSection from './AvatarSection'
 import ChangePasswordSection from './ChangePasswordSection'
 import PersonalDetailsSection from './PersonalDetailsSection'
@@ -12,6 +13,8 @@ class DashboardMe extends React.Component {
   render() {
     return (
       <UiContainer size="lg">
+        <Helmet title="Account Settings" />
+        
         <h4
           css={css`
             margin-top: 0;
