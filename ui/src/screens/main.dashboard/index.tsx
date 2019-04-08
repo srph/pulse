@@ -105,7 +105,7 @@ C.profileName = css`
   margin-top: 0;
   margin-bottom: 4px;
   font-weight: 400;
-  font-size: ${s['font-size-title']};
+  font-size: ${s['font-size-title']}px;
   /* Truncate */
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -114,7 +114,7 @@ C.profileName = css`
 C.profileEmail = css`
   margin: 0;
   color: ${s['color-bw-600']};
-  font-size: ${s['font-size-subtitle']};
+  font-size: ${s['font-size-subtitle']}px;
   /* Truncate */
   text-overflow: ellipsis;
   white-space: nowrap;
