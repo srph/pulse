@@ -80,6 +80,46 @@ C.navLink = css`
     border-bottom-color: ${s['color-blue-500']};
   }
 `
+C.profile = css`
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  padding-bottom: 12px;
+  width: 240px;
+  border-bottom: 1px solid ${s['color-bw-300']};
+`
+C.profileInfo = css`
+  /*
+    Allow dynamic widths in text overflow ellipsis
+    @source https://stackoverflow.com/questions/12649904/css-text-ellipsis-when-using-variable-width-divs
+  */
+  min-width: 0;
+  width: 100%;
+`
+C.profileAvatar = css`
+  margin-right: 16px;
+  flex: 1;
+  flex-shrink: 0;
+`
+C.profileName = css`
+  margin-top: 0;
+  margin-bottom: 4px;
+  font-weight: 400;
+  font-size: ${s['font-size-title']};
+  /* Truncate */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`
+C.profileEmail = css`
+  margin: 0;
+  color: ${s['color-bw-600']};
+  font-size: ${s['font-size-subtitle']};
+  /* Truncate */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`
 
 interface State {
   isDropdownOpen: boolean
@@ -95,66 +135,81 @@ class MainDashboard extends React.Component<{}, State> {
   render() {
     return (
       <Subscribe to={[AuthContainer]}>
-      {(auth: AuthContainer) => (
-      <React.Fragment>
-        <div css={C.line} />
+        {(auth: AuthContainer) => (
+          <React.Fragment>
+            <div css={C.line} />
 
-        <UiContainer size="lg">
-          <div css={C.navbar}>
-            <div css={C.navbarContainer}>
-              <div css={C.navSection}>
-                <Link to="/" css={C.navbarLogo}>
-                  <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" css={C.navbarLogoIcon} />
-                  Pulse
+            <UiContainer size="lg">
+              <div css={C.navbar}>
+                <div css={C.navbarContainer}>
+                  <div css={C.navSection}>
+                    <Link to="/" css={C.navbarLogo}>
+                      <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" css={C.navbarLogoIcon} />
+                      Pulse
                 </Link>
 
-                <NavLink to="/" exact css={C.navLink} activeClassName="-active">
-                  <i className="fa fa-home" />
-                </NavLink>
-              </div>
+                    <NavLink to="/" exact css={C.navLink} activeClassName="-active">
+                      <i className="fa fa-home" />
+                    </NavLink>
+                  </div>
 
-              <div css={C.navMenu}>
-                <div css={C.navMenuAction}>
-                  <UiButton preset="primary" onClick={() => this.setState({ isCreateTrackerModalOpen: true })}>
-                    <UiButton.LeftIcon>
-                      <i className="fa fa-plus" />
-                    </UiButton.LeftIcon>
-                    Create New Tracker
+                  <div css={C.navMenu}>
+                    <div css={C.navMenuAction}>
+                      <UiButton preset="primary" onClick={() => this.setState({ isCreateTrackerModalOpen: true })}>
+                        <UiButton.LeftIcon>
+                          <i className="fa fa-plus" />
+                        </UiButton.LeftIcon>
+                        Create New Tracker
                   </UiButton>
+                    </div>
+                    <UiDropdown
+                      isOpen={this.state.isDropdownOpen}
+                      onOpen={() => this.setState({ isDropdownOpen: true })}
+                      onClose={() => this.setState({ isDropdownOpen: false })}>
+                      <UiDropdown.Main>
+                        <UiPlainButton>
+                          <img
+                            css={C.navbarAvatar}
+                            src={auth.state.data.avatar}
+                            alt="Your Photo"
+                          />
+                        </UiPlainButton>
+                      </UiDropdown.Main>
+
+                      <UiDropdown.Menu>
+                        <div css={C.dropdown}>
+                          <div css={C.profile}>
+                            <div css={C.profileAvatar}>
+                              <img
+                                css={C.navbarAvatar}
+                                src={auth.state.data.avatar}
+                                alt="Your Photo"
+                              />
+                            </div>
+
+                            <div css={C.profileInfo}>
+                              <h4 css={C.profileName}>{auth.state.data.name}</h4>
+                              <p css={C.profileEmail}>{auth.state.data.email}</p>
+                            </div>
+                          </div>
+                          <UiDropdown.Link to="/me" icon="fa fa-sliders">Account Settings</UiDropdown.Link>
+                          <UiDropdown.Link to="/logout" icon="fa fa-long-arrow-right">Logout</UiDropdown.Link>
+                        </div>
+                      </UiDropdown.Menu>
+                    </UiDropdown>
+                  </div>
                 </div>
-                <UiDropdown
-                  isOpen={this.state.isDropdownOpen}
-                  onOpen={() => this.setState({ isDropdownOpen: true })}
-                  onClose={() => this.setState({ isDropdownOpen: false })}>
-                  <UiDropdown.Main>
-                    <UiPlainButton>
-                      <img
-                        css={C.navbarAvatar}
-                        src={auth.state.data.avatar}
-                        alt="Your Photo"
-                      />
-                    </UiPlainButton>
-                  </UiDropdown.Main>
-
-                  <UiDropdown.Menu>
-                    <UiDropdown.Link to="/me">Account Settings</UiDropdown.Link>
-
-                    <UiDropdown.Link to="/logout">Logout</UiDropdown.Link>
-                  </UiDropdown.Menu>
-                </UiDropdown>
               </div>
-            </div>
-          </div>
-        </UiContainer>
+            </UiContainer>
 
-        {this.state.isCreateTrackerModalOpen && (
-          <CreateTrackerModal onClose={() => this.setState({ isCreateTrackerModalOpen: false })} />
+            {this.state.isCreateTrackerModalOpen && (
+              <CreateTrackerModal onClose={() => this.setState({ isCreateTrackerModalOpen: false })} />
+            )}
+
+            {this.props.children}
+          </React.Fragment>
         )}
-
-        {this.props.children}
-      </React.Fragment>
-    )}
-    </Subscribe>
+      </Subscribe>
     )
   }
 }

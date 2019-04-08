@@ -10,7 +10,7 @@ C.separator = css`
 `
 C.separatorLine = css`
   height: 1px;
-  background: ${s['color-bw-300']};
+  background: ${s['color-bw-200']};
 `
 
 const UiDropdownSeparator: React.SFC<any> = (props) => {
