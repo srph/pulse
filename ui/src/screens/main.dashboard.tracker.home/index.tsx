@@ -205,6 +205,10 @@ C.labelActionButton = css`
   background: transparent;
   border: 0;
   cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `
 
 const columns = Array(13).fill(0)
@@ -355,11 +359,11 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                         label={label}
                         isOpen={this.props.deleteIndex === i}
                         isLoading={this.props.isDestroyingLabel}
-                        isDisabled={false}
+                        isDisabled={tracker.labels.length === 1}
                         onDelete={this.props.onDeleteLabel}
                         onOpen={() => this.props.onOpenDeleteLabel(i)}
                         onClose={this.props.onCloseDeleteLabel}>
-                        <button type="button" css={C.labelActionButton}>
+                        <button type="button" css={C.labelActionButton} disabled={tracker.labels.length === 1}>
                           <i className="fa fa-trash" />
                         </button>
                       </DeleteLabelPopover>
