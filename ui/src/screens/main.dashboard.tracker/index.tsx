@@ -259,6 +259,7 @@ class DashboardTracker extends React.Component<Props, State> {
 
     this.setState({
       deleteIndex: -1,
+      activeLabelIndex: 0,
       isDeletingLabel: false,
       isDestroyingLabel: false,
       tracker: immer(this.state.tracker, draft => {
@@ -266,7 +267,7 @@ class DashboardTracker extends React.Component<Props, State> {
           Object.values(draft.entries).filter((entry: AppDataTrackerEntry) => entry.label.id !== label.id),
           'entry_date'
         )
-        delete draft.labels[index]
+        draft.labels.splice(index, 1)
       })
     })
   }
