@@ -8,11 +8,11 @@ import UiSpacer from '~/components/UiSpacer'
 import immer from 'immer'
 import axios from '~/lib/axios'
 import { RouteComponentProps } from '~/lib/history/types'
-import s from '~/styles'
 import random from '~/utils/random'
 import isNumericKeyCode from '~/utils/isNumericKeyCode'
 import toPropertyKeys from '~/utils/toPropertyKeys'
 import { State } from './types'
+import LoadingPlaceholder from './LoadingPlaceholder';
 
 type RouteProps = RouteComponentProps<{}, {
   trackerId: string
@@ -65,7 +65,7 @@ class DashboardTracker extends React.Component<Props, State> {
     const { tracker } = this.state
 
     if (tracker == null) {
-      return null;
+      return <LoadingPlaceholder />;
     }
 
     return (

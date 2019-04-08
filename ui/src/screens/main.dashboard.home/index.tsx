@@ -5,6 +5,8 @@ import { jsx, css } from '@emotion/core'
 import { Link } from 'react-router-dom'
 import UiContainer from '~/components/UiContainer'
 import UiPageHeading from '~/components/UiPageHeading'
+import UiPlaceholderBlock from '~/components/UiPlaceholderBlock'
+import UiSpacer from '~/components/UiSpacer'
 import s from '~/styles'
 import axios from '~/lib/axios'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
@@ -76,6 +78,15 @@ class DashboardHome extends React.Component<{}, State> {
         <UiPageHeading title="Your Bullet Journals" />
 
         <UiContainer size="md">
+          {this.state.isLoading && (
+            Array(4).fill(0).map((_, i: number) =>
+              <React.Fragment>
+                <UiPlaceholderBlock shape="rounded" height={46} />
+                <UiSpacer size="sm" />
+              </React.Fragment>
+            )
+          )}
+
           {this.state.trackers.map((tracker: AppDataTracker, i: number) =>
             <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
               <h4 css={C.trackerTitle}>
