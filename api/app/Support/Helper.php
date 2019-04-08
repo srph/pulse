@@ -14,6 +14,6 @@ class Helper {
       $result[$item[$property]] = $item;
     }
 
-    return count($result) ? $result : new stdClass;
+    return count($result) ? $result : new \stdClass;
   }
 }
