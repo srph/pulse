@@ -6,6 +6,7 @@ import UiContainer from '~/components/UiContainer'
 import UiSpacer from '~/components/UiSpacer'
 import AvatarSection from './AvatarSection'
 import ChangePasswordSection from './ChangePasswordSection'
+import PersonalDetailsSection from './PersonalDetailsSection'
 
 class DashboardMe extends React.Component {
   render() {
@@ -22,6 +23,9 @@ class DashboardMe extends React.Component {
           `}>
           Account Settings
         </h4>
+
+        <PersonalDetailsSection />
+        <UiSpacer />
 
         <AvatarSection />
         <UiSpacer />

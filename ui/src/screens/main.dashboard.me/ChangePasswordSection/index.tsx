@@ -1,7 +1,4 @@
-/** @jsx jsx */
 import * as React from 'react'
-import { css, jsx } from '@emotion/core'
-import s from '~/styles'
 import UiFieldGroup from '~/components/UiFieldGroup'
 import UiButtonLoader from '~/components/UiButtonLoader'
 import UiSpacer from '~/components/UiSpacer'
