@@ -15,4 +15,14 @@ class GetTracker extends FormRequest
     {
         return $this->user()->id === $this->route('tracker')->user_id;
     }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
+    }
 }
