@@ -30,7 +30,7 @@ php artisan passport:client --password
 php artisan serve
 ```
 
-### Front-end setup
+## Front-end setup
 You will need npm `>=5` and Node.js `>=10`.
 
 - Move to the `ui` folder
@@ -52,6 +52,8 @@ cp .env.example .env
 ```bash
 npm start
 ```
+
+It should open up to your a new browser window shortly. However, if it doesn't, you can manually open http://localhost:3000.
 
 ## Deployment
 The API and front-end are deployed separately.
