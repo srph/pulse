@@ -116,6 +116,10 @@ C.labelSection = css`
   flex-shrink: 0;
   width: 180px;
 `
+C.labelAffix = css`
+  position: sticky;
+  top: 16;
+`
 C.labelMenu = css`
   display: flex;
   align-items: center;
@@ -263,7 +267,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                         <div css={C.calendarBoxInner}>
                           <Content
                             css={[C.calendarBoxContent, isActive && C.calendarBoxContentIsButton]}
-                            onClick={isActive ? () => this.props.onEntryClick(columnIndex, boxIndex) : () => {}}
+                            onClick={isActive ? () => this.props.onEntryClick(columnIndex, boxIndex) : () => { }}
                             data-calendar-etits>
                             {isHeading && (
                               <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
@@ -276,9 +280,9 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                                 css={[
                                   C.calendarBoxLabel,
                                   Boolean(entry) &&
-                                    css`
-                                      background: ${entry.label.color};
-                                    `
+                                  css`
+                                        background: ${entry.label.color};
+                                      `
                                 ]}>
                                 {entry == null &&
                                   (isBeforeOrToday ? (
@@ -286,15 +290,15 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                                       css={[
                                         C.calendarBoxLabelStamp,
                                         css`
-                                          background: ${this.props.tracker.labels[this.props.activeLabelIndex].color};
-                                        `
+                                            background: ${this.props.tracker.labels[this.props.activeLabelIndex].color};
+                                          `
                                       ]}
                                     />
                                   ) : (
-                                    <span css={C.calendarBoxLabelInvalid}>
-                                      <i className="fa fa-close" />
-                                    </span>
-                                  ))}
+                                      <span css={C.calendarBoxLabelInvalid}>
+                                        <i className="fa fa-close" />
+                                      </span>
+                                    ))}
                               </div>
                             )}
                           </Content>
@@ -310,68 +314,70 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
           </div>
 
           <div css={C.labelSection}>
-            <div css={C.labelMenu}>
-              <h5 css={C.labelMenuHeading}>Labels</h5>
+            <div css={C.labelAffix}>
+              <div css={C.labelMenu}>
+                <h5 css={C.labelMenuHeading}>Labels</h5>
 
-              <CreateLabelPopover
-                isDisabled={false}
-                isOpen={this.props.isCreatingLabel}
-                isLoading={this.props.isStoringLabel}
-                onStore={this.props.onStoreLabel}
-                onOpen={this.props.onOpenCreateLabel}
-                onClose={this.props.onCloseCreateLabel}
-              />
-            </div>
+                <CreateLabelPopover
+                  isDisabled={false}
+                  isOpen={this.props.isCreatingLabel}
+                  isLoading={this.props.isStoringLabel}
+                  onStore={this.props.onStoreLabel}
+                  onOpen={this.props.onOpenCreateLabel}
+                  onClose={this.props.onCloseCreateLabel}
+                />
+              </div>
 
-            <section>
-              {tracker.labels.map((label: AppDataTrackerLabel, i: number) => (
-                <div css={C.labelContainer} key={label.id}>
-                  <button type="button" css={C.label} onClick={() => this.props.onLabelClick(i)}>
-                    <div css={[C.labelColor, color(label.color).isDark() && C.labelColorIsDark ]} style={{ backgroundColor: label.color }}>
-                      Alt + {i + 1}
-                    </div>
+              <section>
+                {tracker.labels.map((label: AppDataTrackerLabel, i: number) => (
+                  <div css={C.labelContainer} key={label.id}>
+                    <button type="button" css={C.label} onClick={() => this.props.onLabelClick(i)}>
+                      <div css={[C.labelColor, color(label.color).isDark() && C.labelColorIsDark]} style={{ backgroundColor: label.color }}>
+                        Alt + {i + 1}
+                      </div>
 
-                    <span css={C.labelName}>{label.name}</span>
-                  </button>
+                      <span css={C.labelName}>{label.name}</span>
+                    </button>
 
-                  <div
-                    css={[
-                      C.labelActions,
-                      (this.props.editIndex === i || this.props.deleteIndex === i) && C.labelActionsIsActive
-                    ]}>
-                    <div css={C.labelAction}>
-                      <EditLabelPopover
-                        label={label}
-                        isOpen={this.props.editIndex === i}
-                        isLoading={this.props.isUpdatingLabel}
-                        isDisabled={false}
-                        onUpdate={this.props.onUpdateLabel}
-                        onOpen={() => this.props.onOpenEditLabel(i)}
-                        onClose={this.props.onCloseEditLabel}>
-                        <button type="button" css={C.labelActionButton}>
-                          <i className="fa fa-pencil" />
-                        </button>
-                      </EditLabelPopover>
-                    </div>
+                    <div
+                      css={[
+                        C.labelActions,
+                        (this.props.editIndex === i || this.props.deleteIndex === i) && C.labelActionsIsActive
+                      ]}>
+                      <div css={C.labelAction}>
+                        <EditLabelPopover
+                          label={label}
+                          isOpen={this.props.editIndex === i}
+                          isLoading={this.props.isUpdatingLabel}
+                          isDisabled={false}
+                          onUpdate={this.props.onUpdateLabel}
+                          onOpen={() => this.props.onOpenEditLabel(i)}
+                          onClose={this.props.onCloseEditLabel}>
+                          <button type="button" css={C.labelActionButton}>
+                            <i className="fa fa-pencil" />
+                          </button>
+                        </EditLabelPopover>
+                      </div>
 
-                    <div css={C.labelAction}>
-                      <DeleteLabelPopover
-                        label={label}
-                        isOpen={this.props.deleteIndex === i}
-                        isLoading={this.props.isDestroyingLabel}
-                        isDisabled={tracker.labels.length === 1}
-                        onDelete={this.props.onDeleteLabel}
-                        onOpen={() => this.props.onOpenDeleteLabel(i)}
-                        onClose={this.props.onCloseDeleteLabel}>
-                        <button type="button" css={C.labelActionButton} disabled={tracker.labels.length === 1}>
-                          <i className="fa fa-trash" />
-                        </button>
-                      </DeleteLabelPopover>
+                      <div css={C.labelAction}>
+                        <DeleteLabelPopover
+                          label={label}
+                          isOpen={this.props.deleteIndex === i}
+                          isLoading={this.props.isDestroyingLabel}
+                          isDisabled={tracker.labels.length === 1}
+                          onDelete={this.props.onDeleteLabel}
+                          onOpen={() => this.props.onOpenDeleteLabel(i)}
+                          onClose={this.props.onCloseDeleteLabel}>
+                          <button type="button" css={C.labelActionButton} disabled={tracker.labels.length === 1}>
+                            <i className="fa fa-trash" />
+                          </button>
+                        </DeleteLabelPopover>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </section>
+                ))}
+              </section>
+            </div>
           </div>
         </div>
       </div>
