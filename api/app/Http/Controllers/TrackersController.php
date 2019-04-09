@@ -50,7 +50,7 @@ class TrackersController extends Controller
         return response()->json($tracker);
     }
 
-    public function show(Tracker $tracker) {
+    public function show(Tracker $tracker, \App\Http\Requests\GetTracker $request) {
         $tracker = $tracker->load(['labels', 'entries', 'entries.label'])->toArray();
         $tracker['entries'] = Helper::toPropertyKeys($tracker['entries'], 'entry_date');
         return response()->json($tracker);
