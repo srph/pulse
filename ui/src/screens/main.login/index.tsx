@@ -190,7 +190,9 @@ class MainLogin extends React.Component<Props, State> {
       await this.props.login(this.state.form)
     } catch (e) {
       this.setState({
-        error: 'Invalid username/password combination.',
+        error: e.response && e.response.status === 400
+          ? 'Invalid username/password combination.'
+          : 'An error occurred with the server. Try again later.',
         isLoading: false
       })
 
