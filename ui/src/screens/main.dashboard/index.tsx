@@ -209,7 +209,7 @@ class MainDashboard extends React.Component<{}, State> {
               <CreateTrackerModal onClose={this.handleCloseCreateTrackerModal} />
             )}
 
-            {React.cloneElement(this.props.children, {
+            {React.cloneElement(this.props.children as React.ReactElement<any>, {
               onOpenCreateTrackerModal: this.handleOpenCreateTrackerModal
             })}
 
