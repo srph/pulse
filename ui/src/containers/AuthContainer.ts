@@ -38,7 +38,9 @@ class AuthContainer extends Container<AuthContainerState> {
       grant_type: 'password'
     })
     const token = tokenResponse.data.access_token
-    cookie.set('app_token', token)
+    cookie.set('app_token', token, {
+      path: '/'
+    })
     const dataResponse = await axios.get('/api/me')
     const data = dataResponse.data
     this.setState({ data, token })
