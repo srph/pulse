@@ -51,7 +51,7 @@ class AuthContainer extends Container<AuthContainerState> {
     cookie.remove('app_token', {
       path: '/'
     })
-    history.push('/')
+    history.push('/login')
   }
 
   getUserData = async () => {
