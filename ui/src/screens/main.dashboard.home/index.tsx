@@ -87,7 +87,7 @@ class DashboardHome extends React.Component<Props, State> {
         <UiContainer size="md">
           {this.state.isLoading && (
             Array(4).fill(0).map((_, i: number) =>
-              <React.Fragment>
+              <React.Fragment key={i}>
                 <UiPlaceholderBlock shape="rounded" height={46} />
                 <UiSpacer size="sm" />
               </React.Fragment>
