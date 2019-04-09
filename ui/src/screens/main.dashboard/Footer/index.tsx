@@ -12,7 +12,7 @@ C.footer = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 32px;
+  padding-top: 80px;
   padding-bottom: 32px;
 `
 C.text = css`

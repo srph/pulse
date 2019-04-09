@@ -45,7 +45,7 @@ class Root extends React.Component {
                   <PrivateRoute exact component={MainLogout} path="/logout" />
 
                   <PrivateRoute component={MainDashboard} path="/">
-                    <Switch>
+                    <RouterSwitch>
                       <RouterRoute exact path="/" component={MainDashboardHome} />
                       <RouterRoute path="/tracker/:trackerId" component={MainDashboardTracker}>
                         <RouterSwitch>
@@ -55,7 +55,7 @@ class Root extends React.Component {
                         </RouterSwitch>
                       </RouterRoute>
                       <RouterRoute exact path="/me" component={MainDashboardMe} />
-                    </Switch>
+                    </RouterSwitch>
                   </PrivateRoute>
                   {/* <Route component={MainError404} /> */}
                 </Switch>

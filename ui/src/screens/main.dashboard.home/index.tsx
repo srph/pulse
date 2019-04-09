@@ -7,6 +7,9 @@ import UiContainer from '~/components/UiContainer'
 import UiPageHeading from '~/components/UiPageHeading'
 import UiPlaceholderBlock from '~/components/UiPlaceholderBlock'
 import UiSpacer from '~/components/UiSpacer'
+import UiEmptySlate from '~/components/UiEmptySlate'
+import UiButton from '~/components/UiButton'
+import empty from './empty.svg'
 import s from '~/styles'
 import axios from '~/lib/axios'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
@@ -43,6 +46,10 @@ C.trackerCaret = css`
   color: ${s['color-bw-500']};
 `
 
+interface Props {
+  onOpenCreateTrackerModal: () => void
+}
+
 interface State {
   trackers: AppDataTracker[]
   isLoading: boolean
@@ -51,12 +58,12 @@ interface State {
 /**
  * @TODO Handle errors
  */
-class DashboardHome extends React.Component<{}, State> {
+class DashboardHome extends React.Component<Props, State> {
   state = {
     trackers: [],
     isLoading: false
   }
-  
+
   async componentDidMount() {
     this.setState({
       isLoading: true
@@ -101,6 +108,14 @@ class DashboardHome extends React.Component<{}, State> {
                 <i className='fa fa-angle-right' />
               </span>
             </Link>
+          )}
+
+          {!this.state.isLoading && !this.state.trackers.length && (
+            <UiEmptySlate img={empty}
+              heading="You seem new!"
+              text="Make your first tracker, and start reaching your goals!"
+              action={<UiButton preset="primary" onClick={this.props.onOpenCreateTrackerModal}>Create your first tracker</UiButton>}
+            />
           )}
         </UiContainer>
       </React.Fragment>

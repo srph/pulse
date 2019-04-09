@@ -158,7 +158,7 @@ class MainDashboard extends React.Component<{}, State> {
 
                   <div css={C.navMenu}>
                     <div css={C.navMenuAction}>
-                      <UiButton preset="primary" onClick={() => this.setState({ isCreateTrackerModalOpen: true })}>
+                      <UiButton preset="primary" onClick={this.handleOpenCreateTrackerModal}>
                         <UiButton.LeftIcon>
                           <i className="fa fa-plus" />
                         </UiButton.LeftIcon>
@@ -206,16 +206,26 @@ class MainDashboard extends React.Component<{}, State> {
             </div>
 
             {this.state.isCreateTrackerModalOpen && (
-              <CreateTrackerModal onClose={() => this.setState({ isCreateTrackerModalOpen: false })} />
+              <CreateTrackerModal onClose={this.handleCloseCreateTrackerModal} />
             )}
 
-            {this.props.children}
+            {React.cloneElement(this.props.children, {
+              onOpenCreateTrackerModal: this.handleOpenCreateTrackerModal
+            })}
 
             <Footer />
           </React.Fragment>
         )}
       </Subscribe>
     )
+  }
+
+  handleOpenCreateTrackerModal = () => {
+    this.setState({ isCreateTrackerModalOpen: true })
+  }
+
+  handleCloseCreateTrackerModal = () => {
+    this.setState({ isCreateTrackerModalOpen: false })
   }
 }
 
