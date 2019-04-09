@@ -113,7 +113,7 @@ class AvatarSection extends React.Component<InjectedProps, State> {
 function WrappedAvatarSection() {
   return (
     <Subscribe to={[AuthContainer]}>
-      {(auth: AuthContainer) => <AvatarSection auth={auth.state.data} onUserUpdate={auth.updateUserData} />}
+      {(auth: typeof AuthContainer) => <AvatarSection auth={auth.state.data} onUserUpdate={auth.updateUserData} />}
     </Subscribe>
   )
 }

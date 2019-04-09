@@ -15,7 +15,7 @@ class PrivateRoute extends React.Component<Props> {
 
     return (
       <UnstatedSubscribe to={[AuthContainer]}>
-        {(auth: AuthContainer) => 
+        {(auth: typeof AuthContainer) => 
           <Route {...rest} render={(props) => (
             auth.isAuthenticated()
               ? <Component {...props} children={children}  />

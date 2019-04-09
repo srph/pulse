@@ -100,7 +100,7 @@ class PersonalDetailsSection extends React.Component<InjectedProps, State> {
 function WrappedPersonalDetailsSection() {
   return (
     <Subscribe to={[AuthContainer]}>
-      {(auth: AuthContainer) => <PersonalDetailsSection auth={auth.state.data} onUserUpdate={auth.updateUserData} />}
+      {(auth: typeof AuthContainer) => <PersonalDetailsSection auth={auth.state.data} onUserUpdate={auth.updateUserData} />}
     </Subscribe>
   )
 }

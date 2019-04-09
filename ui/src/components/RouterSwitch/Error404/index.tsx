@@ -1,9 +1,15 @@
 import * as React from 'react'
-import ErrorHandler, { Context } from '~/components/ErrorHandler'
 
-class Error404 extends React.Component<Context, {}> {
+import { ErrorContainer } from '~/containers'
+import { Subscribe } from 'unstated'
+
+interface Props {
+  error: typeof ErrorContainer
+}
+
+class Error404 extends React.Component<Props, {}> {
   componentDidMount() {
-    this.props.onError(404)
+    this.props.error.set(404)
   }
 
   render() {
@@ -11,13 +17,13 @@ class Error404 extends React.Component<Context, {}> {
   }
 }
 
-function WrappedError404(props: {}) {
+function WrappedError404(props) {
   return (
-    <ErrorHandler.Consumer>
-      {(errorProps: Context) => (
-        <Error404 {...errorProps} />
+    <Subscribe to={[ErrorContainer]}>
+      {(errorProps: typeof ErrorContainer) => (
+        <Error404 error={errorProps} />
       )}
-    </ErrorHandler.Consumer>
+    </Subscribe>
   )
 }
 

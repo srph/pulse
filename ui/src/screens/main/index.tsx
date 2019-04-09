@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { AuthContainer } from '~/containers'
+
+import { AuthContainer, ErrorContainer } from '~/containers'
 import { Subscribe as UnstatedSubscribe } from 'unstated'
-import ErrorHandler, { Context as ErrorHandlerContext, Callback as ErrorHandlerCallback } from '~/components/ErrorHandler'
 
 interface OwnProps {
-  auth: AuthContainer
-  onError: ErrorHandlerCallback
+  auth: typeof AuthContainer
+  error: typeof ErrorContainer
 }
 
 interface InjectedProps {
@@ -25,7 +25,7 @@ class MainScreen extends React.Component<OwnProps, State> {
     try {
       await this.props.auth.getUserData()
     } catch(e) {
-      this.props.onError(500)
+      this.props.error.set(500)
     } finally {
       this.setState({ isLoading: false })
     }
@@ -44,15 +44,11 @@ class MainScreen extends React.Component<OwnProps, State> {
 
 function WrappedMainScreen(props: InjectedProps) {
   return (
-    <ErrorHandler.Consumer>
-      {(errorProps: ErrorHandlerContext) => (
-        <UnstatedSubscribe to={[AuthContainer]}>
-          {(auth: AuthContainer) => (
-            <MainScreen {...props} auth={auth} onError={errorProps.onError} />
-          )}
-        </UnstatedSubscribe>
+    <UnstatedSubscribe to={[AuthContainer, ErrorContainer]}>
+      {(auth: typeof AuthContainer, errorProps: typeof ErrorContainer) => (
+        <MainScreen {...props} auth={auth} error={errorProps} />
       )}
-    </ErrorHandler.Consumer>
+    </UnstatedSubscribe>
   )
 }
 

@@ -4,7 +4,7 @@ import { Subscribe as UnstatedSubscribe } from 'unstated'
 
 
 interface IMainLogoutScreenProps {
-  auth: AuthContainer
+  auth: typeof AuthContainer
 }
 
 class MainLogoutScreen extends React.Component<IMainLogoutScreenProps, {}> {

@@ -84,4 +84,4 @@ class AuthContainer extends Container<AuthContainerState> {
   }
 }
 
-export default AuthContainer
+export default new AuthContainer()

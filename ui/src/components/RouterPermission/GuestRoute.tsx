@@ -15,7 +15,7 @@ class GuestRoute extends React.Component<Props> {
 
     return (
       <UnstatedSubscribe to={[AuthContainer]}>
-        {(auth: AuthContainer) => 
+        {(auth: typeof AuthContainer) => 
           <Route {...rest} render={(props) => (
             auth.isGuest()
               ? <Component {...props} />

@@ -218,7 +218,7 @@ class MainLogin extends React.Component<Props, State> {
 
 function WrappedMainLogin(props: {}) {
   return (
-    <Subscribe to={[AuthContainer]}>{(auth: AuthContainer) => <MainLogin {...props} login={auth.login} />}</Subscribe>
+    <Subscribe to={[AuthContainer]}>{(auth: typeof AuthContainer) => <MainLogin {...props} login={auth.login} />}</Subscribe>
   )
 }
 

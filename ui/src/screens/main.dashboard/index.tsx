@@ -138,7 +138,7 @@ class MainDashboard extends React.Component<{}, State> {
   render() {
     return (
       <Subscribe to={[AuthContainer]}>
-        {(auth: AuthContainer) => (
+        {(auth: typeof AuthContainer) => (
           <React.Fragment>
             <div css={C.line} />
 

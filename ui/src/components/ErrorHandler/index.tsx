@@ -3,51 +3,33 @@ import UiEmptySlate from '~/components/UiEmptySlate'
 import UiButton from '~/components/UiButton'
 import UiScreenCenter from '~/components/UiScreenCenter'
 import error404 from './error404.svg'
-import error500 from './error404.svg'
+import error500 from './error500.svg'
+
+import { ErrorContainer } from '~/containers'
+import { Subscribe } from 'unstated'
 
 interface Props {
   children: React.ReactNode
 }
 
-type ErrorCodes = 404 | 500 | 0
-
-interface State {
-  error: ErrorCodes
-}
-
-export type Callback = (error: ErrorCodes) => void
-
-export interface Context {
-  onError: Callback
-}
-
-const context = React.createContext<Context>({ onError: (error: ErrorCodes) => {} })
-
-class ErrorHandler extends React.Component<Props, State> {
-  state = {
-    error: null
-  }
-
-  static Consumer = context.Consumer
-
-  render() {
-    console.log(this.state.error)
-    if (this.state.error === 404) {
+class ErrorHandler extends React.Component<Props> {
+  renderContent(errorProps: typeof ErrorContainer) {
+    if (errorProps.state.error === 404) {
       return (
         <UiScreenCenter>
-          <UiEmptySlate img={error500}
-            heading="Oops!"
-            text="We couldn't find your request."
-            action={<UiButton preset="primary" link to="/" onClick={this.handleReset}>Go back</UiButton>}
+          <UiEmptySlate img={error404}
+            heading="You seem lost."
+            text="Sorry, but whatever you're looking for isn't here."
+            action={<UiButton preset="primary" link to="/" onClick={() => errorProps.set(null)}>Home</UiButton>}
           />
         </UiScreenCenter>
       )
     }
 
-    if (this.state.error === 500) {
+    if (errorProps.state.error === 500) {
       return (
         <UiScreenCenter>
-          <UiEmptySlate img={error404}
+          <UiEmptySlate img={error500}
             heading="Oh no!"
             text="We're having issues at the moment. Try again in a moment."
             action={<UiButton preset="primary" onClick={() => {
@@ -58,21 +40,15 @@ class ErrorHandler extends React.Component<Props, State> {
       )
     }
 
-    return (
-      <context.Provider value={{
-        onError: this.handleError
-      }}>
-        {this.props.children}
-      </context.Provider>
-    )
-  }
-  
-  handleReset = () => {
-    this.setState({ error: null})
+    return this.props.children
   }
 
-  handleError = (error: ErrorCodes) => {
-    this.setState({ error })
+  render() {
+    return (
+      <Subscribe to={[ErrorContainer]}>
+        {(errorProps: typeof ErrorContainer) => this.renderContent(errorProps)}
+      </Subscribe>
+    )
   }
 }
 

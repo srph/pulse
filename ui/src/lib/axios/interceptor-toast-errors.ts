@@ -18,10 +18,10 @@ interface AxiosValidationError extends AxiosError {
  * axios({ appValidationError: 'An error occured trying to create a contact })
  */
 instance.interceptors.response.use(null, (err: AxiosValidationError) => {
-  if (err.config.method === 'GET') {
+  if (err.config.method === 'get') {
     return Promise.reject(err)
   }
-  
+
   if (!err.response) {
     toast('We couldn\'t quite reach the servers. Please try refreshing the page.')
   } else if (err.response.status === 500) {
