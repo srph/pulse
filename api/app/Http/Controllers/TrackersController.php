@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class TrackersController extends Controller
 {
     public function index(Request $request) {
-        $trackers = $request->user()->trackers()->orderBy('updated_at', 'desc');
+        $trackers = $request->user()->trackers()->orderBy('updated_at', 'desc')->get();
 
         return response()->json($trackers);
     }
