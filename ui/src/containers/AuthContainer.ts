@@ -47,11 +47,12 @@ class AuthContainer extends Container<AuthContainerState> {
   }
 
   logout = () => {
-    this.setState({ data: null, token: null })
     cookie.remove('app_token', {
       path: '/'
     })
-    history.push('/login')
+    this.setState({ data: null, token: null }, () => {
+      history.push('/login')
+    })
   }
 
   getUserData = async () => {
