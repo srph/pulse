@@ -2,12 +2,12 @@ import instance from './instance'
 import { toast }  from '~/components/Toast'
 import { AxiosRequestConfig, AxiosError } from 'axios';
 
-interface IAxiosInterceptorValidationConfig extends AxiosRequestConfig {
+interface AxiosValidationConfig extends AxiosRequestConfig {
   appToastError?: string | boolean
 }
 
-interface IAxiosInterceptorValidationError extends AxiosError {
-  config: IAxiosInterceptorValidationConfig
+interface AxiosValidationError extends AxiosError {
+  config: AxiosValidationConfig
 }
 
 /**
@@ -17,7 +17,11 @@ interface IAxiosInterceptorValidationError extends AxiosError {
  * @example Provide a custom error message
  * axios({ appValidationError: 'An error occured trying to create a contact })
  */
-instance.interceptors.response.use(null, (err: IAxiosInterceptorValidationError) => {
+instance.interceptors.response.use(null, (err: AxiosValidationError) => {
+  if (err.config.method === 'GET') {
+    return Promise.reject(err)
+  }
+  
   if (!err.response) {
     toast('We couldn\'t quite reach the servers. Please try refreshing the page.')
   } else if (err.response.status === 500) {

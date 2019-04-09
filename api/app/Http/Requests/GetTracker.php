@@ -13,7 +13,6 @@ class GetTracker extends FormRequest
      */
     public function authorize()
     {
-        dd($this->user()->id, $this->route('tracker')->user_id);
         return $this->user()->id === $this->route('tracker')->user_id;
     }
 }
