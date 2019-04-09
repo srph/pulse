@@ -70,18 +70,6 @@ class AuthContainer extends Container<AuthContainerState> {
       }
     })
   }
-
-  updateNotificationCount = (count: 0 | -1 | 1) => {
-    this.setState({
-      data: immer(this.state.data, draft => {
-        if (count === 0) {
-          draft.notifications_count.unread = 0
-        } else {
-          draft.notifications_count.unread += count
-        }
-      })
-    })
-  }
 }
 
 export default new AuthContainer()
