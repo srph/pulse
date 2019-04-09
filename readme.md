@@ -71,6 +71,6 @@ The web interface is hosted on Netlify for free. Set the root folder to `ui`; th
 npm run build
 ```
 
-### Attribution
+## Attribution
 - [Louie (@leewui)](https://twitter.com/weelui/status/1082070518520414209) for the idea.
 - [DrawKit](https://www.drawkit.io/illustrations/drawing-woman-colour) for the free illustrations pack.
