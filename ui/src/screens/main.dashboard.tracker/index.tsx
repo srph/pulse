@@ -9,6 +9,7 @@ import immer from 'immer'
 import axios from '~/lib/axios'
 import { RouteComponentProps } from '~/lib/history/types'
 import random from '~/utils/random'
+import getEntryDateString from '~/utils/tracker/getEntryDateString'
 import isNumericKeyCode from '~/utils/isNumericKeyCode'
 import toPropertyKeys from '~/utils/toPropertyKeys'
 import { State } from './types'
@@ -49,16 +50,6 @@ class DashboardTracker extends React.Component<Props, State> {
       tracker: response.data,
       isFetching: false
     })
-  }
-
-  getEntryDate = (month: number, day: number) => {
-    const mm = String(month).padStart(2, '0')
-    const dd = String(day).padStart(2, '0')
-    return `2019-${mm}-${dd}`
-  }
-
-  getEntry = (month: number, day: number) => {
-    return this.state.tracker.entries[this.getEntryDate(month, day)]
   }
 
   render() {
@@ -274,7 +265,11 @@ class DashboardTracker extends React.Component<Props, State> {
 
   handleEntryClick = async (month: number, day: number) => {
     const id = random(2, 5000)
-    const date = this.getEntryDate(month, day)
+    const date = getEntryDateString({
+      tracker: this.state.tracker,
+      month,
+      day
+    })
     const label = this.state.tracker.labels[this.state.activeLabelIndex]
 
     this.setState({

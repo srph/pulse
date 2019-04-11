@@ -7,6 +7,8 @@ import CreateLabelPopover from './CreateLabelPopover'
 import EditLabelPopover from './EditLabelPopover'
 import DeleteLabelPopover from './DeleteLabelPopover'
 import { format, getDaysInMonth, isToday, isBefore } from 'date-fns'
+import getTrackerYear from '~/utils/tracker/getTrackerYear'
+import getEntry from '~/utils/tracker/getEntry'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import color from 'color'
 import s from '~/styles'
@@ -242,16 +244,6 @@ const columns = Array(13).fill(0)
 const boxes = Array(32).fill(0)
 
 class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
-  getEntryDate = (month: number, day: number) => {
-    const mm = String(month).padStart(2, '0')
-    const dd = String(day).padStart(2, '0')
-    return `2019-${mm}-${dd}`
-  }
-
-  getEntry = (month: number, day: number) => {
-    return this.props.tracker.entries[this.getEntryDate(month, day)]
-  }
-
   render() {
     const { tracker } = this.props
 
@@ -272,15 +264,20 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                     const isHeading = columnIndex > 0 && boxIndex === 0
                     const isDate = columnIndex === 0 && boxIndex > 0
                     const isEntry = columnIndex > 0 && boxIndex > 0
+                    const year = getTrackerYear(this.props.tracker)
 
-                    if (isEntry && boxIndex > getDaysInMonth(new Date(2019, columnIndex - 1))) {
+                    if (isEntry && boxIndex > getDaysInMonth(new Date(year, columnIndex - 1))) {
                       return
                     }
 
-                    const isToday2 = isToday(new Date(2019, columnIndex - 1, boxIndex))
+                    const isToday2 = isToday(new Date(year, columnIndex - 1, boxIndex))
                     const isEntryToday = isEntry && isToday2
-                    const entry = this.getEntry(columnIndex, boxIndex)
-                    const date = new Date(2019, columnIndex - 1, boxIndex)
+                    const entry = getEntry({
+                      tracker: this.props.tracker,
+                      month: columnIndex,
+                      day: boxIndex
+                    })
+                    const date = new Date(year, columnIndex - 1, boxIndex)
                     const isBeforeOrToday = isBefore(date, new Date()) || isToday2
                     const isActive = isEntry && isBeforeOrToday
                     const Content = !isActive ? 'div' : 'button'
