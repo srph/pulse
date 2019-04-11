@@ -38,6 +38,7 @@ const styles = {
       strokeWidth: 0
     },
     tickLabels: {
+      fontFamily: s['font-family'],
       fill: s['color-bw-600']
     },
     grid: {
