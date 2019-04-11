@@ -93,6 +93,9 @@ C.calendarBoxLabel = css`
   height: 100%;
   width: 100%;
 `
+C.calendarBoxLabelIsInactive = css`
+  background: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239C92AC' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+`
 C.calendarBoxLabelStamp = css`
   height: 28px;
   width: 28px;
@@ -299,26 +302,20 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                               <div
                                 css={[
                                   C.calendarBoxLabel,
-                                  Boolean(entry) &&
-                                  css`
-                                        background: ${entry.label.color};
-                                      `
-                                ]}>
-                                {entry == null &&
-                                  (isBeforeOrToday ? (
-                                    <div
-                                      css={[
-                                        C.calendarBoxLabelStamp,
-                                        css`
+                                  !isActive && C.calendarBoxLabelIsInactive
+                                ]} style={Boolean(entry) ? {
+                                  background: entry.label.color
+                                } : {}}>
+                                {entry == null && isBeforeOrToday && (
+                                  <div
+                                    css={[
+                                      C.calendarBoxLabelStamp,
+                                      css`
                                             background: ${this.props.tracker.labels[this.props.activeLabelIndex].color};
                                           `
-                                      ]}
-                                    />
-                                  ) : (
-                                      <span css={C.calendarBoxLabelInvalid}>
-                                        <i className="fa fa-close" />
-                                      </span>
-                                    ))}
+                                    ]}
+                                  />
+                                )}
                               </div>
                             )}
                           </Content>
