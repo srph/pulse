@@ -211,7 +211,7 @@ class DashboardTracker extends React.Component<Props, State> {
       editIndex: -1,
       isUpdatingLabel: false,
       tracker: immer(this.state.tracker, draft => {
-        // If he color changes, we'll also update all of the entries' label color
+        // If the label color changes, we'll also update all of the entries' label color
         if (data.color !== label.color) {
           const entries: AppDataTrackerEntry[] = Object.values(draft.entries)
 
