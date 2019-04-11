@@ -195,10 +195,11 @@ class DashboardTracker extends React.Component<Props, State> {
 
     const { tracker } = this.state
     const index = this.state.editIndex
+    const label = tracker.labels[index]
 
     try {
       await axios.put(
-        `/api/trackers/${tracker.id}/labels/${tracker.labels[index].id}`,
+        `/api/trackers/${tracker.id}/labels/${label.id}`,
         data
       )
     } catch (e) {
@@ -210,6 +211,15 @@ class DashboardTracker extends React.Component<Props, State> {
       editIndex: -1,
       isUpdatingLabel: false,
       tracker: immer(this.state.tracker, draft => {
+        // If he color changes, we'll also update all of the entries' label color
+        if (data.color !== label.color) {
+          const entries: AppDataTrackerEntry[] = Object.values(draft.entries)
+
+          entries.filter(entry => entry.label.id === label.id).forEach(entry => {
+            entry.label.color = data.color
+          })
+        }
+
         draft.labels[index].name = data.name
         draft.labels[index].color = data.color
       })
