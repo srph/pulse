@@ -7,6 +7,7 @@ import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import padDate from '~/utils/padDate'
 import { format } from 'date-fns'
 import random from '~/utils/random';
+import getTrackerYear from '~/utils/tracker/getTrackerYear';
 
 const box = {
   width: 600,
@@ -57,9 +58,11 @@ const styles = {
 
 class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
   render() {
+    const year = getTrackerYear(this.props.tracker)
+
     const months = Array(12)
       .fill(0)
-      .map((_, i: number) => format(new Date(2019, i, 1), 'MMM'))
+      .map((_, i: number) => format(new Date(year, i, 1), 'MMM'))
 
     const data = this.props.tracker.labels.map(label => (
       months.map((month, i) => ({
@@ -118,7 +121,9 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
 
   getEntryCountForLabel(month: number, label: AppDataTrackerLabel): number {
     const entries: AppDataTrackerEntry[] = Object.values(this.props.tracker.entries)
-    const date = new RegExp(`^2019-${padDate(month)}`)
+    const yy = getTrackerYear(this.props.tracker)
+    const mm = padDate(month)
+    const date = new RegExp(`^${yy}-${mm}`)
     return entries.filter(entry => entry.label.id === label.id && date.test(entry.entry_date)).length || random(10, 31)
   }
 }

@@ -293,7 +293,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                             onClick={isActive ? () => this.props.onEntryClick(columnIndex, boxIndex) : () => { }}
                             data-calendar-etits>
                             {isHeading && (
-                              <div css={C.calendarBoxTitle}>{format(new Date(2019, columnIndex - 1), 'MMM')}</div>
+                              <div css={C.calendarBoxTitle}>{format(new Date(year, columnIndex - 1), 'MMM')}</div>
                             )}
 
                             {isDate && <div css={C.calendarBoxTitle}>{boxIndex}</div>}
