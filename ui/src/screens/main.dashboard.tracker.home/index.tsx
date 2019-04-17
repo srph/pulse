@@ -21,7 +21,7 @@ C.calendar = css`
 C.heading = css`
   position: sticky;
   top: 0;
-  z-index: 500;
+  z-index: ${s['z-index-tracker-calendar-heading']};
   display: flex;
   width: 100%;
   margin-bottom: 16px;

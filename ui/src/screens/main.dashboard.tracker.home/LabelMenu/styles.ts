@@ -4,6 +4,8 @@ import s from '~/styles'
 const C = {} as any
 
 C.labelSection = css`
+  position: relative;
+  z-index: ${s['z-index-tracker-calendar-labels']};
   flex-shrink: 0;
   width: 200px;
 `
