@@ -47,6 +47,9 @@ export default {
   'font-size': 14,
   'font-size-subtitle': 12,
   'border-radius': 4,
+  'z-index-tracker-calendar-body': 499,
+  'z-index-tracker-calendar-heading': 500,
+  'z-index-tracker-calendar-labels': 600,
   'z-index-wizard-content': 899,
   'z-index-wizard-footer': 900,
   'z-index-popover': 1000

@@ -42,6 +42,8 @@ C.headingColumn = css`
   color: ${s['color-bw-700']};
 `
 C.body = css`
+  position: relative;
+  z-index: ${s['z-index-tracker-calendar-body']};
   display: flex;
   margin-left: -4px;
   margin-right: -4px;
