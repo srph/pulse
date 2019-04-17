@@ -5,6 +5,7 @@ import CreateLabelPopover from '../CreateLabelPopover'
 import EditLabelPopover from '../EditLabelPopover'
 import DeleteLabelPopover from '../DeleteLabelPopover'
 import UiTransitionFadeSlideIn from '~components/UiTransitionFadeSlideIn'
+import LabelMenuScrollToToday from '../LabelMenuScrollToToday'
 import color from 'color'
 import C from './styles'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
@@ -29,7 +30,7 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
             />
           </div>
 
-          <section>
+          <section css={C.labelList}>
             {tracker.labels.map((label: AppDataTrackerLabel, i: number) => (
               <div css={C.labelContainer} key={label.id}>
                 {this.props.activeLabelIndex === i ? (
@@ -93,6 +94,8 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
               </div>
             ))}
           </section>
+
+          <LabelMenuScrollToToday />
         </div>
       </div>
     )

@@ -8,13 +8,13 @@ C.labelSection = css`
   z-index: ${s['z-index-tracker-calendar-labels']};
   flex-shrink: 0;
   width: 200px;
+  padding-left: 26px;
 `
 C.labelAffix = css`
   position: sticky;
   top: 16;
 `
 C.labelMenu = css`
-  padding-left: 26px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -25,8 +25,6 @@ C.labelMenuHeading = css`
   text-transform: uppercase;
 `
 C.labelContainer = css`
-  display: flex;
-  align-items: center;
   position: relative;
   margin-bottom: 8px;
 
@@ -40,7 +38,10 @@ C.labelPlaceholder = css`
   margin-right: 8px;
 `
 C.labelCheck = css`
-  flex-shrink: 0;
+  position: absolute;
+  top: 12px;
+  left: -26px;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,6 +52,9 @@ C.labelCheck = css`
   border-radius: 50%;
   color: ${s['color-bw-100']};
   background: ${s['color-bw-800']};
+`
+C.labelList = css`
+  margin-bottom: 16px;
 `
 C.label = css`
   position: relative;

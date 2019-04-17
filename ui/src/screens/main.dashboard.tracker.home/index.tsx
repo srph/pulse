@@ -8,6 +8,7 @@ import getEntry from '~/utils/tracker/getEntry'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import LabelMenu from './LabelMenu'
 import s from '~/styles'
+import constants from './constants';
 
 const C = {} as any
 C.wrapper = css`
@@ -148,6 +149,11 @@ C.fillCircle = css`
     opacity: 1;
   }
 `
+C.anchor = css`
+  position: absolute;
+  top: -64px;
+  pointer-events: none;
+`
 
 const columns = Array(13).fill(0)
 const boxes = Array(31).fill(0)
@@ -225,6 +231,8 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                                       style={{ background: tracker.labels[this.props.activeLabelIndex].color }}
                                     />
                                   </button>
+
+                                  <div className={isDateToday ? constants.todayAnchorClassName : ''} css={C.anchor} />
                                 </div>
                               )}
 
