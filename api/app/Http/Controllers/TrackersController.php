@@ -26,21 +26,17 @@ class TrackersController extends Controller
 
         $labels = [
             [
-                'name' => 'No Fap',
-                'color' => '#2186EB'
+                'name' => 'Label 1',
+                'color' => '#BFB3FF'
             ],
             [
-                'name' => 'Relapsed',
-                'color' => '#eb5757'
+                'name' => 'Label 2',
+                'color' => '#B3FFD7'
             ],
             [
-                'name' => 'Muntik Lang',
-                'color' => '#d5dde5'
-            ],
-            [
-                'name' => 'Eut',
-                'color' => '#27AE60'
-            ],
+                'name' => 'Label 3',
+                'color' => '#B3FFD7'
+            ]
         ];
 
         foreach($labels as $label) {
