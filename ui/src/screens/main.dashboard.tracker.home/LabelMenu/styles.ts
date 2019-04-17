@@ -69,7 +69,7 @@ C.label = css`
 `
 C.labelIsActive = css`
   box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  border-color: ${s['color-bw-200']};
+  border-color: ${s['color-bw-400']};
 `
 C.labelColor = css`
   display: flex;
