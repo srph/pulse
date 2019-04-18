@@ -55,7 +55,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
     // If the user hasn't updated the old tracker in a while.
     if (!isTrackerFresh(tracker)) {
       const missStreak = getMissStreak(tracker)
-
+      console.log(missStreak)
       if (missStreak >= 3) {
         return this.renderContent({
           text: `Your last update was ${missStreak} days ago. How have you been?`,

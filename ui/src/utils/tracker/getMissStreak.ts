@@ -6,10 +6,6 @@ import { format, parse, differenceInDays } from 'date-fns';
  */
 export default function getMissStreak(tracker: AppDataTracker): number {
   const entries: AppDataTrackerEntry[] = Object.values(tracker.entries)
-  
-  if (entries.length === 1) {
-    return 0
-  }
 
   const today: string = getEntryTodayDateString(tracker)
 
