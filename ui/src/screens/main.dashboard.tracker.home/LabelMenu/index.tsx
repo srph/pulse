@@ -6,6 +6,7 @@ import EditLabelPopover from '../EditLabelPopover'
 import DeleteLabelPopover from '../DeleteLabelPopover'
 import UiTransitionFadeSlideIn from '~components/UiTransitionFadeSlideIn'
 import LabelMenuScrollToToday from '../LabelMenuScrollToToday'
+import LabelMenuStreak from '../LabelMenuStreak'
 import color from 'color'
 import C from './styles'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
@@ -94,6 +95,8 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
               </div>
             ))}
           </section>
+
+          <LabelMenuStreak tracker={tracker} />
 
           <LabelMenuScrollToToday />
         </div>

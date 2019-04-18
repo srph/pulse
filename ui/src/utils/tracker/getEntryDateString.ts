@@ -6,7 +6,7 @@ interface Payload {
   day: number
 }
 
-export default function getEntryDateString({ tracker, month, day }: Payload) {
+export default function getEntryDateString({ tracker, month, day }: Payload): string {
   const yy = getTrackerYear(tracker)
   const mm = String(month).padStart(2, '0')
   const dd = String(day).padStart(2, '0')

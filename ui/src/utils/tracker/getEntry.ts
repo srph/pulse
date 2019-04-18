@@ -6,6 +6,6 @@ interface Payload {
   day: number
 }
 
-export default function getEntry(payload: Payload) {
+export default function getEntry(payload: Payload): AppDataTrackerEntry {
   return payload.tracker.entries[getEntryDateString(payload)]
 }

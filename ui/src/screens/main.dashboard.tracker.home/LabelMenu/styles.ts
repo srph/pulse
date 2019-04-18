@@ -7,7 +7,7 @@ C.labelSection = css`
   position: relative;
   z-index: ${s['z-index-tracker-calendar-labels']};
   flex-shrink: 0;
-  width: 200px;
+  width: 240px;
   padding-left: 26px;
 `
 C.labelAffix = css`
@@ -29,7 +29,7 @@ C.labelContainer = css`
   margin-bottom: 8px;
 
   &:last-child {
-    margin-bottom: 32px;
+    margin-bottom: 16px;
   }
 `
 C.labelPlaceholder = css`
@@ -54,7 +54,7 @@ C.labelCheck = css`
   background: ${s['color-bw-800']};
 `
 C.labelList = css`
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 `
 C.label = css`
   position: relative;
