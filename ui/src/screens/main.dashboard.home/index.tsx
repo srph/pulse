@@ -15,6 +15,13 @@ import axios from '~/lib/axios'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
 
 const C = {} as any
+C.year = css`
+  margin-bottom: 64px;
+`
+C.yearHeading = css`
+  margin: 0;
+  margin-bottom: 16px;
+`
 C.tracker = css`
   display: flex;
   align-items: center;
@@ -51,7 +58,10 @@ interface Props {
 }
 
 interface State {
-  trackers: AppDataTracker[]
+  data: {
+    year: number
+    trackers: AppDataTracker[]
+  }[]
   isLoading: boolean
 }
 
@@ -60,7 +70,7 @@ interface State {
  */
 class DashboardHome extends React.Component<Props, State> {
   state = {
-    trackers: [],
+    data: [],
     isLoading: false
   }
 
@@ -72,7 +82,7 @@ class DashboardHome extends React.Component<Props, State> {
     let response = await axios.get('/api/trackers')
 
     this.setState({
-      trackers: response.data,
+      data: response.data,
       isLoading: false
     })
   }
@@ -94,23 +104,29 @@ class DashboardHome extends React.Component<Props, State> {
             )
           )}
 
-          {this.state.trackers.map((tracker: AppDataTracker, i: number) =>
-            <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
-              <h4 css={C.trackerTitle}>
-                {tracker.name}
-              </h4>
+          {this.state.data.map((year, i) => (
+            <section css={C.year} key={year.year}>
+              <h5 css={C.yearHeading}>{year.year}</h5>
 
-              <span css={C.trackerDate}>
-                Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
-              </span>
+              {year.trackers.map((tracker: AppDataTracker, i: number) =>
+                <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
+                  <h4 css={C.trackerTitle}>
+                    {tracker.name}
+                  </h4>
 
-              <span css={C.trackerCaret}>
-                <i className='fa fa-angle-right' />
-              </span>
-            </Link>
-          )}
+                  <span css={C.trackerDate}>
+                    Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+                  </span>
 
-          {!this.state.isLoading && !this.state.trackers.length && (
+                  <span css={C.trackerCaret}>
+                    <i className='fa fa-angle-right' />
+                  </span>
+                </Link>
+              )}
+            </section>
+          ))}
+
+          {!this.state.isLoading && !this.state.data.length && (
             <UiEmptySlate img={empty}
               heading="You seem new!"
               text="Make your first tracker, and start reaching your goals!"

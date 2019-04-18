@@ -9,9 +9,20 @@ use Illuminate\Http\Request;
 class TrackersController extends Controller
 {
     public function index(Request $request) {
-        $trackers = $request->user()->trackers()->orderBy('updated_at', 'desc')->get();
+        $trackers = $request->user()->trackers()
+            ->orderBy('updated_at', 'desc')
+            ->get();
 
-        return response()->json($trackers);
+        $payload = $trackers->groupBy(function($tracker) {
+            return $tracker->created_at->year;
+        })->map(function($trackers, $year) {
+            return [
+                'year' => $year,
+                'trackers' => $trackers
+            ];
+        })->values();
+
+        return response()->json($payload);
     }
 
     public function store(\App\Http\Requests\StoreTracker $request) {
