@@ -7,6 +7,7 @@ import UiSpacer from '~/components/UiSpacer'
 import UiInputColorPicker from '~/components/UiInputColorPicker'
 import UiButton from '~/components/UiButton'
 import UiButtonLink from '~/components/UiButtonLink'
+import UiButtonAction from '~/components/UiButtonAction'
 import SharedPopover from '../SharedPopover'
 import randomColorHex from '~/utils/randomColorHex'
 
@@ -70,7 +71,9 @@ class CreateLabelPopover extends React.Component<Props, State> {
 
             <UiSpacer />
 
-            <UiButton type="submit" preset="primary" disabled={this.props.isLoading}>Create</UiButton>
+            <UiButtonAction>
+              <UiButton type="submit" preset="primary" disabled={this.props.isLoading}>Create</UiButton>
+            </UiButtonAction>
           </form>
         </SharedPopover>
       </UiDropdown.Menu>

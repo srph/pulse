@@ -6,6 +6,7 @@ import UiField from '~/components/UiField'
 import UiInput from '~/components/UiInput'
 import UiSpacer from '~/components/UiSpacer'
 import UiButtonLoader from '~/components/UiButtonLoader'
+import UiButtonAction from '~/components/UiButtonAction'
 import ls from 'linkstate'
 import axios from '~/lib/axios'
 import history from '~/lib/history'
@@ -51,11 +52,11 @@ class CreateTrackerModal extends React.Component<Props, State> {
 
           <UiSpacer />
 
-          <div css={css`text-align: right;`}>
+          <UiButtonAction>
             <UiButtonLoader isLoading={this.state.isLoading} preset="primary">
               Create Tracker
             </UiButtonLoader>
-          </div>
+          </UiButtonAction>
         </form>
       </UiModal>
     )

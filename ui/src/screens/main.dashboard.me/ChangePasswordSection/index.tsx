@@ -4,6 +4,7 @@ import UiButtonLoader from '~/components/UiButtonLoader'
 import UiSpacer from '~/components/UiSpacer'
 import UiInput from '~/components/UiInput'
 import UiField from '~/components/UiField'
+import UiButtonAction from '~/components/UiButtonAction'
 
 import axios from '~/lib/axios'
 import ls from 'linkstate'
@@ -58,7 +59,9 @@ class AvatarSection extends React.Component<{}, State> {
 
           <UiSpacer />
 
-          <UiButtonLoader preset="primary" isLoading={this.state.isLoading}>Update Password</UiButtonLoader>
+          <UiButtonAction>
+            <UiButtonLoader preset="primary" isLoading={this.state.isLoading}>Update Password</UiButtonLoader>
+          </UiButtonAction>
         </form>
       </UiFieldGroup>
     )

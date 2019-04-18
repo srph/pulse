@@ -4,6 +4,7 @@ import UiButtonLoader from '~/components/UiButtonLoader'
 import UiSpacer from '~/components/UiSpacer'
 import UiInput from '~/components/UiInput'
 import UiField from '~/components/UiField'
+import UiButtonAction from '~/components/UiButtonAction'
 
 import { Subscribe } from 'unstated'
 import { AuthContainer } from '~/containers'
@@ -58,7 +59,9 @@ class PersonalDetailsSection extends React.Component<InjectedProps, State> {
 
           <UiSpacer />
 
-          <UiButtonLoader preset="primary" isLoading={this.state.isLoading}>Update Profile</UiButtonLoader>
+          <UiButtonAction>
+            <UiButtonLoader preset="primary" isLoading={this.state.isLoading}>Update Profile</UiButtonLoader>
+          </UiButtonAction>
         </form>
       </UiFieldGroup>
     )

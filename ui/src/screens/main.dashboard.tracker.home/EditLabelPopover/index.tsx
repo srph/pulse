@@ -6,6 +6,7 @@ import UiInput from '~/components/UiInput'
 import UiSpacer from '~/components/UiSpacer'
 import UiInputColorPicker from '~/components/UiInputColorPicker'
 import UiButton from '~/components/UiButton'
+import UiButtonAction from '~/components/UiButtonAction'
 import SharedPopover from '../SharedPopover'
 
 interface Props {
@@ -69,7 +70,9 @@ class EditLabelPopover extends React.Component<Props, State> {
 
             <UiSpacer />
 
-            <UiButton type="submit" preset="primary" disabled={this.props.isLoading}>Update</UiButton>
+            <UiButtonAction>
+              <UiButton type="submit" preset="primary" disabled={this.props.isLoading}>Update</UiButton>
+            </UiButtonAction>
           </form>
         </SharedPopover>
       </UiDropdown.Menu>
