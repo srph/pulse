@@ -31,7 +31,7 @@ C.iconIsInfo = css`
 
 C.iconIsSuccess = css`
   color: ${s['color-green-200']};
-  background: ${s['color-green-400']};
+  background: ${s['color-green-500']};
 `
 
 C.iconIsWarning = css`

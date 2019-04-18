@@ -6,6 +6,7 @@ import isTrackerFinished from '~/utils/tracker/isTrackerFinished'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntryToday from '~utils/tracker/getEntryToday'
 import getMissStreak from '~utils/tracker/getMissStreak'
+import getStreak from '~utils/tracker/getStreak'
 
 interface Props {
   tracker: AppDataTracker
@@ -15,6 +16,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
   render() {
     const { tracker } = this.props
 
+    // If the year concluded.
     if (isTrackerFinished(tracker)) {
       console.log('finished')
 
@@ -25,6 +27,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
       })
     }
 
+    // If the tracker is clean
     if (!Object.values(tracker.entries).length) {
       console.log('empty')
 
@@ -35,11 +38,23 @@ class LabelMenuStreak extends React.Component<Props, {}> {
       })
     }
 
+    // If the user has caught up
+    if (getEntryToday(tracker)) {
+      const streak = getStreak(tracker)
+
+      return this.renderContent({
+        text: streak >= 3
+          ? `Good job! You're on a ${streak}-day streak.`
+          : `You're all caught up.`,
+        type: 'success',
+        icon: 'fa fa-star'
+      })
+    }
+
     const missStreak = getMissStreak(tracker)
 
+    // If the user hasn't updated in a while
     if (missStreak >= 3) {
-      console.log('miss streak', missStreak)
-
       return this.renderContent({
         text: `It's been ${missStreak} days. How are you?`,
         type: 'warning',
@@ -47,19 +62,11 @@ class LabelMenuStreak extends React.Component<Props, {}> {
       })
     }
 
-    if (getEntryToday(tracker)) {
-      console.log('today')
-
-      return this.renderContent({
-        text: `Good job! You're all caught up.`,
-        type: 'success',
-        icon: 'fa fa-star'
-      })
-    }
-
-    console.log('null')
-
-    return null
+    return this.renderContent({
+      text: 'How was your day?',
+      type: 'info',
+      icon: 'fa fa-magic'
+    })
   }
 
   renderContent({ text, type, icon }: {
