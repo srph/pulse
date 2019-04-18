@@ -52,5 +52,6 @@ export default {
   'z-index-tracker-calendar-labels': 600,
   'z-index-wizard-content': 899,
   'z-index-wizard-footer': 900,
-  'z-index-popover': 1000
+  'z-index-popover': 1000,
+  'z-index-modal': 1100
 }
