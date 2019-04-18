@@ -44,7 +44,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
 
       return this.renderContent({
         text: streak >= 3
-          ? `Good job! You're on a ${streak}-day streak.`
+          ? `Good job. You're on a ${streak}-day streak. Keep it up!`
           : `You're all caught up.`,
         type: 'success',
         icon: 'fa fa-star'
@@ -56,7 +56,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
     // If the user hasn't updated in a while
     if (missStreak >= 3) {
       return this.renderContent({
-        text: `It's been ${missStreak} days. How are you?`,
+        text: `Your last update was ${missStreak} days ago. How are you?`,
         type: 'warning',
         icon: 'fa fa-exclamation'
       })

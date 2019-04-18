@@ -16,5 +16,5 @@ export default function getMissStreak(tracker: AppDataTracker): number {
   const sorted: Date[] = entries.map(entry => parse(entry.entry_date))
     .sort((a: Date, b: Date) => a.getTime() - b.getTime())
 
-  return differenceInDays(parse(today), sorted[sorted.length - 2])
+  return differenceInDays(parse(today), sorted[sorted.length - 1])
 }
