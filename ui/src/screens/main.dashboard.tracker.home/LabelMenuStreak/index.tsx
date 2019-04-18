@@ -3,6 +3,7 @@ import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import C from './styles'
 import isTrackerFinished from '~/utils/tracker/isTrackerFinished'
+import isTrackerFresh from '~/utils/tracker/isTrackerFresh'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntryToday from '~utils/tracker/getEntryToday'
 import getMissStreak from '~utils/tracker/getMissStreak'
@@ -51,15 +52,17 @@ class LabelMenuStreak extends React.Component<Props, {}> {
       })
     }
 
-    const missStreak = getMissStreak(tracker)
+    // If the user hasn't updated the old tracker in a while.
+    if (!isTrackerFresh(tracker)) {
+      const missStreak = getMissStreak(tracker)
 
-    // If the user hasn't updated in a while
-    if (missStreak >= 3) {
-      return this.renderContent({
-        text: `Your last update was ${missStreak} days ago. How are you?`,
-        type: 'warning',
-        icon: 'fa fa-exclamation'
-      })
+      if (missStreak >= 3) {
+        return this.renderContent({
+          text: `Your last update was ${missStreak} days ago. How have you been?`,
+          type: 'warning',
+          icon: 'fa fa-exclamation'
+        })
+      }
     }
 
     return this.renderContent({
