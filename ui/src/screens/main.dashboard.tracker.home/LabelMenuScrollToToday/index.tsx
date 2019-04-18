@@ -4,6 +4,7 @@ import { jsx, css } from '@emotion/core'
 import UiButton from '~/components/UiButton'
 import s from '~/styles'
 import constants from '../constants'
+import getTrackerYear from '~/utils/tracker/getTrackerYear'
 
 const C = {} as any
 C.container = css`
@@ -21,8 +22,16 @@ C.border = css`
   pointer-events: none;
 `
 
-class LabelMenuScrollToToday extends React.Component {
+interface Props {
+  tracker: AppDataTracker
+}
+
+class LabelMenuScrollToToday extends React.Component<Props, {}> {
   render() {
+    if (getTrackerYear(this.props.tracker) !== new Date().getFullYear()) {
+      return null
+    }
+
     return (
       <div css={C.container}>
         <UiButton isBlock preset="primary" onClick={this.handleClick}>

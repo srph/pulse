@@ -98,7 +98,7 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
 
           <LabelMenuStreak tracker={tracker} />
 
-          <LabelMenuScrollToToday />
+          <LabelMenuScrollToToday tracker={tracker} />
         </div>
       </div>
     )
