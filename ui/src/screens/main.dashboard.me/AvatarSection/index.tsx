@@ -83,7 +83,7 @@ class AvatarSection extends React.Component<InjectedProps, State> {
               <div css={[C.avatar, this.props.auth.avatar === avatar && C.avatarIsSelected]}>
                 <img css={C.img} src={avatar} alt="Avatar" />
 
-                <BufferDisplay flag={this.props.auth.avatar === avatar} timeout={4100}>
+                <BufferDisplay flag={this.props.auth.avatar === avatar} timeout={4000}>
                   <span css={C.success}>
                     <i className='fa fa-check' />
                   </span>
