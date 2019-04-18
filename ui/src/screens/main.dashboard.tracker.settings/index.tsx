@@ -6,6 +6,7 @@ import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import UiInput from '~/components/UiInput'
 import UiField from '~/components/UiField'
 import UiButtonLoader from '~/components/UiButtonLoader'
+import UiButtonAction from '~/components/UiButtonAction'
 import UiSpacer from '~/components/UiSpacer'
 import ls from 'linkstate'
 import UiGrid from '~components/UiGrid';
@@ -52,9 +53,11 @@ class DashboardTrackerStats extends React.Component<ClonedProps, State> {
 
               <UiSpacer />
 
-              <UiButtonLoader preset="primary" isLoading={this.state.isLoading}>
-                Update Tracker
-              </UiButtonLoader>
+              <UiButtonAction>
+                <UiButtonLoader preset="primary" isLoading={this.state.isLoading}>
+                  Update Tracker
+                </UiButtonLoader>
+              </UiButtonAction>
             </form>
           </UiPanel>
         </UiGrid.Column>
