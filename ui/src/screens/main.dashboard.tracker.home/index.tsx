@@ -188,7 +188,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
               {columns.map((_, i) => (
                 <div css={C.bodyColumn} key={i}>
                   {boxes.map((_, j) => {
-                    const date = new Date(year, i - 1, j)
+                    const date = new Date(year, i - 1, j + 1)
                     const isDateToday = isToday(date)
                     const isDateBeforeCreationDate = isBefore(date, creationDate)
                     const isDateBeforeToday = isBefore(date, today)
@@ -205,7 +205,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                         <div css={C.boxInner}>
                           {i === 0 && (
                             <div css={C.date} key={j}>
-                              {j}
+                              {j + 1}
                             </div>
                           )}
 
