@@ -59,7 +59,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
       if (missStreak >= 3) {
         return this.renderContent({
           // We need to add 1 to the displayed streak for semantics.
-          // (i.e., a 5 day miss streak would mean you last update was 6 days ago)
+          // (i.e., a 5 day miss streak would mean your last update was 6 days ago)
           text: `Your last update was ${missStreak + 1} days ago. How have you been?`,
           type: 'warning',
           icon: 'fa fa-exclamation'
