@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import * as React from 'react'
 import Helmet from 'react-helmet'
-import { jsx, css, keyframes } from '@emotion/core'
+import { jsx, css } from '@emotion/core'
 import { format, isToday, isBefore, parse, isSameDay } from 'date-fns'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntry from '~/utils/tracker/getEntry'
@@ -155,21 +155,6 @@ C.anchor = css`
   top: -64px;
   pointer-events: none;
 `
-const kf = keyframes`
-  0% {
-    display: none;
-    opacity: 0;
-  }
-
-  90% {
-    display: flex;
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-`
 C.tooltip = css`
   position: absolute;
   top: -8px;
@@ -188,12 +173,7 @@ C.tooltip = css`
   transition: 200ms opacity ease;
 
   .js-calendar-box-tooltip-hack:hover & {
-    /* display: flex; */
     opacity: 1;
-    /* transition-delay: 500ms;
-    animation-name: ${kf};
-    animation-duration: 2200ms;
-    animation-iteration-count: 1; */
   }
 `
 C.tooltipIsBeforeCreationDate = css`
