@@ -8,9 +8,7 @@ import ContainerWidthSizer from '~/components/ContainerWidthSizer'
 import UiPanel from '~/components/UiPanel'
 import padDate from '~/utils/padDate'
 import { format } from 'date-fns'
-import random from '~/utils/random';
 import getTrackerYear from '~/utils/tracker/getTrackerYear';
-import C from '~screens/main.dashboard.tracker.home/LabelMenuStreak/styles';
 
 const styles = {
   chart: {

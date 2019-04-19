@@ -26,7 +26,7 @@ export default class Position extends React.Component<PositionProps, PositionSta
 
   componentDidMount() {
     const targetBox = this.props.target().getBoundingClientRect()
-    const tooltipBox = ReactDOM.findDOMNode(this).getBoundingClientRect()
+    const tooltipBox = (ReactDOM.findDOMNode(this) as HTMLDivElement).getBoundingClientRect()
 
     let position: PositionState
     if (this.props.placement === 'left') {
