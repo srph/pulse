@@ -6,7 +6,7 @@ export default {
   },
   app: {
     title: 'Pulse',
-    tagline: 'An entry journal that lets you keep track of your goals.',
-    description: 'Pulse is an entry journal that lets you keep track of your goals.'
+    tagline: 'An annual bullet journal to help you track your progress. ',
+    description: 'Pulse is an annual bullet journal to help you track your progress. '
   }
 }
