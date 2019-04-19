@@ -1,14 +1,15 @@
 /** @jsx jsx */
 import * as React from 'react'
 import Helmet from 'react-helmet'
-import { jsx, css } from '@emotion/core'
-import { format, getDaysInMonth, isToday, isBefore, parse } from 'date-fns'
+import { jsx, css, keyframes } from '@emotion/core'
+import { format, isToday, isBefore, parse, isSameDay } from 'date-fns'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntry from '~/utils/tracker/getEntry'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import LabelMenu from './LabelMenu'
 import s from '~/styles'
 import constants from './constants';
+import UiTooltip from '~components/UiTooltip';
 
 const C = {} as any
 C.wrapper = css`
@@ -154,6 +155,50 @@ C.anchor = css`
   top: -64px;
   pointer-events: none;
 `
+const kf = keyframes`
+  0% {
+    display: none;
+    opacity: 0;
+  }
+
+  90% {
+    display: flex;
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+`
+C.tooltip = css`
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  /* display: none; */
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  color: ${s['color-bw-100']};
+  background: ${s['color-bw-600']};
+  border-radius: 50%;
+  opacity: 0;
+  transition: 200ms opacity ease;
+
+  .js-calendar-box-tooltip-hack:hover & {
+    /* display: flex; */
+    opacity: 1;
+    /* transition-delay: 500ms;
+    animation-name: ${kf};
+    animation-duration: 2200ms;
+    animation-iteration-count: 1; */
+  }
+`
+C.tooltipIsBeforeCreationDate = css`
+  background: ${s['color-bw-400']};
+`
 
 const columns = Array(13).fill(0)
 const boxes = Array(31).fill(0)
@@ -190,7 +235,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                   {boxes.map((_, j) => {
                     const date = new Date(year, i - 1, j + 1)
                     const isDateToday = isToday(date)
-                    const isDateBeforeCreationDate = isBefore(date, creationDate)
+                    const isDateBeforeCreationDate = isBefore(date, creationDate) && !isSameDay(date, creationDate)
                     const isDateBeforeToday = isBefore(date, today)
                     const isBeforeOrToday = isDateBeforeToday || isDateToday
 
@@ -212,7 +257,7 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                           {i > 0 && (
                             <React.Fragment>
                               {isBeforeOrToday && (
-                                <div css={[C.box, isDateBeforeCreationDate && C.boxIsBeforeCreation]}>
+                                <div css={[C.box, isDateBeforeCreationDate && C.boxIsBeforeCreation]} className="js-calendar-box-tooltip-hack">
                                   {Boolean(entry) && <div css={[C.entry, isDateToday && C.entryIsToday]} style={{ background: entry.label.color }} />}
 
                                   {isDateToday && (
@@ -232,11 +277,21 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                                     />
                                   </button>
 
+                                  {isDateBeforeCreationDate && <UiTooltip text="The tracker was created after this date." attachment="right" delay={1000}>
+                                    <div css={[C.tooltip, C.tooltipIsBeforeCreationDate]}><i className='fa fa-question' /></div>
+                                  </UiTooltip>}
+
                                   <div className={isDateToday ? constants.todayAnchorClassName : ''} css={C.anchor} />
                                 </div>
                               )}
 
-                              {!isBeforeOrToday && <div css={[C.box, !isBeforeOrToday && C.boxIsDisabled]} />}
+                              {!isBeforeOrToday && (
+                                <div css={[C.box, !isBeforeOrToday && C.boxIsDisabled]} className='js-calendar-box-tooltip-hack'>
+                                  <UiTooltip text="You cannot fill this date yet." attachment="right" delay={500}>
+                                    <div css={C.tooltip}><i className='fa fa-question' /></div>
+                                  </UiTooltip>
+                                </div>
+                              )}
                             </React.Fragment>
                           )}
                         </div>

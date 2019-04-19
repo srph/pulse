@@ -96,8 +96,6 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
 
     return (
       <div>
-        <h1>Overall Insight</h1>
-
         <UiPanel>
           <div css={C.list}>
             {this.props.tracker.labels.map((label, i) => (
