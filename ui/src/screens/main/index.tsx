@@ -24,8 +24,11 @@ class MainScreen extends React.Component<OwnProps, State> {
   async componentDidMount() {
     try {
       await this.props.auth.getUserData()
-    } catch(e) {
-      this.props.error.set(500)
+    } catch(err) {
+      // Handle issues that aren't expired tokens.
+      if (err.response && err.response.status !== 401) {
+        this.props.error.set(500)
+      }
     } finally {
       this.setState({ isLoading: false })
     }

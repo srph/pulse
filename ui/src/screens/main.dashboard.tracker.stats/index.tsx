@@ -4,21 +4,18 @@ import { jsx, css } from '@emotion/core'
 import s from '~/styles'
 import { VictoryGroup, VictoryArea, VictoryLine, VictoryScatter, VictoryChart, VictoryAxis } from 'victory'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
+import ContainerWidthSizer from '~/components/ContainerWidthSizer'
+import UiPanel from '~/components/UiPanel'
 import padDate from '~/utils/padDate'
 import { format } from 'date-fns'
 import random from '~/utils/random';
 import getTrackerYear from '~/utils/tracker/getTrackerYear';
-
-const box = {
-  width: 600,
-  height: 300
-}
+import C from '~screens/main.dashboard.tracker.home/LabelMenuStreak/styles';
 
 const styles = {
   chart: {
     parent: {
-      height: box.height,
-      width: box.width
+      height: 400,
       // border: `1px solid ${s['color-bw-600']}`
     }
   },
@@ -30,6 +27,7 @@ const styles = {
     tickLabels: {
       fill: s['color-bw-700'],
       fontSize: 14,
+      fontWeight: 'bold',
       fontFamily: s['font-family']
     }
   },
@@ -43,7 +41,7 @@ const styles = {
       fill: s['color-bw-600']
     },
     grid: {
-      stroke: s['color-bw-400'],
+      stroke: s['color-bw-200'],
       strokeWidth: 1
     }
   },
@@ -55,6 +53,31 @@ const styles = {
     }
   }
 }
+
+const C = {} as any
+C.list = css`
+  display: flex;
+`
+C.label = css`
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid ${s['color-bw-200']};
+  border-radius: ${s['border-radius']}px;
+
+  &:not(:last-child) {
+    margin-right: 32px;
+  }
+`
+C.labelCircle = css`
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  margin-right: 12px;
+`
+C.labelText = css`
+  color: ${s['color-bw-700']};
+`
 
 class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
   render() {
@@ -73,48 +96,64 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
 
     return (
       <div>
-        <h4>Entry Count / Label</h4>
-        <VictoryChart style={styles.chart} domain={{ y: [0, 31] }} height={box.height} width={box.width}>
-          <VictoryAxis crossAxis style={styles.xAxis} />
-          <VictoryAxis dependentAxis crossAxis orientation="left" style={styles.yAxis} />
-          <VictoryGroup
-            style={styles.group}
-            colorScale={this.props.tracker.labels.map(label => label.color)}
-            offset={16}>
-            {data.map((data, i) => (
-              <VictoryLine
-                key={i}
-                interpolation="stepAfter"
-                data={data}
-              />
-            ))}
-          </VictoryGroup>
+        <h1>Overall Insight</h1>
 
-          <VictoryGroup
-            style={styles.group}
-            colorScale={this.props.tracker.labels.map(label => label.color)}
-            offset={16}>
-            {data.map((data, i) => (
-              <VictoryArea
-              key={i}
-                interpolation="stepAfter"
-                data={data}
-              />
+        <UiPanel>
+          <div css={C.list}>
+            {this.props.tracker.labels.map((label, i) => (
+              <div css={C.label}>
+                <div css={C.labelCircle} style={{ background: label.color}} />
+                <span css={C.labelText}>{label.name}</span>
+              </div>
             ))}
-          </VictoryGroup>
+          </div>
 
-          <VictoryGroup
-            style={styles.group}
-            colorScale={this.props.tracker.labels.map(label => label.color)}
-            offset={16}>
-            {data.map((data, i) => (
-              <VictoryScatter
-              key={i}
-                data={data}
-              />
-            ))}
-          </VictoryGroup>
-        </VictoryChart>
+          <ContainerWidthSizer>
+            {({ width }) => (
+              <VictoryChart style={styles.chart} domain={{ y: [0, 31] }} height={400} width={width}>
+                <VictoryAxis crossAxis style={styles.xAxis} />
+                <VictoryAxis dependentAxis crossAxis orientation="left" style={styles.yAxis} />
+                <VictoryGroup
+                  style={styles.group}
+                  colorScale={this.props.tracker.labels.map(label => label.color)}
+                  offset={16}>
+                  {data.map((data, i) => (
+                    <VictoryLine
+                      key={i}
+                      interpolation="stepAfter"
+                      data={data}
+                    />
+                  ))}
+                </VictoryGroup>
+
+                <VictoryGroup
+                  style={styles.group}
+                  colorScale={this.props.tracker.labels.map(label => label.color)}
+                  offset={16}>
+                  {data.map((data, i) => (
+                    <VictoryArea
+                    key={i}
+                      interpolation="stepAfter"
+                      data={data}
+                    />
+                  ))}
+                </VictoryGroup>
+
+                <VictoryGroup
+                  style={styles.group}
+                  colorScale={this.props.tracker.labels.map(label => label.color)}
+                  offset={16}>
+                  {data.map((data, i) => (
+                    <VictoryScatter
+                    key={i}
+                      data={data}
+                    />
+                  ))}
+                </VictoryGroup>
+              </VictoryChart>
+            )}
+          </ContainerWidthSizer>
+        </UiPanel>
       </div>
     )
   }
@@ -124,7 +163,7 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
     const yy = getTrackerYear(this.props.tracker)
     const mm = padDate(month)
     const date = new RegExp(`^${yy}-${mm}`)
-    return entries.filter(entry => entry.label.id === label.id && date.test(entry.entry_date)).length || random(10, 31)
+    return entries.filter(entry => entry.label.id === label.id && date.test(entry.entry_date)).length
   }
 }
 
