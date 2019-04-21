@@ -11,16 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return response()->json([
-        'success' => true,
-        'message' => 'Welcome to Pulse API'
-    ]);
-});
+// Route::get('/', function () {
+//     return response()->json([
+//         'success' => true,
+//         'message' => 'Welcome to Pulse API'
+//     ]);
+// });
 
-Auth::routes([
-    'register' => false
-]);
+// Auth::routes([
+//     'register' => false
+// ]);
 
-// ¯\_(ツ)_/¯
-Route::get('/logout', 'Auth\LoginController@logout');
+// // ¯\_(ツ)_/¯
+// Route::get('/logout', 'Auth\LoginController@logout');
