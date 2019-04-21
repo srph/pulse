@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
 
         $user = factory(App\User::class)->make([
             'email' => 'admin@admin.com'
-            'is_admin' => true
         ]);
 
         $user->save();
