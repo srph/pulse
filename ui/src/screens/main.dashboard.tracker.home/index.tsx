@@ -2,14 +2,14 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
 import { jsx, css } from '@emotion/core'
-import { format, isToday, isBefore, parse, isSameDay } from 'date-fns'
+import { format, isToday, isBefore, parse, isSameDay, getDaysInMonth } from 'date-fns'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntry from '~/utils/tracker/getEntry'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import LabelMenu from './LabelMenu'
 import s from '~/styles'
-import constants from './constants';
-import UiTooltip from '~components/UiTooltip';
+import constants from './constants'
+import UiTooltip from '~components/UiTooltip'
 
 const C = {} as any
 C.wrapper = css`
@@ -120,7 +120,7 @@ C.entry = css`
   border-radius: ${s['border-radius']}px;
   transform: translateY(-50%) translateX(-50%);
 `
-C.entryIsToday = css` 
+C.entryIsToday = css`
   top: calc(50% + 9px);
 `
 C.fill = css`
@@ -210,76 +210,99 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
             </div>
 
             <div css={C.body}>
-              {columns.map((_, i) => (
-                <div css={C.bodyColumn} key={i}>
-                  {boxes.map((_, j) => {
-                    const date = new Date(year, i - 1, j + 1)
-                    const isDateToday = isToday(date)
-                    const isDateBeforeCreationDate = isBefore(date, creationDate) && !isSameDay(date, creationDate)
-                    const isDateBeforeToday = isBefore(date, today)
-                    const isBeforeOrToday = isDateBeforeToday || isDateToday
+              {columns.map((_, i) => {
+                // We're skipping the first column (day column)
+                const numberOfDays = i === 0 ? 0 : getDaysInMonth(new Date(year, i - 1))
 
-                    const entry = getEntry({
-                      tracker: this.props.tracker,
-                      month: i,
-                      day: j + 1
-                    })
+                return (
+                  <div css={C.bodyColumn} key={i}>
+                    {boxes.map((_, j) => {
+                      const date = new Date(year, i - 1, j + 1)
+                      const isDateToday = isToday(date)
+                      const isDateBeforeCreationDate = isBefore(date, creationDate) && !isSameDay(date, creationDate)
+                      const isDateBeforeToday = isBefore(date, today)
+                      const isBeforeOrToday = isDateBeforeToday || isDateToday
 
-                    return (
-                      <div css={C.boxContainer} key={j}>
-                        <div css={C.boxInner}>
-                          {i === 0 && (
-                            <div css={C.date} key={j}>
-                              {j + 1}
-                            </div>
-                          )}
+                      const entry = getEntry({
+                        tracker: this.props.tracker,
+                        month: i,
+                        day: j + 1
+                      })
 
-                          {i > 0 && (
-                            <React.Fragment>
-                              {isBeforeOrToday && (
-                                <div css={[C.box, isDateBeforeCreationDate && C.boxIsBeforeCreation]} className="js-calendar-box-tooltip-hack">
-                                  {Boolean(entry) && <div css={[C.entry, isDateToday && C.entryIsToday]} style={{ background: entry.label.color }} />}
+                      return (
+                        <div css={C.boxContainer} key={j}>
+                          <div css={C.boxInner}>
+                            {i === 0 && (
+                              <div css={C.date} key={j}>
+                                {j + 1}
+                              </div>
+                            )}
 
-                                  {isDateToday && (
-                                    <div css={C.today}>
-                                      <div css={C.todayText}>Today</div>
-                                    </div>
-                                  )}
+                            {i > 0 && j < numberOfDays && (
+                              <React.Fragment>
+                                {isBeforeOrToday && (
+                                  <div
+                                    css={[C.box, isDateBeforeCreationDate && C.boxIsBeforeCreation]}
+                                    className="js-calendar-box-tooltip-hack">
+                                    {Boolean(entry) && (
+                                      <div
+                                        css={[C.entry, isDateToday && C.entryIsToday]}
+                                        style={{ background: entry.label.color }}
+                                      />
+                                    )}
 
-                                  <button
-                                    onClick={() => this.props.onEntryClick(i, j + 1)}
-                                    type="button"
-                                    css={C.fill}
-                                    style={isDateToday ? { top: 8 } : {}}>
-                                    <div
-                                      css={C.fillCircle}
-                                      style={{ background: tracker.labels[this.props.activeLabelIndex].color }}
-                                    />
-                                  </button>
+                                    {isDateToday && (
+                                      <div css={C.today}>
+                                        <div css={C.todayText}>Today</div>
+                                      </div>
+                                    )}
 
-                                  {isDateBeforeCreationDate && <UiTooltip text="The tracker was created after this date." attachment="right" delay={1000}>
-                                    <div css={[C.tooltip, C.tooltipIsBeforeCreationDate]}><i className='fa fa-question' /></div>
-                                  </UiTooltip>}
+                                    <button
+                                      onClick={() => this.props.onEntryClick(i, j + 1)}
+                                      type="button"
+                                      css={C.fill}
+                                      style={isDateToday ? { top: 8 } : {}}>
+                                      <div
+                                        css={C.fillCircle}
+                                        style={{ background: tracker.labels[this.props.activeLabelIndex].color }}
+                                      />
+                                    </button>
 
-                                  <div className={isDateToday ? constants.todayAnchorClassName : ''} css={C.anchor} />
-                                </div>
-                              )}
+                                    {isDateBeforeCreationDate && (
+                                      <UiTooltip
+                                        text="The tracker was created after this date."
+                                        attachment="right"
+                                        delay={1000}>
+                                        <div css={[C.tooltip, C.tooltipIsBeforeCreationDate]}>
+                                          <i className="fa fa-question" />
+                                        </div>
+                                      </UiTooltip>
+                                    )}
 
-                              {!isBeforeOrToday && (
-                                <div css={[C.box, !isBeforeOrToday && C.boxIsDisabled]} className='js-calendar-box-tooltip-hack'>
-                                  <UiTooltip text="You cannot fill this date yet." attachment="right" delay={500}>
-                                    <div css={C.tooltip}><i className='fa fa-question' /></div>
-                                  </UiTooltip>
-                                </div>
-                              )}
-                            </React.Fragment>
-                          )}
+                                    <div className={isDateToday ? constants.todayAnchorClassName : ''} css={C.anchor} />
+                                  </div>
+                                )}
+
+                                {!isBeforeOrToday && (
+                                  <div
+                                    css={[C.box, !isBeforeOrToday && C.boxIsDisabled]}
+                                    className="js-calendar-box-tooltip-hack">
+                                    <UiTooltip text="You cannot fill this date yet." attachment="right" delay={500}>
+                                      <div css={C.tooltip}>
+                                        <i className="fa fa-question" />
+                                      </div>
+                                    </UiTooltip>
+                                  </div>
+                                )}
+                              </React.Fragment>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              ))}
+                      )
+                    })}
+                  </div>
+                )
+              })}
             </div>
           </div>
 
