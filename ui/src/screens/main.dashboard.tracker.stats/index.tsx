@@ -100,7 +100,7 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
         <UiPanel>
           <div css={C.list}>
             {this.props.tracker.labels.map((label, i) => (
-              <div css={C.label}>
+              <div css={C.label} key={i}>
                 <div css={C.labelCircle} style={{ background: label.color}} />
                 <span css={C.labelText}>{label.name}</span>
               </div>
