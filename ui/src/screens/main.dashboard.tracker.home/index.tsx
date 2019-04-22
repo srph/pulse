@@ -180,7 +180,7 @@ C.tooltipIsBeforeCreationDate = css`
   background: ${s['color-bw-400']};
 `
 
-const columns = Array(13).fill(0)
+const columns = Array(12).fill(0)
 const boxes = Array(31).fill(0)
 
 class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
@@ -202,22 +202,35 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
         <div css={C.wrapper}>
           <div css={C.calendar}>
             <div css={C.heading}>
+              <div css={C.headingColumn} />
+
               {columns.map((_, i) => (
                 <div css={C.headingColumn} key={i}>
-                  {i > 0 && format(new Date(year, i - 1), 'MMM')}
+                  {format(new Date(year, i), 'MMM')}
                 </div>
               ))}
             </div>
 
             <div css={C.body}>
+              <div css={C.bodyColumn}>
+                {boxes.map((_, j) => (
+                  <div css={C.boxContainer} key={j}>
+                    <div css={C.boxInner}>
+                      <div css={C.date} key={j}>
+                        {j + 1}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
               {columns.map((_, i) => {
-                // We're skipping the first column (day column)
-                const numberOfDays = i === 0 ? 0 : getDaysInMonth(new Date(year, i - 1))
+                const numberOfDays = getDaysInMonth(new Date(year, i))
 
                 return (
                   <div css={C.bodyColumn} key={i}>
                     {boxes.map((_, j) => {
-                      const date = new Date(year, i - 1, j + 1)
+                      const date = new Date(year, i, j + 1)
                       const isDateToday = isToday(date)
                       const isDateBeforeCreationDate = isBefore(date, creationDate) && !isSameDay(date, creationDate)
                       const isDateBeforeToday = isBefore(date, today)
@@ -225,20 +238,15 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
 
                       const entry = getEntry({
                         tracker: this.props.tracker,
-                        month: i,
+                        // We'll add 1 here since our database' months start with 1, not 0 (unlike Date)
+                        month: i + 1,
                         day: j + 1
                       })
 
                       return (
                         <div css={C.boxContainer} key={j}>
                           <div css={C.boxInner}>
-                            {i === 0 && (
-                              <div css={C.date} key={j}>
-                                {j + 1}
-                              </div>
-                            )}
-
-                            {i > 0 && j < numberOfDays && (
+                            {j < numberOfDays && (
                               <React.Fragment>
                                 {isBeforeOrToday && (
                                   <div
@@ -258,7 +266,10 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                                     )}
 
                                     <button
-                                      onClick={() => this.props.onEntryClick(i, j + 1)}
+                                      onClick={() => {
+                                        // We'll add 1 here since our database' months start with 1, not 0 (unlike Date)
+                                        this.props.onEntryClick(i + 1, j + 1)
+                                      }}
                                       type="button"
                                       css={C.fill}
                                       style={isDateToday ? { top: 8 } : {}}>
