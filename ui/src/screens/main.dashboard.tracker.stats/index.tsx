@@ -8,12 +8,12 @@ import ContainerWidthSizer from '~/components/ContainerWidthSizer'
 import UiPanel from '~/components/UiPanel'
 import padDate from '~/utils/padDate'
 import { format } from 'date-fns'
-import getTrackerYear from '~/utils/tracker/getTrackerYear';
+import getTrackerYear from '~/utils/tracker/getTrackerYear'
 
 const styles = {
   chart: {
     parent: {
-      height: 400,
+      height: 400
       // border: `1px solid ${s['color-bw-600']}`
     }
   },
@@ -48,6 +48,42 @@ const styles = {
       strokeWidth: 2,
       strokeLinecap: 'round',
       fillOpacity: 0.5
+    }
+  },
+  area: {
+    data: {
+      // fill: d => {
+      //   return `linear-gradient(90deg, 0)`
+      // }
+    }
+  },
+  scatter: {
+    data: {
+      fill: d => d.color,
+      fillOpacity: 1,
+      strokeWidth: 0
+    }
+  },
+  scatterFaded: {
+    data: {
+      fill: 'transparent',
+      stroke: d => d.color,
+      strokeWidth: 2,
+      opacity: 0.5
+      // fill: d => d.color,
+      // fillOpacity: 0.5,
+      // strokeWidth: 0
+    }
+  },
+  scatterMostFaded: {
+    data: {
+      fill: 'transparent',
+      stroke: d => d.color,
+      strokeWidth: 2,
+      opacity: 0.2
+      // fill: d => d.color,
+      // fillOpacity: 0.2,
+      // strokeWidth: 0
     }
   }
 }
@@ -86,14 +122,18 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
       // Date months are 0-based
       .map((_, i: number) => format(new Date(year, i, 1), 'MMM'))
 
-    const data = this.props.tracker.labels.map(label => (
+    const data = this.props.tracker.labels.map(label =>
       months.map((month, i) => ({
         x: month,
         // We'll start from 1 til 12 (instead of 0-11) because
         // that's how our database dates look like.
-        y: this.getEntryCountForLabel(i + 1, label)
+        y: this.getEntryCountForLabel(i + 1, label),
+        // Make it available on style
+        color: label.color
       }))
-    ))
+    )
+
+    const colorScale = this.props.tracker.labels.map(label => label.color)
 
     return (
       <div>
@@ -101,7 +141,7 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
           <div css={C.list}>
             {this.props.tracker.labels.map((label, i) => (
               <div css={C.label} key={i}>
-                <div css={C.labelCircle} style={{ background: label.color}} />
+                <div css={C.labelCircle} style={{ background: label.color }} />
                 <span css={C.labelText}>{label.name}</span>
               </div>
             ))}
@@ -114,39 +154,46 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
                 <VictoryAxis dependentAxis crossAxis orientation="left" style={styles.yAxis} />
                 <VictoryGroup
                   style={styles.group}
-                  colorScale={this.props.tracker.labels.map(label => label.color)}
+                  colorScale={colorScale}
                   offset={16}>
                   {data.map((data, i) => (
-                    <VictoryLine
-                      key={i}
-                      interpolation="stepAfter"
-                      data={data}
-                    />
+                    <VictoryLine key={i} interpolation="stepAfter" data={data} />
                   ))}
                 </VictoryGroup>
 
                 <VictoryGroup
                   style={styles.group}
-                  colorScale={this.props.tracker.labels.map(label => label.color)}
+                  colorScale={colorScale}
                   offset={16}>
                   {data.map((data, i) => (
-                    <VictoryArea
-                    key={i}
-                      interpolation="stepAfter"
-                      data={data}
-                    />
+                    <VictoryArea style={styles.area} key={i} interpolation="stepAfter" data={data} />
                   ))}
                 </VictoryGroup>
 
                 <VictoryGroup
                   style={styles.group}
-                  colorScale={this.props.tracker.labels.map(label => label.color)}
+                  colorScale={colorScale}
                   offset={16}>
                   {data.map((data, i) => (
-                    <VictoryScatter
-                    key={i}
-                      data={data}
-                    />
+                    <VictoryScatter size={8} style={styles.scatterMostFaded} key={i} data={data} />
+                  ))}
+                </VictoryGroup>
+
+                <VictoryGroup
+                  style={styles.group}
+                  colorScale={colorScale}
+                  offset={16}>
+                  {data.map((data, i) => (
+                    <VictoryScatter size={5} style={styles.scatterFaded} key={i} data={data} />
+                  ))}
+                </VictoryGroup>
+
+                <VictoryGroup
+                  style={styles.group}
+                  colorScale={colorScale}
+                  offset={16}>
+                  {data.map((data, i) => (
+                    <VictoryScatter size={3} style={styles.scatter} key={i} data={data} />
                   ))}
                 </VictoryGroup>
               </VictoryChart>
