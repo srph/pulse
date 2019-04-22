@@ -83,12 +83,15 @@ class DashboardTrackerStats extends React.Component<ClonedProps, {}> {
 
     const months = Array(12)
       .fill(0)
+      // Date months are 0-based
       .map((_, i: number) => format(new Date(year, i, 1), 'MMM'))
 
     const data = this.props.tracker.labels.map(label => (
       months.map((month, i) => ({
         x: month,
-        y: this.getEntryCountForLabel(i, label)
+        // We'll start from 1 til 12 (instead of 0-11) because
+        // that's how our database dates look like.
+        y: this.getEntryCountForLabel(i + 1, label)
       }))
     ))
 
