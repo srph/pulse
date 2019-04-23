@@ -23,6 +23,7 @@ C.yearHeading = css`
   margin: 0;
   margin-bottom: 16px;
 `
+C.trackerList = css``
 C.tracker = css`
   display: flex;
   align-items: center;
@@ -34,9 +35,18 @@ C.tracker = css`
   border: 1px solid ${s['color-bw-400']};
   border-radius: ${s['border-radius']}px;
   box-shadow: ${s['drop-shadow']};
+  transition: 100ms opacity ease;
 
   &:not(:last-child) {
     margin-bottom: 16px;
+  }
+
+  .css-${C.trackerList.name}:hover & {
+    opacity: 0.7;
+  }
+
+  .css-${C.trackerList.name}:hover &:hover {
+    opacity: 1;
   }
 `
 C.trackerTitle = css`
@@ -62,6 +72,12 @@ C.trackerDateIndicatorIsWarning = css`
 `
 C.trackerCaret = css` 
   color: ${s['color-bw-500']};
+  transform: translateX(0);
+  transition: 200ms transform ease;
+
+  .css-${C.tracker.name}:hover & {
+    transform: translateX(2px);
+  }
 `
 
 interface Props {
@@ -119,30 +135,32 @@ class DashboardHome extends React.Component<Props, State> {
             <section css={C.year} key={year.year}>
               <h5 css={C.yearHeading}>{year.year}</h5>
 
-              {year.trackers.map((tracker: AppDataTracker, i: number) => {
-                const lastUpdateInDays = differenceInDays(new Date(), new Date(tracker.updated_at))
+              <section css={C.trackerList}>
+                {year.trackers.map((tracker: AppDataTracker, i: number) => {
+                  const lastUpdateInDays = differenceInDays(new Date(), new Date(tracker.updated_at))
 
-                return (
-                  <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
-                    <h4 css={C.trackerTitle}>
-                      {tracker.name}
-                    </h4>
+                  return (
+                    <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
+                      <h4 css={C.trackerTitle}>
+                        {tracker.name}
+                      </h4>
 
-                    <span css={C.trackerDate}>
-                      Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
-                      {lastUpdateInDays > 1 && (
-                        lastUpdateInDays > 5
-                          ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
-                          : <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}><i className='fa fa-circle' /></span>
-                      )}
-                    </span>
+                      <span css={C.trackerDate}>
+                        Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+                        {lastUpdateInDays > 1 && (
+                          lastUpdateInDays > 5
+                            ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
+                            : <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}><i className='fa fa-circle' /></span>
+                        )}
+                      </span>
 
-                    <span css={C.trackerCaret}>
-                      <i className='fa fa-angle-right' />
-                    </span>
-                  </Link>
-                )
-              }}
+                      <span css={C.trackerCaret}>
+                        <i className='fa fa-angle-right' />
+                      </span>
+                    </Link>
+                  )
+                }}
+              </section>
             </section>
           ))}
 
