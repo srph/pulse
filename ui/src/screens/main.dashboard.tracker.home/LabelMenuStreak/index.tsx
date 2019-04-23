@@ -19,8 +19,6 @@ class LabelMenuStreak extends React.Component<Props, {}> {
 
     // If the year concluded.
     if (isTrackerFinished(tracker)) {
-      console.log('finished')
-
       return this.renderContent({
         text: `${getTrackerYear(tracker)} was a good year.`,
         type: 'info',
@@ -30,8 +28,6 @@ class LabelMenuStreak extends React.Component<Props, {}> {
 
     // If the tracker is clean
     if (!Object.values(tracker.entries).length) {
-      console.log('empty')
-
       return this.renderContent({
         text: 'Progress is progress. Start filling up those boxes.',
         type: 'info',
