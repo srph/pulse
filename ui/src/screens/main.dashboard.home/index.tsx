@@ -12,6 +12,7 @@ import UiButton from '~/components/UiButton'
 import empty from './empty.svg'
 import s from '~/styles'
 import axios from '~/lib/axios'
+import { differenceInDays } from 'date-fns'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
 
 const C = {} as any
@@ -48,6 +49,16 @@ C.trackerDate = css`
   color: ${s['color-bw-500']};
   font-weight: 500;
   font-size: ${s['font-size-subtitle']}px;
+`
+C.trackerDateIndicator = css`
+  margin-left: 8px;
+  font-size: 12px;
+`
+C.trackerDateIndicatorIsFollowUp = css`
+  color: ${s['color-blue-500']};
+`
+C.trackerDateIndicatorIsWarning = css`
+  color: #e4d500;
 `
 C.trackerCaret = css` 
   color: ${s['color-bw-500']};
@@ -108,21 +119,30 @@ class DashboardHome extends React.Component<Props, State> {
             <section css={C.year} key={year.year}>
               <h5 css={C.yearHeading}>{year.year}</h5>
 
-              {year.trackers.map((tracker: AppDataTracker, i: number) =>
-                <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
-                  <h4 css={C.trackerTitle}>
-                    {tracker.name}
-                  </h4>
+              {year.trackers.map((tracker: AppDataTracker, i: number) => {
+                const lastUpdateInDays = differenceInDays(new Date(), new Date(tracker.updated_at))
 
-                  <span css={C.trackerDate}>
-                    Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
-                  </span>
+                return (
+                  <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
+                    <h4 css={C.trackerTitle}>
+                      {tracker.name}
+                    </h4>
 
-                  <span css={C.trackerCaret}>
-                    <i className='fa fa-angle-right' />
-                  </span>
-                </Link>
-              )}
+                    <span css={C.trackerDate}>
+                      Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+                      {lastUpdateInDays > 1 && (
+                        lastUpdateInDays > 5
+                          ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
+                          : <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}><i className='fa fa-circle' /></span>
+                      )}
+                    </span>
+
+                    <span css={C.trackerCaret}>
+                      <i className='fa fa-angle-right' />
+                    </span>
+                  </Link>
+                )
+              }}
             </section>
           ))}
 
