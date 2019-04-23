@@ -65,7 +65,7 @@ class TrackersController extends Controller
 
     public function update(Tracker $tracker, \App\Http\Requests\UpdateTracker $request) {
         $payload = $request->only([
-            'title',
+            'name',
             'description'
         ]);
 
