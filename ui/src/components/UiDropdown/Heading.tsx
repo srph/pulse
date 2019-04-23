@@ -2,6 +2,7 @@
 import * as React from 'react'
 import { jsx, css } from '@emotion/core'
 import s from '~/styles'
+import Context from './Context';
 
 const C = {} as any
 C.heading = css`
@@ -34,15 +35,19 @@ interface Props {
 
 const UiDropdownHeading: React.SFC<Props> = (props) => {
   return (
-    <div css={C.heading}>
-      <h5 css={C.headingText}>
-        {props.text}
-      </h5>
+    <Context.Consumer>
+      {({ onClose }) => (
+        <div css={C.heading}>
+          <h5 css={C.headingText}>
+            {props.text}
+          </h5>
 
-      <button type="button" css={C.headingIcon}>
-        <i className='fa fa-close' />
-      </button>
-    </div>
+          <button type="button" css={C.headingIcon} onClick={onClose}>
+            <i className='fa fa-close' />
+          </button>
+        </div>
+      )}
+    </Context.Consumer>
   )
 }
 

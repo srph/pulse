@@ -7,6 +7,7 @@ import Main from './Main'
 import Menu from './Menu'
 import Separator from './Separator'
 import Heading from './Heading'
+import Context from './Context'
 import * as utils from './utils'
 
 const C = {} as any
@@ -61,12 +62,14 @@ class UiDropdown extends React.Component<Props> {
     const menu = children.find((child: React.ReactElement<any>) => child.type === Menu) as React.ReactElement<any>
     
     return (
-      <div css={C.dropdown}
-        ref={c => this.containerNode = c}>
-        {Boolean(main) && main.props.children}
+      <Context.Provider value={{ onClose: this.props.onClose }}>
+        <div css={C.dropdown}
+          ref={c => this.containerNode = c}>
+          {Boolean(main) && main.props.children}
 
-        {this.props.isOpen && <div css={C.dropdownMenu} ref={c => (this.menuNode = c)}>{Boolean(menu) && menu.props.children}</div>}
-      </div>
+          {this.props.isOpen && <div css={C.dropdownMenu} ref={c => (this.menuNode = c)}>{Boolean(menu) && menu.props.children}</div>}
+        </div>
+      </Context.Provider>
     )
   }
 
