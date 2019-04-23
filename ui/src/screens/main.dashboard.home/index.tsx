@@ -164,7 +164,7 @@ class DashboardHome extends React.Component<Props, State> {
                       </span>
                     </Link>
                   )
-                }}
+                })}
               </section>
             </section>
           ))}
