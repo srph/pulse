@@ -14,18 +14,6 @@ interface Props {
 }
 
 class LabelMenuStreak extends React.Component<Props, {}> {
-  componentWillUpdate() {
-    window.performance.mark('App')
-  }
-
-  componentDidUpdate() {
-    console.log(window.performance.now('App'))
-  }
-  
-  // shouldComponentUpdate(nextProps) {
-  //   return nextProps.tracker !== this.props.tracker
-  // }
-
   render() {
     const { tracker } = this.props
 
