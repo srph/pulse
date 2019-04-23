@@ -115,6 +115,8 @@ class DashboardHome extends React.Component<Props, State> {
   }
 
   render() {
+    const now = new Date()
+
     return (
       <React.Fragment>
         <Helmet title="Trackers" />
@@ -137,7 +139,10 @@ class DashboardHome extends React.Component<Props, State> {
 
               <section css={C.trackerList}>
                 {year.trackers.map((tracker: AppDataTracker, i: number) => {
-                  const lastUpdateInDays = differenceInDays(new Date(), new Date(tracker.updated_at))
+                  // We'll skip the indicators if it's a previous year
+                  const lastUpdateInDays = now.getFullYear() === year.year
+                    ? differenceInDays(now, new Date(tracker.updated_at))
+                    : 0
 
                   return (
                     <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
