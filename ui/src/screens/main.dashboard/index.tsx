@@ -30,6 +30,7 @@ C.navbarContainer = css`
 `
 C.navSection = css`
   display: flex;
+  height: 100%;
 `
 C.navbarAvatar = css`
   width: 40px;
@@ -147,9 +148,13 @@ class MainDashboard extends React.Component<{}, State> {
                 <div css={C.navbarContainer}>
                   <div css={C.navSection}>
                     <Link to="/" css={C.navbarLogo}>
-                      <img src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg" alt="Pulse Logo" css={C.navbarLogoIcon} />
+                      <img
+                        src="https://caretv.sgp1.digitaloceanspaces.com/app-pulse/logos/logo-icon.svg"
+                        alt="Pulse Logo"
+                        css={C.navbarLogoIcon}
+                      />
                       Pulse
-                </Link>
+                    </Link>
 
                     <NavLink to="/" exact css={C.navLink} activeClassName="-active">
                       <i className="fa fa-home" />
@@ -163,7 +168,7 @@ class MainDashboard extends React.Component<{}, State> {
                           <i className="fa fa-plus" />
                         </UiButton.LeftIcon>
                         Create New Tracker
-                  </UiButton>
+                      </UiButton>
                     </div>
                     <UiDropdown
                       isOpen={this.state.isDropdownOpen}
@@ -171,11 +176,7 @@ class MainDashboard extends React.Component<{}, State> {
                       onClose={() => this.setState({ isDropdownOpen: false })}>
                       <UiDropdown.Main>
                         <UiPlainButton>
-                          <img
-                            css={C.navbarAvatar}
-                            src={auth.state.data.avatar}
-                            alt="Your Photo"
-                          />
+                          <img css={C.navbarAvatar} src={auth.state.data.avatar} alt="Your Photo" />
                         </UiPlainButton>
                       </UiDropdown.Main>
 
@@ -183,11 +184,7 @@ class MainDashboard extends React.Component<{}, State> {
                         <div css={C.dropdown}>
                           <div css={C.profile}>
                             <div css={C.profileAvatar}>
-                              <img
-                                css={C.navbarAvatar}
-                                src={auth.state.data.avatar}
-                                alt="Your Photo"
-                              />
+                              <img css={C.navbarAvatar} src={auth.state.data.avatar} alt="Your Photo" />
                             </div>
 
                             <div css={C.profileInfo}>
@@ -195,8 +192,12 @@ class MainDashboard extends React.Component<{}, State> {
                               <p css={C.profileEmail}>{auth.state.data.email}</p>
                             </div>
                           </div>
-                          <UiDropdown.Link to="/me" icon="fa fa-sliders">Account Settings</UiDropdown.Link>
-                          <UiDropdown.Link to="/logout" icon="fa fa-long-arrow-right">Logout</UiDropdown.Link>
+                          <UiDropdown.Link to="/me" icon="fa fa-sliders">
+                            Account Settings
+                          </UiDropdown.Link>
+                          <UiDropdown.Link to="/logout" icon="fa fa-long-arrow-right">
+                            Logout
+                          </UiDropdown.Link>
                         </div>
                       </UiDropdown.Menu>
                     </UiDropdown>
@@ -205,9 +206,7 @@ class MainDashboard extends React.Component<{}, State> {
               </UiContainer>
             </div>
 
-            {this.state.isCreateTrackerModalOpen && (
-              <CreateTrackerModal onClose={this.handleCloseCreateTrackerModal} />
-            )}
+            {this.state.isCreateTrackerModalOpen && <CreateTrackerModal onClose={this.handleCloseCreateTrackerModal} />}
 
             {React.cloneElement(this.props.children as React.ReactElement<any>, {
               onOpenCreateTrackerModal: this.handleOpenCreateTrackerModal
