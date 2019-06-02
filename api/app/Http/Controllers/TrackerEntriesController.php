@@ -13,9 +13,17 @@ class TrackerEntriesController extends Controller
             'tracker_label_id',
             'entry_date',
         ]);
+        
         $entry = $tracker->entries()
             ->where('entry_date', $payload['entry_date'])
             ->firstOrCreate($payload);
+
+        if ($entry->entry_date->isAfter($tracker->most_recent_entry_at)) {
+            $tracker->fill([
+                'most_recent_entry_at' => $payload['entry_date']
+            ])->save();
+        }
+
         return response()->json($entry);
     }
 

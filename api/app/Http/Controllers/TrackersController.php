@@ -10,6 +10,8 @@ class TrackersController extends Controller
 {
     public function index(Request $request) {
         $trackers = $request->user()->trackers()
+            // While the front-end displays the last updated text based on most recent entry date,
+            // we're intentionally sorting based on literally the last update (entry date is irrelevant).
             ->orderBy('updated_at', 'desc')
             ->get();
 

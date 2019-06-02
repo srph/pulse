@@ -141,9 +141,11 @@ class DashboardHome extends React.Component<Props, State> {
 
                     <section css={C.trackerList}>
                       {year.trackers.map((tracker: AppDataTracker, i: number) => {
+                        const dateAgo = tracker.most_recent_entry_at || tracker.updated_at
+
                         // We'll skip the indicators if it's a previous year
                         const lastUpdateInDays = now.getFullYear() === year.year
-                          ? differenceInDays(now, new Date(tracker.updated_at))
+                          ? differenceInDays(now, new Date(dateAgo))
                           : 0
 
                         return (
@@ -153,7 +155,7 @@ class DashboardHome extends React.Component<Props, State> {
                             </h4>
 
                             <span css={C.trackerDate}>
-                              Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+                              Last updated {distanceInWordsStrictToNow(dateAgo)} ago
                               {lastUpdateInDays > 1 && (
                                 lastUpdateInDays > 5
                                   ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>

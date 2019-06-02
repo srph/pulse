@@ -13,8 +13,18 @@ class Tracker extends Model
      */
     protected $fillable = [
         'last_label_id',
+        'most_recent_entry_at',
         'name',
         'description'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'most_recent_entry_at' => 'datetime:Y-m-d'
     ];
 
     public function user() {

@@ -17,6 +17,16 @@ class TrackerEntry extends Model
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'entry_date' => 'datetime:Y-m-d'
+    ];
+
+
+    /**
      * All of the relationships to be touched.
      *
      * @var array
