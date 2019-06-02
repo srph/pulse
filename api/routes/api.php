@@ -26,6 +26,7 @@ Route::middleware('auth:api')->group(function() {
         Route::post('/', 'TrackersController@store');
         Route::get('/{tracker}', 'TrackersController@show');
         Route::put('/{tracker}', 'TrackersController@update');
+        Route::put('/{tracker}/last-selected-label', 'TrackersController@updateLastSelectedLabel');
 
         Route::post('/{tracker}/labels', 'TrackerLabelsController@store');
         Route::put('/{tracker}/labels/{tracker_label}', 'TrackerLabelsController@update');

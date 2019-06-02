@@ -10,6 +10,7 @@ import LabelMenuStreak from '../LabelMenuStreak'
 import color from 'color'
 import C from './styles'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
+import axios from '~/lib/axios';
 
 class LabelMenu extends React.Component<ClonedProps, {}> {
   render() {
@@ -47,7 +48,7 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
                 <button
                   type="button"
                   css={[C.label, this.props.activeLabelIndex === i && C.labelIsActive]}
-                  onClick={() => this.props.onLabelClick(i)}>
+                  onClick={() => this.handleSelectLabel(i)}>
                   <div
                     css={[C.labelColor, color(label.color).isDark() && C.labelColorIsDark]}
                     style={{ backgroundColor: label.color }}>
@@ -102,6 +103,21 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
         </div>
       </div>
     )
+  }
+
+  handleSelectLabel(i: number) {
+    // We don't really want to disable the button, so we'll just do a noop here in-case.
+    if (this.props.activeLabelIndex === i) {
+      return
+    }
+
+    this.props.onLabelClick(i)
+
+    // @TODO Disable the toast and silently fail for all errors.
+    // Also, for 500 errors; The interceptor doesn't allow this at the moment.
+    axios.put(`/api/trackers/${this.props.tracker.id}/last-selected-label`, {
+      last_selected_label_id: this.props.tracker.labels[i].id
+    })
   }
 }
 

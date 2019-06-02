@@ -44,6 +44,7 @@ interface AppDataTracker {
   entries: {
     [key: string]: AppDataTrackerEntry
   }
+  last_selected_label_id: number
   created_at: string
   updated_at: string
 }

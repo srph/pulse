@@ -74,4 +74,12 @@ class TrackersController extends Controller
         $tracker['entries'] = Helper::toPropertyKeys($tracker['entries'], 'entry_date');
         return response()->json($tracker);
     }
+
+    public function updateLastSelectedLabel(Tracker $tracker, \App\Http\Requests\UpdateTrackerLastSelectedLabel $request) {
+        $tracker->last_selected_label_id = $request->get('last_selected_label_id');
+        $tracker->save();
+        $tracker = $tracker->load(['labels', 'entries', 'entries.label'])->toArray();
+        $tracker['entries'] = Helper::toPropertyKeys($tracker['entries'], 'entry_date');
+        return response()->json($tracker);
+    }
 }

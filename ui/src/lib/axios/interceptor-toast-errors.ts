@@ -12,10 +12,10 @@ interface AxiosValidationError extends AxiosError {
 
 /**
  * @example Disable the default validation toast
- * axios({ appValidationError: false })
+ * axios({ appToastError: false })
  * 
  * @example Provide a custom error message
- * axios({ appValidationError: 'An error occured trying to create a contact })
+ * axios({ appToastError: 'An error occured trying to create a contact })
  */
 instance.interceptors.response.use(null, (err: AxiosValidationError) => {
   if (err.config.method === 'get') {

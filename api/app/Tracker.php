@@ -12,6 +12,7 @@ class Tracker extends Model
      * @var array
      */
     protected $fillable = [
+        'last_label_id',
         'name',
         'description'
     ];

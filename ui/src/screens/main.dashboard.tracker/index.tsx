@@ -48,6 +48,7 @@ class DashboardTracker extends React.Component<Props, State> {
 
     this.setState({
       tracker: response.data,
+      activeLabelIndex: this.getActiveLabelIndex(response.data),
       isFetching: false
     })
   }
@@ -95,6 +96,11 @@ class DashboardTracker extends React.Component<Props, State> {
         </UiContainer>
       </React.Fragment>
     )
+  }
+
+  getActiveLabelIndex(tracker: AppDataTracker): number{
+    const index = tracker.labels.findIndex(label => label.id === tracker.last_selected_label_id)
+    return index === -1 ? 0 : index
   }
 
   handleKeyDown = (evt: React.KeyboardEvent<HTMLDocument>) => {
