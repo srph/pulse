@@ -87,6 +87,11 @@ class TrackersController extends Controller
 
     public function destroy(Tracker $tracker) {
         $tracker->delete();
-        return response()->json([$tracker]);
+        return response()->json(['success' => true]);
+    }
+
+    public function unarchive(Tracker $tracker) {
+        $tracker->restore();
+        return response()->json($tracker);
     }
 }

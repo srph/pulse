@@ -5,6 +5,9 @@ import UiContainer from '~/components/UiContainer'
 import UiTabs from '~/components/UiTabs'
 import UiPageHeading from '~/components/UiPageHeading'
 import UiSpacer from '~/components/UiSpacer'
+import LoadingPlaceholder from './LoadingPlaceholder';
+import ArchiveSlate from './ArchiveSlate';
+
 import immer from 'immer'
 import axios from '~/lib/axios'
 import { RouteComponentProps } from '~/lib/history/types'
@@ -13,7 +16,6 @@ import getEntryDateString from '~/utils/tracker/getEntryDateString'
 import isNumericKeyCode from '~/utils/isNumericKeyCode'
 import toPropertyKeys from '~/utils/toPropertyKeys'
 import { State } from './types'
-import LoadingPlaceholder from './LoadingPlaceholder';
 import { format } from 'date-fns';
 
 type RouteProps = RouteComponentProps<{}, {
@@ -61,6 +63,8 @@ class DashboardTracker extends React.Component<Props, State> {
       return <LoadingPlaceholder />;
     }
 
+    console.log(tracker, tracker.deleted_at != null)
+
     return (
       <React.Fragment>
         <Helmet title={`${tracker.name}`} />
@@ -69,7 +73,7 @@ class DashboardTracker extends React.Component<Props, State> {
 
         <UiPageHeading title={tracker.name} />
 
-        <UiContainer size="lg">
+        {tracker.deleted_at == null && <UiContainer size="lg">
           <UiTabs>
             <UiTabs.Link to={`/tracker/${tracker.id}`} exact icon="fa fa-pencil">Entries</UiTabs.Link>
             <UiTabs.Link to={`/tracker/${tracker.id}/stats`} icon="fa fa-bar-chart">Stats</UiTabs.Link>
@@ -95,7 +99,11 @@ class DashboardTracker extends React.Component<Props, State> {
             onUpdateTracker: this.handleUpdateTracker,
             onArchiveTracker: this.handleArchiveTracker
           })}
-        </UiContainer>
+        </UiContainer>}
+
+        {tracker.deleted_at != null && (
+          <ArchiveSlate tracker={tracker} onUnarchive={this.handleUnarchiveTracker} />
+        )}
       </React.Fragment>
     )
   }
@@ -323,6 +331,15 @@ class DashboardTracker extends React.Component<Props, State> {
       tracker: {
         ...this.state.tracker,
         deleted_at: format(new Date(), 'YYYY-M-D HH:mm:ss')
+      }
+    })
+  }
+
+  handleUnarchiveTracker = () => {
+    this.setState({
+      tracker: {
+        ...this.state.tracker,
+        deleted_at: null
       }
     })
   }
