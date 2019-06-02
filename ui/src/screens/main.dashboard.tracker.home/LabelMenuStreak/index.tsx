@@ -7,7 +7,8 @@ import isTrackerFresh from '~/utils/tracker/isTrackerFresh'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntryToday from '~utils/tracker/getEntryToday'
 import getMissStreak from '~utils/tracker/getMissStreak'
-import getStreak from '~utils/tracker/getStreak'
+// import getStreak from '~utils/tracker/getStreak'
+import getLabelStreak from '~utils/tracker/getLabelStreak'
 
 interface Props {
   tracker: AppDataTracker
@@ -36,12 +37,25 @@ class LabelMenuStreak extends React.Component<Props, {}> {
     }
 
     // If the user has caught up
+    // if (getEntryToday(tracker)) {
+    //   const streak = getStreak(tracker)
+
+    //   return this.renderContent({
+    //     text: streak >= 3
+    //       ? `You're on a ${streak}-day streak.`
+    //       : `You're all caught up.`,
+    //     type: 'success',
+    //     icon: 'fa fa-star'
+    //   })
+    // }
+
+    // If the user has caught up. Previously, streaks were irrelevant of label. Now, we are.
     if (getEntryToday(tracker)) {
-      const streak = getStreak(tracker)
+      const { streak, label } = getLabelStreak(tracker)
 
       return this.renderContent({
         text: streak >= 3
-          ? `Good job. You're on a ${streak}-day streak. Keep it up!`
+          ? `You're on a ${streak}-day streak for <strong>${label.name}</strong>.`
           : `You're all caught up.`,
         type: 'success',
         icon: 'fa fa-star'
@@ -87,7 +101,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
           <i className={icon} />
         </div>
 
-        <p css={C.text}>{text}</p>
+        <p css={C.text} dangerouslySetInnerHTML={{ __html: text }} />
       </div>
     )
   }
