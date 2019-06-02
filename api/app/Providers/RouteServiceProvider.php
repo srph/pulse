@@ -27,7 +27,9 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot();
 
-        Route::model('tracker', \App\Tracker::class);
+        Route::bind('tracker', function($id) {
+            return \App\Tracker::withTrashed()->find($id);
+        });
         Route::model('tracker_label', \App\TrackerLabel::class);
         Route::model('tracker_entry', \App\TrackerEntry::class);
     }

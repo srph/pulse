@@ -24,11 +24,16 @@ C.heading = css`
   font-size: 16px;
   color: ${s['color-bw-700']};
 `
-C.tagline = css`  
+C.headingIsDangerous = css`
+  color: ${s['color-red-500']};
+`
+C.tagline = css`
+  line-height: 1.5;
   margin: 0;
 `
 
 interface Props {
+  isDangerous?: boolean
   heading: string
   tagline: string
   children?: React.ReactNode
@@ -38,7 +43,7 @@ function UiFieldGroup(props: Props) {
   return (
     <div css={C.container}>
       <div css={C.section}>
-        <h4 css={C.heading}>{props.heading}</h4>
+        <h4 css={[C.heading, props.isDangerous && C.headingIsDangerous]}>{props.heading}</h4>
         <p css={C.tagline}>{props.tagline}</p>
       </div>
 

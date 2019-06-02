@@ -46,6 +46,7 @@ interface AppDataTracker {
   }
   last_selected_label_id: number
   most_recent_entry_at: string | null
+  deleted_at: string | null
   created_at: string
   updated_at: string
 }

@@ -84,4 +84,9 @@ class TrackersController extends Controller
         $tracker['entries'] = Helper::toPropertyKeys($tracker['entries'], 'entry_date');
         return response()->json($tracker);
     }
+
+    public function destroy(Tracker $tracker) {
+        $tracker->delete();
+        return response()->json([$tracker]);
+    }
 }

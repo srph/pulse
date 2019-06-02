@@ -14,6 +14,7 @@ import isNumericKeyCode from '~/utils/isNumericKeyCode'
 import toPropertyKeys from '~/utils/toPropertyKeys'
 import { State } from './types'
 import LoadingPlaceholder from './LoadingPlaceholder';
+import { format } from 'date-fns';
 
 type RouteProps = RouteComponentProps<{}, {
   trackerId: string
@@ -91,7 +92,8 @@ class DashboardTracker extends React.Component<Props, State> {
             onCloseEditLabel: this.handleCloseEditLabel,
             onOpenDeleteLabel: this.handleOpenDeleteLabel,
             onCloseDeleteLabel: this.handleCloseDeleteLabel,
-            onUpdateTracker: this.handleUpdateTracker
+            onUpdateTracker: this.handleUpdateTracker,
+            onArchiveTracker: this.handleArchiveTracker
           })}
         </UiContainer>
       </React.Fragment>
@@ -312,6 +314,15 @@ class DashboardTracker extends React.Component<Props, State> {
       tracker: {
         ...this.state.tracker,
         ...data
+      }
+    })
+  }
+
+  handleArchiveTracker = () => {
+    this.setState({
+      tracker: {
+        ...this.state.tracker,
+        deleted_at: format(new Date(), 'YYYY-M-D HH:mm:ss')
       }
     })
   }
