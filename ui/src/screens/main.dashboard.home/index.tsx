@@ -14,6 +14,7 @@ import s from '~/styles'
 import axios from '~/lib/axios'
 import { differenceInDays } from 'date-fns'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
+import PeriodicNow from '~/components/PeriodicNow'
 
 const C = {} as any
 C.year = css`
@@ -115,8 +116,6 @@ class DashboardHome extends React.Component<Props, State> {
   }
 
   render() {
-    const now = new Date()
-
     return (
       <React.Fragment>
         <Helmet title="Trackers" />
@@ -133,41 +132,47 @@ class DashboardHome extends React.Component<Props, State> {
             )
           )}
 
-          {this.state.data.map((year, i) => (
-            <section css={C.year} key={year.year}>
-              <h5 css={C.yearHeading}>{year.year}</h5>
+          <PeriodicNow interval={1000}>
+            {(now: Date) => (
+              <React.Fragment>
+                {this.state.data.map((year, i) => (
+                  <section css={C.year} key={year.year}>
+                    <h5 css={C.yearHeading}>{year.year}</h5>
 
-              <section css={C.trackerList}>
-                {year.trackers.map((tracker: AppDataTracker, i: number) => {
-                  // We'll skip the indicators if it's a previous year
-                  const lastUpdateInDays = now.getFullYear() === year.year
-                    ? differenceInDays(now, new Date(tracker.updated_at))
-                    : 0
+                    <section css={C.trackerList}>
+                      {year.trackers.map((tracker: AppDataTracker, i: number) => {
+                        // We'll skip the indicators if it's a previous year
+                        const lastUpdateInDays = now.getFullYear() === year.year
+                          ? differenceInDays(now, new Date(tracker.updated_at))
+                          : 0
 
-                  return (
-                    <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
-                      <h4 css={C.trackerTitle}>
-                        {tracker.name}
-                      </h4>
+                        return (
+                          <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
+                            <h4 css={C.trackerTitle}>
+                              {tracker.name}
+                            </h4>
 
-                      <span css={C.trackerDate}>
-                        Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
-                        {lastUpdateInDays > 1 && (
-                          lastUpdateInDays > 5
-                            ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
-                            : <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}><i className='fa fa-circle' /></span>
-                        )}
-                      </span>
+                            <span css={C.trackerDate}>
+                              Last updated {distanceInWordsStrictToNow(tracker.updated_at)} ago
+                              {lastUpdateInDays > 1 && (
+                                lastUpdateInDays > 5
+                                  ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
+                                  : <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}><i className='fa fa-circle' /></span>
+                              )}
+                            </span>
 
-                      <span css={C.trackerCaret}>
-                        <i className='fa fa-angle-right' />
-                      </span>
-                    </Link>
-                  )
-                })}
-              </section>
-            </section>
-          ))}
+                            <span css={C.trackerCaret}>
+                              <i className='fa fa-angle-right' />
+                            </span>
+                          </Link>
+                        )
+                      })}
+                    </section>
+                  </section>
+                ))}
+              </React.Fragment>
+            )}
+          </PeriodicNow>
 
           {!this.state.isLoading && !this.state.data.length && (
             <UiEmptySlate img={empty}
