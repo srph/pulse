@@ -16,6 +16,7 @@ import s from '~/styles'
 import axios from '~/lib/axios'
 import { differenceInDays } from 'date-fns'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
+import isTrackerFinished from '~/utils/tracker/isTrackerFinished'
 import PeriodicNow from '~/components/PeriodicNow'
 import { RouteComponentProps } from '~/lib/history/types'
 
@@ -188,20 +189,22 @@ class DashboardHome extends React.Component<Props, State> {
                           <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
                             <h4 css={C.trackerTitle}>{tracker.name}</h4>
 
-                            <span css={C.trackerDate}>
-                              {this.isArchived() ? 'Archived' : 'Last updated'}{' '}
-                              {lastUpdateInDays === 0 ? 'today' : `${distanceInWordsStrictToNow(dateAgo)} ago`}
-                              {!this.isArchived() && lastUpdateInDays > 1 &&
-                                (lastUpdateInDays > 5 ? (
-                                  <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}>
-                                    <i className="fa fa-exclamation-circle" />
-                                  </span>
-                                ) : (
-                                  <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}>
-                                    <i className="fa fa-circle" />
-                                  </span>
-                                ))}
-                            </span>
+                            {!isTrackerFinished(tracker) && (
+                              <span css={C.trackerDate}>
+                                {this.isArchived() ? 'Archived' : 'Last updated'}{' '}
+                                {lastUpdateInDays === 0 ? 'today' : `${distanceInWordsStrictToNow(dateAgo)} ago`}
+                                {!this.isArchived() && lastUpdateInDays > 1 &&
+                                  (lastUpdateInDays > 5 ? (
+                                    <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}>
+                                      <i className="fa fa-exclamation-circle" />
+                                    </span>
+                                  ) : (
+                                    <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}>
+                                      <i className="fa fa-circle" />
+                                    </span>
+                                  ))}
+                              </span>
+                            )}
 
                             <span css={C.trackerCaret}>
                               <i className="fa fa-angle-right" />
