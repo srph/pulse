@@ -13,6 +13,9 @@ class TrackersController extends Controller
             // While the front-end displays the last updated text based on most recent entry date,
             // we're intentionally sorting based on literally the last update (entry date is irrelevant).
             ->orderBy('updated_at', 'desc')
+            ->when($request->has('archived'), function($query) {
+                $query->onlyTrashed();
+            })
             ->get();
 
         $payload = $trackers->groupBy(function($tracker) {

@@ -19,7 +19,12 @@ C.alertIsSuccess = css`
   background: ${s['color-green-500']};
 `
 C.alertIsWarning = css`
-  background: #ffc700;
+  background: ${s['color-yellow-100']};
+
+  a {
+    color: ${s['color-yellow-200']};
+    text-decoration: none;
+  }
 `
 C.alertIsCompact = css`
   padding: 12px;
@@ -44,7 +49,7 @@ C.alertIconIsSuccess = css`
   background: ${s['color-green-900']};
 `
 C.alertIconIsWarning = css`
-  background: ${s['color-yellow']};
+  background: ${s['color-yellow-200']};
 `
 
 interface Props {

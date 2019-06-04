@@ -12,6 +12,7 @@ C.button = css`
   line-height: 39px;
   padding: 0 12px;
   font-weight: 600;
+  color: ${s['color-text']};
   font-family: ${s['font-family']};
   font-size: ${s['font-size']}px;
   color: ${s['color-white']};

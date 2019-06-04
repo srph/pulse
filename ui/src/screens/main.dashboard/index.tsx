@@ -195,6 +195,9 @@ class MainDashboard extends React.Component<{}, State> {
                           <UiDropdown.Link to="/me" icon="fa fa-sliders">
                             Account Settings
                           </UiDropdown.Link>
+                          <UiDropdown.Link to="/?archived=true" icon="fa fa-trash">
+                            Archived Trackers
+                          </UiDropdown.Link>
                           <UiDropdown.Link to="/logout" icon="fa fa-long-arrow-right">
                             Logout
                           </UiDropdown.Link>

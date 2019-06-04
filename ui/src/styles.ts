@@ -38,6 +38,8 @@ export default {
   'color-red-800': '#AB091E',
   'color-red-900': '#8A041A',
   'color-red-1000': '#610316',
+  'color-yellow-100': '#ffc700',
+  'color-yellow-200': '#a58000',
   'color-text': '#404B5A',
   'drop-shadow': '0px 2px 4px rgba(0,0,0,0.1)',
   'drop-shadow-lower': '0px 4px 16px rgba(0,0,0,0.1)',

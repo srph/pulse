@@ -9,12 +9,15 @@ import UiPlaceholderBlock from '~/components/UiPlaceholderBlock'
 import UiSpacer from '~/components/UiSpacer'
 import UiEmptySlate from '~/components/UiEmptySlate'
 import UiButton from '~/components/UiButton'
+import UiAlert from '~/components/UiAlert'
 import empty from './empty.svg'
+import archived from './archived.svg'
 import s from '~/styles'
 import axios from '~/lib/axios'
 import { differenceInDays } from 'date-fns'
 import distanceInWordsStrictToNow from '~/utils/distanceInWordsStrictToNow'
 import PeriodicNow from '~/components/PeriodicNow'
+import { RouteComponentProps } from '~/lib/history/types'
 
 const C = {} as any
 C.year = css`
@@ -55,7 +58,7 @@ C.trackerTitle = css`
   margin-right: auto;
   font-size: ${s['font-size-title']}px;
 `
-C.trackerDate = css` 
+C.trackerDate = css`
   margin-right: 24px;
   color: ${s['color-bw-500']};
   font-weight: 500;
@@ -71,7 +74,7 @@ C.trackerDateIndicatorIsFollowUp = css`
 C.trackerDateIndicatorIsWarning = css`
   color: #e4d500;
 `
-C.trackerCaret = css` 
+C.trackerCaret = css`
   color: ${s['color-bw-500']};
   transform: translateX(0);
   transition: 200ms transform ease;
@@ -81,9 +84,15 @@ C.trackerCaret = css`
   }
 `
 
-interface Props {
+interface OwnProps {
   onOpenCreateTrackerModal: () => void
 }
+
+type RouteProps = RouteComponentProps<{
+  archived: string
+}>
+
+type Props = RouteProps & OwnProps
 
 interface State {
   data: {
@@ -102,17 +111,32 @@ class DashboardHome extends React.Component<Props, State> {
     isLoading: false
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.fetch()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.location.query.archived !== nextProps.location.query.archived) {
+      this.fetch(nextProps)
+    }
+  }
+
+  async fetch(props: Props = this.props) {
     this.setState({
+      data: [],
       isLoading: true
     })
 
-    let response = await axios.get('/api/trackers')
+    let response = await axios.get(this.isArchived(props) ? '/api/trackers?archived=true' : '/api/trackers')
 
     this.setState({
       data: response.data,
       isLoading: false
     })
+  }
+
+  isArchived(props: Props = this.props) {
+    return 'archived' in props.location.query
   }
 
   render() {
@@ -123,13 +147,24 @@ class DashboardHome extends React.Component<Props, State> {
         <UiPageHeading title="Your Bullet Journals" />
 
         <UiContainer size="md">
-          {this.state.isLoading && (
-            Array(4).fill(0).map((_, i: number) =>
-              <React.Fragment key={i}>
-                <UiPlaceholderBlock shape="rounded" height={46} />
-                <UiSpacer size="sm" />
-              </React.Fragment>
-            )
+          {this.state.isLoading &&
+            Array(4)
+              .fill(0)
+              .map((_, i: number) => (
+                <React.Fragment key={i}>
+                  <UiPlaceholderBlock shape="rounded" height={46} />
+                  <UiSpacer size="sm" />
+                </React.Fragment>
+              ))}
+
+          {!this.state.isLoading && Boolean(this.state.data.length) && this.isArchived() && (
+            <React.Fragment>
+              <UiAlert preset="warning" isCompact>
+                You are viewing all your archived trackers. <Link to="/">View all trackers</Link>.
+              </UiAlert>
+
+              <UiSpacer />
+            </React.Fragment>
           )}
 
           <PeriodicNow interval={1000}>
@@ -144,27 +179,30 @@ class DashboardHome extends React.Component<Props, State> {
                         const dateAgo = tracker.most_recent_entry_at || tracker.updated_at
 
                         // We'll skip the indicators if it's a previous year
-                        const lastUpdateInDays = now.getFullYear() === year.year
-                          ? differenceInDays(now, new Date(dateAgo))
-                          : 0
+                        const lastUpdateInDays =
+                          now.getFullYear() === year.year ? differenceInDays(now, new Date(dateAgo)) : 0
 
                         return (
                           <Link css={C.tracker} to={`/tracker/${tracker.id}`} key={i}>
-                            <h4 css={C.trackerTitle}>
-                              {tracker.name}
-                            </h4>
+                            <h4 css={C.trackerTitle}>{tracker.name}</h4>
 
                             <span css={C.trackerDate}>
-                              Last updated {lastUpdateInDays === 0 ? 'today' : `${distanceInWordsStrictToNow(dateAgo)} ago`}
-                              {lastUpdateInDays > 1 && (
-                                lastUpdateInDays > 5
-                                  ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
-                                  : <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}><i className='fa fa-circle' /></span>
-                              )}
+                              Last updated{' '}
+                              {lastUpdateInDays === 0 ? 'today' : `${distanceInWordsStrictToNow(dateAgo)} ago`}
+                              {lastUpdateInDays > 1 &&
+                                (lastUpdateInDays > 5 ? (
+                                  <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}>
+                                    <i className="fa fa-exclamation-circle" />
+                                  </span>
+                                ) : (
+                                  <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsFollowUp]}>
+                                    <i className="fa fa-circle" />
+                                  </span>
+                                ))}
                             </span>
 
                             <span css={C.trackerCaret}>
-                              <i className='fa fa-angle-right' />
+                              <i className="fa fa-angle-right" />
                             </span>
                           </Link>
                         )
@@ -177,11 +215,33 @@ class DashboardHome extends React.Component<Props, State> {
           </PeriodicNow>
 
           {!this.state.isLoading && !this.state.data.length && (
-            <UiEmptySlate img={empty}
-              heading="You seem new!"
-              text="Make your first tracker, and start reaching your goals!"
-              action={<UiButton preset="primary" onClick={this.props.onOpenCreateTrackerModal}>Create your first tracker</UiButton>}
-            />
+            <React.Fragment>
+              {!this.isArchived() && (
+                <UiEmptySlate
+                  img={empty}
+                  heading="You seem new!"
+                  text="Make your first tracker, and start reaching your goals!"
+                  action={
+                    <UiButton preset="primary" onClick={this.props.onOpenCreateTrackerModal}>
+                      Create your first tracker
+                    </UiButton>
+                  }
+                />
+              )}
+
+              {this.isArchived() && (
+                <UiEmptySlate
+                  img={archived}
+                  heading="Nothing seems to be here."
+                  text="You haven't archived any trackers yet."
+                  action={
+                    <UiButton preset="primary" link to="/">
+                      View all trackers
+                    </UiButton>
+                  }
+                />
+              )}
+            </React.Fragment>
           )}
         </UiContainer>
       </React.Fragment>
