@@ -36,7 +36,7 @@ class ArchiveSlate extends React.Component<Props, State> {
     })
 
     try {
-      await axios.delete(`/api/trackers/${this.props.tracker.id}`)
+      await axios.put(`/api/trackers/${this.props.tracker.id}/unarchive`)
     } catch(e) {
       this.setState({
         isLoading: false
