@@ -5,7 +5,7 @@ import s from '~/styles'
 import UiFieldGroup from '~/components/UiFieldGroup'
 import UiPlainButton from '~/components/UiPlainButton'
 
-import avatars from './avatars'
+import sections from './avatars'
 import axios from '~/lib/axios'
 import { Subscribe } from 'unstated'
 import { AuthContainer } from '~/containers'
@@ -13,7 +13,16 @@ import BufferDisplay from '~components/BufferDisplay';
 
 const C = {} as any
 C.container = css`
+  max-height: 400px;
+  overflow-y: auto;
+`
+C.section = css`
   display: flex;
+  flex-wrap: wrap;
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
 `
 C.avatar = css`
   position: relative;
@@ -76,34 +85,38 @@ interface State {
 class AvatarSection extends React.Component<InjectedProps, State> {
   render() {
     return (
-      <UiFieldGroup heading="Select an avatar" tagline="Pick one of the photos that represent you the most. Have fun!">
+      <UiFieldGroup heading="Select an avatar" tagline="Pick one of the photos that represent you the most. Have fun!" isFullWidth>
         <div css={C.container}>
-          {avatars.map((avatar, i) => (
-            <UiPlainButton key={i} onClick={() => this.handleSelect(i)}>
-              <div css={[C.avatar, this.props.auth.avatar === avatar && C.avatarIsSelected]}>
-                <img css={C.img} src={avatar} alt="Avatar" />
+          {sections.map((avatars, i) => (
+            <div css={C.section} key={i}>
+              {avatars.map((avatar, j) => (
+                <UiPlainButton key={j} onClick={() => this.handleSelect(avatar)}>
+                  <div css={[C.avatar, this.props.auth.avatar === avatar && C.avatarIsSelected]}>
+                    <img css={C.img} src={avatar} alt="Avatar" />
 
-                <BufferDisplay flag={this.props.auth.avatar === avatar} timeout={4000}>
-                  <span css={C.success}>
-                    <i className='fa fa-check' />
-                  </span>
-                </BufferDisplay>
-              </div>
-            </UiPlainButton>
+                    <BufferDisplay flag={this.props.auth.avatar === avatar} timeout={4000}>
+                      <span css={C.success}>
+                        <i className='fa fa-check' />
+                      </span>
+                    </BufferDisplay>
+                  </div>
+                </UiPlainButton>
+              ))}
+            </div>
           ))}
         </div>
       </UiFieldGroup>
     )
   }
 
-  handleSelect = async (index: number) => {
+  handleSelect = async (avatar: string) => {
     // Buffer the last avatar to revert to it when the request fails
     const last = this.props.auth.avatar
 
-    this.props.onUserUpdate({ avatar: avatars[index] })
+    this.props.onUserUpdate({ avatar })
 
     try {
-      await axios.put('/api/me/avatar', { avatar: avatars[index] })
+      await axios.put('/api/me/avatar', { avatar })
     } catch (e) {
       this.props.onUserUpdate({ avatar: last })
     }

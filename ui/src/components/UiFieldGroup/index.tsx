@@ -18,6 +18,9 @@ C.section = css`
 C.form = css`
   width: 400px;
 `
+C.formIsFullWidth = css`
+  width: 100%;
+`
 C.heading = css`
   margin: 0;
   margin-bottom: 8px;
@@ -40,6 +43,7 @@ C.tagline = css`
 
 interface Props {
   isDangerous?: boolean
+  isFullWidth?: boolean
   heading: string
   tagline: React.ReactNode
   children?: React.ReactNode
@@ -53,7 +57,7 @@ function UiFieldGroup(props: Props) {
         <p css={C.tagline}>{props.tagline}</p>
       </div>
 
-      <div css={C.form}>
+      <div css={[C.form, props.isFullWidth && C.formIsFullWidth]}>
         {props.children}
       </div>
     </div>
