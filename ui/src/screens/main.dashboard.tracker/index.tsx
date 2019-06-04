@@ -63,8 +63,6 @@ class DashboardTracker extends React.Component<Props, State> {
       return <LoadingPlaceholder />;
     }
 
-    console.log(tracker, tracker.deleted_at != null)
-
     return (
       <React.Fragment>
         <Helmet title={`${tracker.name}`} />
