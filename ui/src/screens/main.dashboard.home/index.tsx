@@ -176,7 +176,9 @@ class DashboardHome extends React.Component<Props, State> {
 
                     <section css={C.trackerList}>
                       {year.trackers.map((tracker: AppDataTracker, i: number) => {
-                        const dateAgo = tracker.most_recent_entry_at || tracker.updated_at
+                        const dateAgo = this.isArchived()
+                          ? tracker.deleted_at
+                          : tracker.most_recent_entry_at || tracker.updated_at
 
                         // We'll skip the indicators if it's a previous year
                         const lastUpdateInDays =
@@ -187,9 +189,9 @@ class DashboardHome extends React.Component<Props, State> {
                             <h4 css={C.trackerTitle}>{tracker.name}</h4>
 
                             <span css={C.trackerDate}>
-                              Last updated{' '}
+                              {this.isArchived() ? 'Archived' : 'Last updated'}{' '}
                               {lastUpdateInDays === 0 ? 'today' : `${distanceInWordsStrictToNow(dateAgo)} ago`}
-                              {lastUpdateInDays > 1 &&
+                              {!this.isArchived() && lastUpdateInDays > 1 &&
                                 (lastUpdateInDays > 5 ? (
                                   <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}>
                                     <i className="fa fa-exclamation-circle" />
