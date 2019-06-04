@@ -30,7 +30,7 @@ class TrackerArchive extends React.Component<ClonedProps, State> {
           <input autoComplete="false" name="hidden" type="text" style= {{ display: 'none' }} />
 
           <UiField label="Tracker name" isRequired>
-            <UiInput type="text" name="name" value={this.state.name} onChange={ls(this, 'name')} />
+            <UiInput type="text" name="name" placeholder={this.props.tracker.name} value={this.state.name} onChange={ls(this, 'name')} />
           </UiField>
 
           <UiSpacer />
