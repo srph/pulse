@@ -37,7 +37,7 @@ class TrackerArchive extends React.Component<ClonedProps, State> {
 
           <UiButtonAction>
             <UiButtonLoader isLoading={this.state.isLoading} preset="default-danger" size="lg" disabled={this.state.name !== this.props.tracker.name}>
-              Archive this tracker
+              Archive Tracker
             </UiButtonLoader>
           </UiButtonAction>
         </form>
