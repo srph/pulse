@@ -29,7 +29,6 @@ class PeriodicNow extends React.Component<Props, State> {
   }
 
   render() {
-    console.log('Rendering PeriodicNow')
     return this.props.children(this.state.now)
   }
 }
