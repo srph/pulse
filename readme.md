@@ -1,6 +1,8 @@
-![preview](preview.png)
+![Logo](logo.png)
 ## Pulse
 Pulse is an annual bullet journal to help you track your progress. Inspired by [@weelui](https://twitter.com/weelui/status/1082070518520414209).
+
+![Preview](preview.png)
 
 ## API Setup
 You will have to install these dependencies: [MySQL `5.7`](https://dev.mysql.com/downloads/mysql/5.7.html), [php `>=7.2`](https://thishosting.rocks/install-php-on-ubuntu/) along with [Composer](https://getcomposer.org/).
