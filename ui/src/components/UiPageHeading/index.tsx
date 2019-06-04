@@ -17,16 +17,25 @@ C.title = css`
   color: ${s['color-bw-700']};
   font-size: ${s['font-size-title']}px;
 `
+C.container = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
 
 interface Props {
   title: string
+  action?: React.ReactNode
 }
 
 function UiPageHeading(props: Props) {
   return (
     <div css={C.heading}>
       <UiContainer size="lg">
-        <h4 css={C.title}>{props.title}</h4>
+        <div css={C.container}>
+          <h4 css={C.title}>{props.title}</h4>
+          {props.action}
+        </div>
       </UiContainer>
     </div>
   )

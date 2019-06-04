@@ -20,11 +20,7 @@ class LabelMenuStreak extends React.Component<Props, {}> {
 
     // If the year concluded.
     if (isTrackerFinished(tracker)) {
-      return this.renderContent({
-        text: `${getTrackerYear(tracker)} was a good year.`,
-        type: 'info',
-        icon: 'fa fa-star'
-      })
+      return null
     }
 
     // If the tracker is clean
@@ -35,19 +31,6 @@ class LabelMenuStreak extends React.Component<Props, {}> {
         icon: 'fa fa-magic'
       })
     }
-
-    // If the user has caught up
-    // if (getEntryToday(tracker)) {
-    //   const streak = getStreak(tracker)
-
-    //   return this.renderContent({
-    //     text: streak >= 3
-    //       ? `You're on a ${streak}-day streak.`
-    //       : `You're all caught up.`,
-    //     type: 'success',
-    //     icon: 'fa fa-star'
-    //   })
-    // }
 
     // If the user has caught up. Previously, streaks were irrelevant of label. Now, we are.
     if (getEntryToday(tracker)) {

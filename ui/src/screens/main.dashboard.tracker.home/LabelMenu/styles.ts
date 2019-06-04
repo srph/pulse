@@ -72,6 +72,10 @@ C.label = css`
   cursor: pointer;
   outline: 0;
   transition: 200ms all ease;
+
+  &:disabled {
+    cursor: initial;
+  }
 `
 C.labelIsActive = css`
   box-shadow: 0 1px 4px rgba(0,0,0,0.15);

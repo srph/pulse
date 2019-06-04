@@ -11,10 +11,12 @@ import color from 'color'
 import C from './styles'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import axios from '~/lib/axios';
+import isTrackerFinished from '~/utils/tracker/isTrackerFinished'
 
 class LabelMenu extends React.Component<ClonedProps, {}> {
   render() {
     const { tracker } = this.props
+    const isFinished = isTrackerFinished(tracker)
 
     return (
       <div css={C.labelSection}>
@@ -22,20 +24,20 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
           <div css={C.labelMenu}>
             <h5 css={C.labelMenuHeading}>Labels</h5>
 
-            <CreateLabelPopover
+            {!isFinished && <CreateLabelPopover
               isDisabled={false}
               isOpen={this.props.isCreatingLabel}
               isLoading={this.props.isStoringLabel}
               onStore={this.props.onStoreLabel}
               onOpen={this.props.onOpenCreateLabel}
               onClose={this.props.onCloseCreateLabel}
-            />
+            />}
           </div>
 
           <section css={C.labelList}>
             {tracker.labels.map((label: AppDataTrackerLabel, i: number) => (
               <div css={C.labelContainer} key={label.id}>
-                {this.props.activeLabelIndex === i ? (
+                {!isFinished && this.props.activeLabelIndex === i ? (
                   <UiTransitionFadeSlideIn>
                     <div css={C.labelCheck}>
                       <i className="fa fa-check" />
@@ -47,8 +49,9 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
 
                 <button
                   type="button"
-                  css={[C.label, this.props.activeLabelIndex === i && C.labelIsActive]}
-                  onClick={() => this.handleSelectLabel(i)}>
+                  css={[C.label, !isFinished && this.props.activeLabelIndex === i && C.labelIsActive]}
+                  onClick={() => this.handleSelectLabel(i)}
+                  disabled={isFinished}>
                   <div
                     css={[C.labelColor, color(label.color).isDark() && C.labelColorIsDark]}
                     style={{ backgroundColor: label.color }}>
@@ -58,7 +61,7 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
                   <span css={C.labelName}>{label.name}</span>
                 </button>
 
-                <div
+                {!isFinished && <div
                   css={[
                     C.labelActions,
                     (this.props.editIndex === i || this.props.deleteIndex === i) && C.labelActionsIsActive
@@ -92,7 +95,7 @@ class LabelMenu extends React.Component<ClonedProps, {}> {
                       </button>
                     </DeleteLabelPopover>
                   </div>
-                </div>
+                </div>}
               </div>
             ))}
           </section>

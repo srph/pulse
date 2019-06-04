@@ -5,6 +5,7 @@ import { jsx, css } from '@emotion/core'
 import { format, isToday, isBefore, parse, isSameDay, getDaysInMonth } from 'date-fns'
 import getTrackerYear from '~/utils/tracker/getTrackerYear'
 import getEntry from '~/utils/tracker/getEntry'
+import isTrackerFinished from '~/utils/tracker/isTrackerFinished'
 import { ClonedProps } from '~/screens/main.dashboard.tracker/types'
 import LabelMenu from './LabelMenu'
 import s from '~/styles'
@@ -139,6 +140,10 @@ C.fill = css`
   width: 100%;
   cursor: pointer;
   outline: 0;
+
+  &:disabled {
+    cursor: initial;
+  }
 `
 C.fillCircle = css`
   height: 18px;
@@ -191,6 +196,8 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
       return null
     }
 
+
+    const isFinished = isTrackerFinished(tracker)
     const creationDate: Date = parse(tracker.created_at)
     const year = getTrackerYear(tracker)
     const today = new Date()
@@ -270,13 +277,14 @@ class DashboardTrackerHome extends React.Component<ClonedProps, {}> {
                                         // We'll add 1 here since our database' months start with 1, not 0 (unlike Date)
                                         this.props.onEntryClick(i + 1, j + 1)
                                       }}
+                                      disabled={isFinished}
                                       type="button"
                                       css={C.fill}
                                       style={isDateToday ? { top: 8 } : {}}>
-                                      <div
+                                      {!isFinished && <div
                                         css={C.fillCircle}
                                         style={{ background: tracker.labels[this.props.activeLabelIndex].color }}
-                                      />
+                                      />}
                                     </button>
 
                                     {isDateBeforeCreationDate && (

@@ -7,6 +7,7 @@ import UiPageHeading from '~/components/UiPageHeading'
 import UiSpacer from '~/components/UiSpacer'
 import LoadingPlaceholder from './LoadingPlaceholder';
 import ArchiveSlate from './ArchiveSlate';
+import HeadingCompleteLabel from './HeadingCompleteLabel';
 
 import immer from 'immer'
 import axios from '~/lib/axios'
@@ -17,6 +18,7 @@ import isNumericKeyCode from '~/utils/isNumericKeyCode'
 import toPropertyKeys from '~/utils/toPropertyKeys'
 import { State } from './types'
 import { format } from 'date-fns';
+import isTrackerFinished from '~/utils/tracker/isTrackerFinished'
 
 type RouteProps = RouteComponentProps<{}, {
   trackerId: string
@@ -63,13 +65,15 @@ class DashboardTracker extends React.Component<Props, State> {
       return <LoadingPlaceholder />;
     }
 
+    const isFinished = isTrackerFinished(tracker)
+
     return (
       <React.Fragment>
         <Helmet title={`${tracker.name}`} />
 
         <EventListener target="document" onKeyDown={this.handleKeyDown} />
 
-        <UiPageHeading title={tracker.name} />
+        <UiPageHeading title={tracker.name} action={isFinished && <HeadingCompleteLabel />} />
 
         {tracker.deleted_at == null && <UiContainer size="lg">
           <UiTabs>
