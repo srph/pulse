@@ -155,7 +155,7 @@ class DashboardHome extends React.Component<Props, State> {
                             </h4>
 
                             <span css={C.trackerDate}>
-                              Last updated {distanceInWordsStrictToNow(dateAgo)} ago
+                              Last updated {lastUpdateInDays === 0 ? 'today' : distanceInWordsStrictToNow(dateAgo)} ago
                               {lastUpdateInDays > 1 && (
                                 lastUpdateInDays > 5
                                   ? <span css={[C.trackerDateIndicator, C.trackerDateIndicatorIsWarning]}><i className='fa fa-exclamation-circle' /></span>
