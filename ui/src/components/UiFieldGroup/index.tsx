@@ -30,12 +30,18 @@ C.headingIsDangerous = css`
 C.tagline = css`
   line-height: 1.5;
   margin: 0;
+
+  a {
+    color: ${s['color-text']};
+    text-decoration: none;
+    border-bottom: 1px dashed ${s['color-bw-500']};
+  }
 `
 
 interface Props {
   isDangerous?: boolean
   heading: string
-  tagline: string
+  tagline: React.ReactNode
   children?: React.ReactNode
 }
 

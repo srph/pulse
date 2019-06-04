@@ -8,6 +8,7 @@ import UiButtonLoader from '~/components/UiButtonLoader'
 import UiButtonAction from '~/components/UiButtonAction'
 import UiSpacer from '~/components/UiSpacer'
 import UiFieldGroup from '~components/UiFieldGroup';
+import { Link }  from 'react-router-dom';
 import ls from 'linkstate'
 import axios from '~/lib/axios';
 import { toast } from '~/components/Toast'
@@ -25,7 +26,7 @@ class TrackerArchive extends React.Component<ClonedProps, State> {
   
   render() {
     return (
-      <UiFieldGroup heading="Archive Tracker" tagline="Enter the tracker's name to archive. You may view all closed trackers from the Nav Dropdown > Archived Trackers." isDangerous>
+    <UiFieldGroup heading="Archive Tracker" tagline={<span>Enter the tracker's name to archive. You may view all closed trackers from the <Link to="/?archived=true">Nav Dropdown > Archived Trackers</Link>.</span>} isDangerous>
         <form onSubmit={this.handleSubmit} autoComplete="off">
           <input autoComplete="false" name="hidden" type="text" style= {{ display: 'none' }} />
 
