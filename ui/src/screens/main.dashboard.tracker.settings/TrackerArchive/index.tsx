@@ -25,7 +25,7 @@ class TrackerArchive extends React.Component<ClonedProps, State> {
   
   render() {
     return (
-      <UiFieldGroup heading="Archive Tracker" tagline="Enter the tracker's name to archive. You may view all closed trackers from Home > View Archived Trackers." isDangerous>
+      <UiFieldGroup heading="Archive Tracker" tagline="Enter the tracker's name to archive. You may view all closed trackers from the Nav Dropdown > Archived Trackers." isDangerous>
         <form onSubmit={this.handleSubmit} autoComplete="off">
           <input autoComplete="false" name="hidden" type="text" style= {{ display: 'none' }} />
 
