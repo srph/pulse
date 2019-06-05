@@ -25,7 +25,8 @@ class TrackersController extends Controller
                 'year' => $year,
                 'trackers' => $trackers
             ];
-        })->values();
+        })->sortByDesc('year')
+        ->values();
 
         return response()->json($payload);
     }
