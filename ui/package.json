@@ -28,7 +28,7 @@
     "emotion-theming": "^10.0.10",
     "font-awesome": "^4.7.0",
     "history": "^4.9.0",
-    "immer": "^2.1.4",
+    "immer": "^8.0.1",
     "linkstate": "^1.1.1",
     "lodash.groupby": "^4.6.0",
     "qhistory": "^1.0.3",
