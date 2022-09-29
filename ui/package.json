@@ -45,6 +45,6 @@
     "src": "^1.1.2",
     "styled-components": "^4.2.0",
     "unstated": "^2.1.1",
-    "victory": "^32.1.0"
+    "victory": "^36.6.8"
   }
 }
